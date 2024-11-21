@@ -1,4 +1,4 @@
-![Project Logo](Fracture-Minecraft_Title.png)
+![Project Logo](UI/images/Title.png)
 ## Info:
 [![pages-build-deployment](https://github.com/ssh-lvl/new-shatter/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/ssh-lvl/new-shatter/actions/workflows/pages/pages-build-deployment)
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/ssh-lvl/new-shatter)
