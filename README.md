@@ -1,5 +1,5 @@
 ![Project Logo](UI/images/Title.png)
-## Info:
+## Info: 
 [![pages-build-deployment](https://github.com/ssh-lvl/new-shatter/actions/workflows/jekyll-gh-pages.yml/badge.svg?branch=main)](https://github.com/ssh-lvl/new-shatter/actions/workflows/jekyll-gh-pages.yml)
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/ssh-lvl/new-shatter)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ssh-lvl/new-shatter)
