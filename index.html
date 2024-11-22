@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+    <head>
+        <title>Shatter</title>
+
+        <link rel="stylesheet" href="CSS/theme-index.css">    
+        <link rel="stylesheet" href="CSS/index.css">    
+    </head>
+
+    <body>
+        <style>
+            .background {
+              background: var(--color-major);
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              z-index: -5; }
+
+            .vbutton {
+              position: absolute;
+              width: 80px;
+              height: 40px;
+              background-color: var(--color-minor);
+              color: white;
+              border: 2px solid var(--color-accent);
+              border-radius: 5px;
+              cursor: pointer;
+              text-align: center;
+              line-height: 40px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              font-size: 16px;
+              font-weight: bold;
+              text-decoration: none;
+              transition: all 0.3s ease-in-out; }
+
+            .vbutton:hover {
+              border-radius: 10px;
+              border-color: var(--color-button-hover);
+              background-color: var(--color-accent-hover);
+              color: #fff; }
+        </style>
+        <div class="background"></div>
+        <h3 id="test"></h3>
+
+        <script src="JS/fetch.js"></script>
+        <script type="module">
+        document.getElementById('test').textContent = await FFFF('UI')
+        </script>
+        
+    </body>
