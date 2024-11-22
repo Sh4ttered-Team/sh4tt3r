@@ -4,7 +4,7 @@
 
 async function FFFF(folder) {  //Fetch Files From Folder, gets list of filenames in a folder(used for dynamic assets)
     const response = await UF('https://api.github.com/repos/ssh-lvl/new-shatter/contents/'+folder);
-    if (typeof(response != Array)) {
+    if (!Array.isArray(response)) {
         console.error('url fetch failed! :' + typeof(response) == null ? 'null' : response)
         return null;
     }
