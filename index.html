@@ -53,7 +53,7 @@
         <script type="module">
 
             (async function() {
-                const files = await FFFF('');
+                const files = await FDB('users');
         
                 if (files) {
                     document.getElementById('test').textContent = files.join(", ");
