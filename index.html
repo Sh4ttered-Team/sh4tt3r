@@ -43,13 +43,17 @@
               color: #fff; }
         </style>
         <div class="background"></div>
-        <h3 id="test"></h3>
 
         <script src="JS/fetch.js"></script>
+
+        <!-- testing -->
+        <h3 id="test"></h3>
+
+        
         <script type="module">
 
             (async function() {
-                const files = await FFFF('UI');
+                const files = await FFFF('');
         
                 if (files) {
                     document.getElementById('test').textContent = files.join(", ");
@@ -57,7 +61,6 @@
                     document.getElementById('test').textContent = "No files found or error occurred";
                 }
              })();
-</script>
+        </script>
 
-        
     </body>

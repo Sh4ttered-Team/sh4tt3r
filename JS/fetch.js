@@ -26,3 +26,7 @@ async function UF(api) { //URL Fetch(used as a base for fetches), simply returns
         return e;
     }
 }
+
+async function FDB(table) { //Fetch DataBase, gets the 
+
+}
