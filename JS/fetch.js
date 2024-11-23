@@ -4,7 +4,7 @@
 
 async function FFFF(folder) {  //Fetch Files From Folder, gets list of filenames in a folder(used for dynamic assets)
     const response = await UF('https://api.github.com/repos/ssh-lvl/new-shatter/contents/'+folder);
-    if (!Array.isArray(response)) {
+    if (!response) {
         console.error('url fetch failed! :' + typeof(response) == null ? 'null' : response)
         return null;
     }
@@ -43,4 +43,13 @@ async function FDB(table) { //Fetch data from a table in the supabase
         return null;
     }
     return response;
+}
+
+async function FICS() { //Fetch Internet Connection Status, pretty much just checks if you can access the internet
+    try {
+        await fetch('https://www.google.com', { mode: 'no-cors' });
+        return true;
+    } catch (e) {
+        return false;
+    }
 }

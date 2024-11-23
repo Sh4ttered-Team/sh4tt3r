@@ -46,8 +46,47 @@
 
         <script src="JS/fetch.js"></script>
 
+        <script type="module">
+            function OnRetry() {
+                if (FICS()) {
+                    if (document.getElementById('wifi-txt') != null) {
+                        document.getElementById('wifi-txt').remove();
+                    }
+                    if (document.getElementById('retry_button') != null) {
+                        document.getElementById('retry_button').remove();
+                    }
+                    LoadSubmenus(); 
+                } else {
+                    if (document.getElementById('wifi-txt') == null) {
+                        const no_internet_txt = document.createElement('h1');
+                        no_internet_txt.className = 'wifi-text';
+                        no_internet_txt.id = 'wifi-txt';
+                        no_internet_txt.textContent = 'No Internet Connection!';
+                    }
+                }
+            }
+
+            async function LoadSubmenus() {
+                const menus = await FFFF('SUB');
+                if (menus == null) {
+                    const retry_button = document.createElement('button');
+
+                    retry_button.className = 'vbutton';
+                    retry_button.id = 'retry_button';
+                    retry_button.textContent = 'Retry';
+                    retry_button.onclick = OnRetry;
+
+                    document.body.appendChild(retry_button);
+                }
+                else {
+
+                }
+            }
+
+            LoadSubmenus();
+        </script>
         <!-- testing -->
-        <h3 id="test"></h3>
+        <!-- <h3 id="test"></h3>
 
         
         <script type="module">
@@ -61,6 +100,6 @@
                     document.getElementById('test').textContent = "No files found or error occurred";
                 }
              })();
-        </script>
+        </script> -->
 
     </body>
