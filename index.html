@@ -46,6 +46,8 @@
 
         <script src="JS/fetch.js"></script>
 
+        <h1 id="test"></h1>
+
         <script type="module">
             function OnRetry() {
                 if (FICS()) {
@@ -79,7 +81,7 @@
                     document.body.appendChild(retry_button);
                 }
                 else {
-
+                    document.getElementById('test').textContent = 'Loaded submenus'
                 }
             }
 
