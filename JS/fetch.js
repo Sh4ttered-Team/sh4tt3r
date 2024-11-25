@@ -3,13 +3,18 @@
 
 
 async function FFFF(folder) {  //Fetch Files From Folder, gets list of filenames in a folder(used for dynamic assets)
-    const response = await UF('https://api.github.com/repos/ssh-lvl/new-shatter/contents/'+folder);
+    let response
+    try {
+        response = await UF('https://api.github.com/repos/ssh-lvl/new-shatter/contents/'+folder);
+    } catch (e) {
+        return null;
+    }
     if (!response) {
         console.error('url fetch failed! :' + typeof(response) == null ? 'null' : response)
         return null;
     }
     const Files = response
-        .filter(item => item.type === "file")
+        .filter(item => item.type === "file" && !item.name.startsWith('-'))
         .map(file => file.name);
     
     return Files;
@@ -18,7 +23,7 @@ async function FFFF(folder) {  //Fetch Files From Folder, gets list of filenames
 async function UF(api, headers = {}) {//(api required:url, headers optional:other headers like api keys) //URL Fetch(used as a base for fetches), simply returns the response from an api call
     try {
         const response = await fetch(api,headers);
-        if (!response.ok) {
+        if (!response.ok || response.type == TypeError) {
             return null;
         }
         return response.json();
@@ -47,7 +52,7 @@ async function FDB(table) { //Fetch data from a table in the supabase
 
 async function FICS() { //Fetch Internet Connection Status, pretty much just checks if you can access the internet
     try {
-        await fetch('https://www.google.com', { mode: 'no-cors' });
+        await UF('https://www.google.com', { mode: 'no-cors' });
         return true;
     } catch (e) {
         return false;

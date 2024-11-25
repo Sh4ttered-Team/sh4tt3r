@@ -4,6 +4,7 @@
 
         <link rel="stylesheet" href="CSS/theme-index.css">    
         <link rel="stylesheet" href="CSS/index.css">    
+        <link rel="icon" type="image/x-icon" href="./UI/favicon.ico">
     </head>
 
     <body>
@@ -49,8 +50,11 @@
         <h1 id="test"></h1>
 
         <script type="module">
-            function OnRetry() {
-                if (FICS()) {
+            const subfolder = 'SUB'
+
+            async function OnRetry() {
+                const network_check = await FICS()
+                if (network_check) {
                     if (document.getElementById('wifi-txt') != null) {
                         document.getElementById('wifi-txt').remove();
                     }
@@ -59,49 +63,48 @@
                     }
                     LoadSubmenus(); 
                 } else {
-                    if (document.getElementById('wifi-txt') == null) {
-                        const no_internet_txt = document.createElement('h1');
-                        no_internet_txt.className = 'wifi-text';
-                        no_internet_txt.id = 'wifi-txt';
-                        no_internet_txt.textContent = 'No Internet Connection!';
-                    }
+                        document.getElementById('wifi-txt').textContent = 'No Internet Connection!';
                 }
             }
 
             async function LoadSubmenus() {
-                const menus = await FFFF('SUB');
+                const menus = await FFFF(subfolder);
                 if (menus == null) {
-                    const retry_button = document.createElement('button');
+                    if (document.getElementById('retry_button') == null) {
+                        const retry_button = document.createElement('button');
 
-                    retry_button.className = 'vbutton';
-                    retry_button.id = 'retry_button';
-                    retry_button.textContent = 'Retry';
-                    retry_button.onclick = OnRetry;
+                        retry_button.className = 'vbutton';
+                        retry_button.id = 'retry_button';
+                        retry_button.textContent = 'Retry';
+                        retry_button.onclick = OnRetry;
 
-                    document.body.appendChild(retry_button);
+                        document.body.appendChild(retry_button);
+                    }
+
+                    if (document.getElementById('wifi-txt') == null) {
+                        const no_internet_txt = document.createElement('h1');
+
+                        no_internet_txt.className = 'wifi-text';
+                        no_internet_txt.id = 'wifi-txt';
+                        no_internet_txt.textContent = 'Failed to get web data';
+
+                        document.body.appendChild(no_internet_txt);
+                    } 
                 }
                 else {
-                    document.getElementById('test').textContent = 'Loaded submenus'
+                    menus.forEach(subpage => {
+                        const sub_button = document.createElement('button');
+
+                        sub_button.className = 'vbutton';
+                        sub_button.textContent = subpage.replace('.html','');
+                        sub_button.onclick = function () {window.location.href = './' + subfolder + '/' + subpage;};
+
+                        document.body.appendChild(sub_button);
+                    });
+                    document.getElementById('test').textContent = 'Loaded submenus: ' + menus
                 }
             }
 
             LoadSubmenus();
         </script>
-        <!-- testing -->
-        <!-- <h3 id="test"></h3>
-
-        
-        <script type="module">
-
-            (async function() {
-                const files = await FDB('users');
-        
-                if (files) {
-                    document.getElementById('test').textContent = files.join(", ");
-                } else {
-                    document.getElementById('test').textContent = "No files found or error occurred";
-                }
-             })();
-        </script> -->
-
     </body>
