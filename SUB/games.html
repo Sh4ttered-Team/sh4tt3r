@@ -13,7 +13,7 @@
             games.forEach(game => {
                 let button = document.createElement('button');
                 button.textContent = String(game);
-                sub_button.onclick = function () {window.location.href = './-play.html' + '?id=' + String(game);};
+                button.onclick = function () {window.location.href = './-play.html' + '?id=' + String(game);};
 
                 document.body.appendChild(button);
             });
