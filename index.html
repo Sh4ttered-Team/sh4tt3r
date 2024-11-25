@@ -68,7 +68,7 @@
             }
 
             async function LoadSubmenus() {
-                const menus = await FFFF(subfolder);
+                const menus = await FFFF(subfolder,'file');
                 if (menus == null) {
                     if (document.getElementById('retry_button') == null) {
                         const retry_button = document.createElement('button');

@@ -2,7 +2,7 @@
 
 
 
-async function FFFF(folder) {  //Fetch Files From Folder, gets list of filenames in a folder(used for dynamic assets)
+async function FFFF(folder,itemtype) {  //Fetch Files From Folder, gets list of filenames in a folder(used for dynamic assets)
     let response
     try {
         response = await UF('https://api.github.com/repos/ssh-lvl/new-shatter/contents/'+folder);
@@ -14,7 +14,7 @@ async function FFFF(folder) {  //Fetch Files From Folder, gets list of filenames
         return null;
     }
     const Files = response
-        .filter(item => item.type === "file" && !item.name.startsWith('-'))
+        .filter(item => item.type === itemtype && !item.name.startsWith('-'))
         .map(file => file.name);
     
     return Files;
