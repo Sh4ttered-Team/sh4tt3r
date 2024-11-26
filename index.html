@@ -92,11 +92,10 @@
                     } 
                 }
                 else {
-                    //button creation
                     menus.forEach(subpage => {
                         const sub_button = document.createElement('button');
 
-                        sub_button.className = 'vbutton';
+                        //sub_button.className = 'vbutton';
                         sub_button.textContent = subpage.replace('.html','');
                         sub_button.onclick = function () {window.location.href = './' + subfolder + '/' + subpage;};
 
