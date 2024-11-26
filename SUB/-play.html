@@ -18,11 +18,35 @@
             }
         </style>
 
-        <iframe frameborder="0" id="display"></iframe>
+        <script src="../ruffle/ruffle.js"></script>
         <script>
             const params = new URLSearchParams(window.location.search);
             const src = params.get('id');
-            document.getElementById('display').src = '../game-sources/' + src + '/'
+
+            if (params.has('flash',true)) {
+                const flashContainer = document.createElement('div');
+                flashContainer.id = 'flash-content';
+                const flashObject = document.createElement('object');
+                flashObject.data = '../game-sources/-flash/' + src + '/index.swf';
+                flashObject.type = 'application/x-shockwave-flash';
+                flashObject.width = '800';
+                flashObject.height = '600';
+                const flashParam = document.createElement('param');
+                flashParam.name = 'movie';
+                flashParam.value = '../game-sources/-flash/' + src + '/index.swf';
+                flashObject.appendChild(flashParam);
+                const fallbackMessage = document.createElement('p');
+                fallbackMessage.textContent = 'Flash content could not be loaded.';
+                flashObject.appendChild(fallbackMessage);
+                flashContainer.appendChild(flashObject);
+                document.body.appendChild(flashContainer);
+            } else {
+                const display = document.createElement('iframe');
+                display.id = 'display';
+                display.frameBorder = 0;
+                document.body.appendChild(display);
+                document.getElementById('display').src = '../game-sources/' + src + '/';
+            }
         </script>
 
     </body>

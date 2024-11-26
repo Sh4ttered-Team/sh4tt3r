@@ -17,5 +17,13 @@
 
                 document.body.appendChild(button);
             });
+            const flashgames = await FFFF('game-sources/-flash','dir');
+            flashgames.forEach(game => {
+                let button = document.createElement('button');
+                button.textContent = String(game);
+                button.onclick = function () {window.location.href = './-play.html' + '?id=' + String(game) + '&flash=true';};
+
+                document.body.appendChild(button);
+            });
         </script>
     </body>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+    <head>
+        <title>Shatter</title>
+        <link rel="icon" type="image/x-icon" href=".././UI/favicon.ico">
+    </head>
+
+    <body>
+        <style>
+            #display {
+                width: 100%;
+                height: 100vh;  
+                border: none;
+            }
+            body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            }
+            
+
+        </style>
+
+        <iframe id="display" style="display:none;"></iframe>
+        <script>
+            const proxies = {
+                'Lucid':'https://luhtrissy.com/'
+            }
+            for (const [name, url] of Object.entries(proxies)) {
+                const button = document.createElement('button');
+                button.textContent = name;
+                button.onclick = (function () {let display = document.getElementById('display'); display.src = url; display.style.display = 'block';});
+                document.body.appendChild(button);
+            }
+        </script>
+    </body>
