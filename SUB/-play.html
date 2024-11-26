@@ -1,52 +1,59 @@
 <!DOCTYPE html>
-    <head>
-        <title>Shatter</title>
-        <link rel="icon" type="image/x-icon" href=".././UI/favicon.ico">
-    </head>
+<head>
+  <title>Shatter</title>
+  <link rel="icon" type="image/x-icon" href=".././UI/favicon.ico" />
+</head>
 
-    <body>
-        <style>
-            #display {
-                width: 100%;
-                height: 100vh;  
-            }
-            html, body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                height: 100%;
-            }
-        </style>
+<body>
+  <style>
+    #display,ruffle-player {
+      width: 100%;
+      height: 100vh;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 
-        <script src="../ruffle/ruffle.js"></script>
-        <script>
-            const params = new URLSearchParams(window.location.search);
-            const src = params.get('id');
+  <script src="../ruffle/ruffle.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const src = params.get("id");
 
-            if (params.has('flash',true)) {
-                const flashContainer = document.createElement('div');
-                flashContainer.id = 'flash-content';
-                const flashObject = document.createElement('object');
-                flashObject.data = '../game-sources/-flash/' + src + '/index.swf';
-                flashObject.type = 'application/x-shockwave-flash';
-                flashObject.width = '800';
-                flashObject.height = '600';
-                const flashParam = document.createElement('param');
-                flashParam.name = 'movie';
-                flashParam.value = '../game-sources/-flash/' + src + '/index.swf';
-                flashObject.appendChild(flashParam);
-                const fallbackMessage = document.createElement('p');
-                fallbackMessage.textContent = 'Flash content could not be loaded.';
-                flashObject.appendChild(fallbackMessage);
-                flashContainer.appendChild(flashObject);
-                document.body.appendChild(flashContainer);
-            } else {
-                const display = document.createElement('iframe');
-                display.id = 'display';
-                display.frameBorder = 0;
-                document.body.appendChild(display);
-                document.getElementById('display').src = '../game-sources/' + src + '/';
-            }
-        </script>
+    if (params.has("flash", true)) {
+      const flashContainer = document.createElement("div");
+      flashContainer.id = "flash-container";
+      flashContainer.style.width = "100%";
+      flashContainer.style.height = "100%";
+      flashContainer.style.display = "flex";
+      flashContainer.style.justifyContent = "center";
+      flashContainer.style.alignItems = "center";
+      flashContainer.style.overflow = "hidden";
 
-    </body>
+      const rufflePlayerContainer = document.createElement("div");
+      rufflePlayerContainer.id = "ruffle-player";
+      rufflePlayerContainer.style.width = "100%";
+      rufflePlayerContainer.style.height = "100%";
+
+      flashContainer.appendChild(rufflePlayerContainer);
+
+      document.body.appendChild(flashContainer);
+
+      const ruffle = window.RufflePlayer.newest();
+      const player = ruffle.createPlayer();
+      rufflePlayerContainer.appendChild(player);
+
+      const flashsrc = "../game-sources/-flash/" + src + "/index.swf";
+      player.load(flashsrc);
+    } else {
+      const display = document.createElement("iframe");
+      display.id = "display";
+      display.frameBorder = 0;
+      document.body.appendChild(display);
+      document.getElementById("display").src = "../game-sources/" + src + "/";
+    }
+  </script>
+</body>
