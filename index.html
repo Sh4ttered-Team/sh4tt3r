@@ -1,110 +1,141 @@
 <!DOCTYPE html>
-    <head>
-        <title>Shatter</title>
+<head>
+  <title>Shatter</title>
 
-        <link rel="stylesheet" href="CSS/theme-index.css">    
-        <link rel="stylesheet" href="CSS/index.css">    
-        <link rel="icon" type="image/x-icon" href="./UI/favicon.ico">
-    </head>
+  <link rel="stylesheet" href="CSS/theme-index.css" />
+  <link rel="stylesheet" href="CSS/index.css" />
+  <link rel="icon" type="image/x-icon" href="./UI/favicon.ico" />
+</head>
 
-    <body>
-        <style>
-            .background {
-              background: var(--color-major);
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              z-index: -5; }
+<body>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
 
-            .vbutton {
-              position: absolute;
-              width: 80px;
-              height: 40px;
-              background-color: var(--color-minor);
-              color: white;
-              border: 2px solid var(--color-accent);
-              border-radius: 5px;
-              cursor: pointer;
-              text-align: center;
-              line-height: 40px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              font-size: 16px;
-              font-weight: bold;
-              text-decoration: none;
-              transition: all 0.3s ease-in-out; }
+    .titlecontainer {
+      position: absolute;
+      top: 2%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-            .vbutton:hover {
-              border-radius: 10px;
-              border-color: var(--color-button-hover);
-              background-color: var(--color-accent-hover);
-              color: #fff; }
-        </style>
-        <div class="background"></div>
+    .title {
+      max-width: 74%;
+      max-height: 74%;
+      padding: 10px;
+      object-fit: contain;
+      display: block;
+    }
 
-        <script src="JS/fetch.js"></script>
+    .background {
+      background: var(--color-major);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -5;
+    }
 
-        <h1 id="test"></h1>
+    .vbutton {
+      position: absolute;
+      width: 80px;
+      height: 40px;
+      background-color: var(--color-minor);
+      color: white;
+      border: 2px solid var(--color-accent);
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 40px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease-in-out;
+    }
 
-        <script type="module">
-            const subfolder = 'SUB'
+    .vbutton:hover {
+      border-radius: 10px;
+      border-color: var(--color-button-hover);
+      background-color: var(--color-accent-hover);
+      color: #fff;
+    }
+  </style>
+  <div class="background"></div>
 
-            async function OnRetry() {
-                const network_check = await FICS()
-                if (network_check) {
-                    if (document.getElementById('wifi-txt') != null) {
-                        document.getElementById('wifi-txt').remove();
-                    }
-                    if (document.getElementById('retry_button') != null) {
-                        document.getElementById('retry_button').remove();
-                    }
-                    LoadSubmenus(); 
-                } else {
-                        document.getElementById('wifi-txt').textContent = 'No Internet Connection!';
-                }
-            }
+  <div class="titlecontainer">
+    <img src="UI/Title.png" class="title" />
+  </div>
 
-            async function LoadSubmenus() {
-                const menus = await FFFF(subfolder,'file');
-                if (menus == null) {
-                    if (document.getElementById('retry_button') == null) {
-                        const retry_button = document.createElement('button');
+  <script src="JS/fetch.js"></script>
 
-                        retry_button.className = 'vbutton';
-                        retry_button.id = 'retry_button';
-                        retry_button.textContent = 'Retry';
-                        retry_button.onclick = OnRetry;
+  <script type="module">
+    const subfolder = "SUB";
 
-                        document.body.appendChild(retry_button);
-                    }
+    async function OnRetry() {
+      const network_check = await FICS();
+      if (network_check) {
+        if (document.getElementById("wifi-txt") != null) {
+          document.getElementById("wifi-txt").remove();
+        }
+        if (document.getElementById("retry_button") != null) {
+          document.getElementById("retry_button").remove();
+        }
+        LoadSubmenus();
+      } else {
+        document.getElementById("wifi-txt").textContent =
+          "No Internet Connection!";
+      }
+    }
 
-                    if (document.getElementById('wifi-txt') == null) {
-                        const no_internet_txt = document.createElement('h1');
+    async function LoadSubmenus() {
+      const menus = await FFFF(subfolder, "file");
+      if (menus == null) {
+        if (document.getElementById("retry_button") == null) {
+          const retry_button = document.createElement("button");
 
-                        no_internet_txt.className = 'wifi-text';
-                        no_internet_txt.id = 'wifi-txt';
-                        no_internet_txt.textContent = 'Failed to get web data';
+          retry_button.className = "vbutton";
+          retry_button.id = "retry_button";
+          retry_button.textContent = "Retry";
+          retry_button.onclick = OnRetry;
 
-                        document.body.appendChild(no_internet_txt);
-                    } 
-                }
-                else {
-                    menus.forEach(subpage => {
-                        const sub_button = document.createElement('button');
+          document.body.appendChild(retry_button);
+        }
 
-                        //sub_button.className = 'vbutton';
-                        sub_button.textContent = subpage.replace('.html','');
-                        sub_button.onclick = function () {window.location.href = './' + subfolder + '/' + subpage;};
+        if (document.getElementById("wifi-txt") == null) {
+          const no_internet_txt = document.createElement("h1");
 
-                        document.body.appendChild(sub_button);
-                    });
-                    document.getElementById('test').textContent = 'Loaded submenus: ' + menus
-                }
-            }
+          no_internet_txt.className = "wifi-text";
+          no_internet_txt.id = "wifi-txt";
+          no_internet_txt.textContent = "Failed to get web data";
 
-            LoadSubmenus();
-        </script>
-    </body>
+          document.body.appendChild(no_internet_txt);
+        }
+      } else {
+        menus.forEach((subpage) => {
+          const sub_button = document.createElement("button");
+
+          //sub_button.className = 'vbutton';
+          sub_button.textContent = subpage.replace(".html", "");
+          sub_button.onclick = function () {
+            window.location.href = "./" + subfolder + "/" + subpage;
+          };
+
+          document.body.appendChild(sub_button);
+        });
+      }
+    }
+
+    LoadSubmenus();
+  </script>
+</body>
