@@ -1,29 +1,39 @@
 <!DOCTYPE html>
-    <head>
-        <title>Shatter</title>
-        <link rel="icon" type="image/x-icon" href=".././UI/favicon.ico">
-    </head>
+<head>
+  <title>Shatter</title>
+  <link rel="icon" type="image/x-icon" href=".././UI/favicon.ico" />
 
-    <body>
+  <!-- main js stuff, copy paste -->
+  <script src="../JS/supabase.js"></script>
+  <script src="../JS/accounts.js"></script>
+  <script src="../JS/fetch.js"></script>
+  <script src="../JS/main.js" type="module"></script>
+</head>
 
-        <script src="../JS/fetch.js"></script>
+<body>
+  <script src="../JS/fetch.js"></script>
 
-        <script type="module">
-            const games = await FFFF('game-sources','dir');
-            games.forEach(game => {
-                let button = document.createElement('button');
-                button.textContent = String(game);
-                button.onclick = function () {window.location.href = './-play.html' + '?id=' + String(game);};
+  <script type="module">
+    const games = await FFFF("game-sources", "dir");
+    games.forEach((game) => {
+      let button = document.createElement("button");
+      button.textContent = String(game);
+      button.onclick = function () {
+        window.location.href = "./-play.html" + "?id=" + String(game);
+      };
 
-                document.body.appendChild(button);
-            });
-            const flashgames = await FFFF('game-sources/-flash','dir');
-            flashgames.forEach(game => {
-                let button = document.createElement('button');
-                button.textContent = String(game);
-                button.onclick = function () {window.location.href = './-play.html' + '?id=' + String(game) + '&flash=true';};
+      document.body.appendChild(button);
+    });
+    const flashgames = await FFFF("game-sources/-flash", "dir");
+    flashgames.forEach((game) => {
+      let button = document.createElement("button");
+      button.textContent = String(game);
+      button.onclick = function () {
+        window.location.href =
+          "./-play.html" + "?id=" + String(game) + "&flash=true";
+      };
 
-                document.body.appendChild(button);
-            });
-        </script>
-    </body>
+      document.body.appendChild(button);
+    });
+  </script>
+</body>

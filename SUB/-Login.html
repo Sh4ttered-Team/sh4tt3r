@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<head>
+  <title>Shatter</title>
+
+  <link rel="stylesheet" href="../CSS/theme-index.css" />
+  <link rel="stylesheet" href="../CSS/index.css" />
+  <link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
+</head>
+ <style>
+    .background {
+      background: var(--color-major);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -5;
+    }
+ </style>
+<body>
+    
+  <form id="login-form">
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button type="submit">Sign In</button>
+  </form>
+
+  <div class="background"></div>
+
+  <script src="../JS/supabase.js"></script>
+  <script src="../JS/fetch.js"></script>
+  <script src="../JS/accounts.js"></script>
+
+  <script type="module">
+
+    // Sign-in logic
+    async function signIn(event) {
+      event.preventDefault(); // Prevent form from submitting the default way
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // Sign in using Supabase Auth
+      LTA(email,password);
+    }
+
+    // Add event listener to form submission
+    document.getElementById("login-form").addEventListener("submit", signIn);
+  </script>
+</body>

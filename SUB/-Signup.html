@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<head>
+  <title>Shatter</title>
+
+  <link rel="stylesheet" href="../CSS/theme-index.css" />
+  <link rel="stylesheet" href="../CSS/index.css" />
+  <link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
+</head>
+<style>
+  .background {
+    background: var(--color-major);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -5;
+  }
+</style>
+<body>
+  <form id="login-form">
+    <input type="file" id="pfp" placeholder="Image/*" required />
+    <input id="username" placeholder="Username" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <div class="background"></div>
+
+  <script src="../JS/supabase.js"></script>
+  <script src="../JS/fetch.js"></script>
+  <script src="../JS/accounts.js"></script>
+
+  <script type="module">
+    document.getElementById("login-form").addEventListener("submit", signUp);
+
+
+    async function signUp(event) {
+      event.preventDefault();
+      
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        alert("Oops! Something went wrong, try again later =(");
+        console.error("Error during signup:", error.message);
+        return;
+      }
+      const file = document.getElementById('pfp').files[0];
+      const extention = String(file.type).split('/').pop();
+      const filepath = String(data.user.id) + '.' + String(extention)
+
+
+      //TODO!!! fix pfp uploads, malformed request?
+      const { pfpdata, pfperror } = await supabaseClient.storage
+        .from('profilePictures')
+        .upload(filepath,file, {
+        cacheControl: '0',
+        upsert: false,
+    });
+    
+      const { error: profileError } = await supabaseClient.from("profiles").insert([
+        {
+          id: data.user.id,
+          username: username,
+          pfp: filepath,
+        },
+      ]);
+
+      alert("Remember to verify your email!");
+      //window.location.href = "https://gmail.com";
+    }
+
+  </script>
+</body>

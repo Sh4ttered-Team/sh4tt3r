@@ -1,49 +1,58 @@
 <!DOCTYPE html>
-    <head>
-        <title>Shatter</title>
-        <link rel="icon" type="image/x-icon" href=".././UI/favicon.ico">
-    </head>
+<head>
+  <title>Shatter</title>
+  <link rel="icon" type="image/x-icon" href=".././UI/favicon.ico" />
 
-    <body>
-        <style>
-            #display {
-                width: 100%;
-                height: 100vh;  
-            }
-            html, body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                height: 100%;
-            }
-        </style>
-        
-        <script src="../JS/fetch.js"></script>
+  <!-- main js stuff, copy paste -->
+  <script src="../JS/supabase.js"></script>
+  <script src="../JS/accounts.js"></script>
+  <script src="../JS/fetch.js"></script>
+  <script src="../JS/main.js" type="module"></script>
+</head>
 
-        <script type="module">
-            const tools = await FFFF('tools','dir');
-            tools.forEach(tool => {
-                let button = document.createElement('button');
-                button.textContent = String(tool);
-                button.onclick = function () {createIframe('../tools/' + tool)};
+<body>
+  <style>
+    #display {
+      width: 100%;
+      height: 100vh;
+    }
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 
-                document.body.appendChild(button);
-            });
+  <script src="../JS/fetch.js"></script>
 
-            function createIframe(src) {
-                const closeButton = document.createElement('button');
-                closeButton.id = 'closeButton';
-                document.body.appendChild(closeButton);
-                closeButton.onclick = function () {
-                    document.body.removeChild(document.getElementById('display'));
-                    document.body.removeChild(document.getElementById('closeButton'));
-                };
+  <script type="module">
+    const tools = await FFFF("tools", "dir");
+    tools.forEach((tool) => {
+      let button = document.createElement("button");
+      button.textContent = String(tool);
+      button.onclick = function () {
+        createIframe("../tools/" + tool);
+      };
 
-                const iframe = document.createElement('iframe');
-                iframe.id = 'display';
-                iframe.src = src;
-                iframe.frameBorder = 0;
-                document.body.appendChild(iframe);
-            }
-        </script>
-    </body>
+      document.body.appendChild(button);
+    });
+
+    function createIframe(src) {
+      const closeButton = document.createElement("button");
+      closeButton.id = "closeButton";
+      document.body.appendChild(closeButton);
+      closeButton.onclick = function () {
+        document.body.removeChild(document.getElementById("display"));
+        document.body.removeChild(document.getElementById("closeButton"));
+      };
+
+      const iframe = document.createElement("iframe");
+      iframe.id = "display";
+      iframe.src = src;
+      iframe.frameBorder = 0;
+      document.body.appendChild(iframe);
+    }
+  </script>
+</body>

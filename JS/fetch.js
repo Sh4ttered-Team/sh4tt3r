@@ -38,25 +38,15 @@ async function UF(api, headers = {}) {
 
 async function FDB(table) {
   //Fetch data from a table in the supabase
-  const SUPABASE_URL = "https://fffwukshwgrcdyqmvahg.supabase.co";
-  const key =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmZnd1a3Nod2dyY2R5cW12YWhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEzOTkxMjAsImV4cCI6MjA0Njk3NTEyMH0.MsMeFMkrJCeJzRFWMZXM-CZu8gwaScV7feentsgMQvI";
-  const response = await UF(`${SUPABASE_URL}/rest/v1/${table}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-    },
-  });
+  const { data, error } = await supabaseClient
+        .from(table)
+        .select('*');
 
-  if (!Array.isArray(response)) {
-    console.error(
-      "url fetch failed! :" + typeof response == null ? "null" : response
-    );
-    return null;
-  }
-  return response;
+    if (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
+    return data;
 }
 
 async function FICS() {
