@@ -13,7 +13,7 @@ async function LTA(Email, Password) {
     alert("Error signing in: " + error.message);
   } else {
     console.log("User signed in:", user);
-    window.location.href = "../";
+    window.location.href = "/";
   }
 }
 
@@ -26,7 +26,8 @@ async function loggedIn() {
   }
 }
 
-function LOA() {
+async function LOA() {
   //Logout Of Accout
-  supabaseClient.auth.signOut();
+  await supabaseClient.auth.signOut();
+  window.location.reload();
 }

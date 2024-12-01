@@ -7,11 +7,10 @@
   <link rel="icon" type="image/x-icon" href="./UI/favicon.ico" />
 
   <!-- main js stuff, copy paste -->
-  <script src="JS/supabase.js"></script>
-  <script src="JS/accounts.js"></script>
-  <script src="JS/fetch.js"></script>
-  <script src="JS/main.js" type="module"></script>
-
+  <script src="/JS/supabase.js"></script>
+  <script src="/JS/accounts.js"></script>
+  <script src="/JS/fetch.js"></script>
+  <script src="/JS/main.js" type="module"></script>
 </head>
 
 <body>
@@ -39,6 +38,7 @@
       padding: 10px;
       object-fit: contain;
       display: block;
+      user-select: none;
     }
 
     .background {
@@ -84,7 +84,77 @@
     <img src="UI/Title.png" class="title" />
   </div>
 
+  <div
+    style="
+      position: fixed;
+      top: 50%;
+      right: 5%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      max-width: 10%;
+      background-color: var(--color-accent);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    "
+  >
+    <img
+      id="pfp"
+      src="/UI/account-placeholder.svg"
+      draggable="false"
+      style="
+        max-width: 80%;
+        max-height: 80%;
+        background-color: var(--color-text-light);
+        border-radius: 50%;
+        user-select: none;
+        margin-bottom: 20px;
+      "
+    />
+    <a
+      id="username"
+      style="
+        color: var(--color-text-light);
+        user-select: none;
+        font-weight: bold;
+        font-size: xx-large;
+        text-align: center;
+      "
+    ></a>
+    <a
+      id="status"
+      style="
+        font-weight: bold;
+        color: var(--color-text-light);
+        user-select: none;
+        font-size: x-large;
+        text-align: center;
+        padding-bottom: 5%;
+      "
+    ></a>
+    <button onclick="LOA()" style="font-size: large; font-weight: bold;">Logout</button>
+  </div>
+
   <script type="module">
+    const user = await FDB("profiles");
+    const pfp = user[0].pfp;
+    if (pfp == null || pfp.length > 8) {
+      document.getElementById("pfp").src =
+        "https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/public/profilePictures/" +
+        pfp;
+    }
+
+    document.getElementById("status").style.color = user[0].admin
+      ? "var(--color-uninstall)"
+      : "var(--text-color1)";
+    document.getElementById("status").textContent = user[0].admin
+      ? "Admin"
+      : "Shatter account";
+    document.getElementById("username").textContent = user[0].username;
 
     const subfolder = "SUB";
 

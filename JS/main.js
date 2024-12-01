@@ -7,7 +7,7 @@ else {
     prefix = '';
 }
 if (user[0] == null) {
-    window.location.href = prefix + '/SUB/-Login.html' 
+    window.location.href = prefix + '/SUB/-Login.html'; 
 }
 if (user[0].banned) {
     window.location.href = prefix + '/404.html';
