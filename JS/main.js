@@ -9,3 +9,4 @@ if (user[0].banned) {
 if (!await loggedIn()) {
     window.location.href = '/new-shatter/SUB/-Login.html';
 }
+
