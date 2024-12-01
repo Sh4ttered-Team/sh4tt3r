@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<head>
+  <title>Shatter</title>
+
+  <link rel="stylesheet" href="/CSS/theme-index.css" />
+  <link rel="stylesheet" href="/CSS/index.css" />
+  <link rel="icon" type="image/x-icon" href="/UI/favicon.ico" />
+
+  <!-- main js stuff, copy paste -->
+  <script src="/JS/supabase.js"></script>
+  <script src="/JS/accounts.js"></script>
+  <script src="/JS/fetch.js"></script>
+  <script src="/JS/main.js" type="module"></script>
+</head>
+
+<body>
+  <script src="/ruffle/ruffle.js"></script>
+  <style>
+    body {
+      color: var(--color-text-light);
+    }
+
+    .background {
+      background: var(--color-major);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -5;
+    }
+  </style>
+  <div class="background"></div>
+  <input id="flash-src-file" type="file" dropzone="true" style="position: absolute; z-index: 2; background-color: var(--color-minor); " accept=".swf,.spl" />
+
+  <div
+    id="flash-container"
+    style="
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    "
+  >
+    <div id="ruffle-player" style="width: 100%; height: 100%"></div>
+  </div>
+  <style>
+    ruffle-player {
+      width: 100%;
+      height: 100vh;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
+  <script>
+    const ruffle = window.RufflePlayer.newest();
+    const rufflePlayerContainer = document.getElementById("ruffle-player");
+    const player = ruffle.createPlayer();
+    rufflePlayerContainer.appendChild(player);
+
+    const fileInput = document.getElementById("flash-src-file");
+    fileInput.addEventListener("change", async () => {
+        const fileURL = URL.createObjectURL(fileInput.files[0]);
+        player.load(fileURL);
+        rufflePlayerContainer.style.width = "100%";
+        rufflePlayerContainer.style.height = "100%";
+    });
+  </script>
+</body>

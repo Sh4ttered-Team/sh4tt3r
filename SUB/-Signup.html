@@ -19,7 +19,7 @@
 </style>
 <body>
   <form id="login-form">
-    <input type="file" id="pfp" placeholder="Image/*" required />
+    <input type="file" id="pfp" accept="image/*" required />
     <input id="username" placeholder="Username" required />
     <input type="email" id="email" placeholder="Email" required />
     <input type="password" id="password" placeholder="Password" required />
@@ -50,7 +50,7 @@
       });
 
       if (error) {
-        alert("Oops! Something went wrong, try again later =(");
+        alert("Oops! Something went wrong, try again later =( \nWe may have reached our email limit for the hour \nplease be patient");
         console.error("Error during signup:", error.message);
         return;
       }

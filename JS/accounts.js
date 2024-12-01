@@ -13,7 +13,6 @@ async function LTA(Email, Password) {
     alert("Error signing in: " + error.message);
   } else {
     console.log("User signed in:", user);
-    alert("Signed in successfully!");
     window.location.href = "../";
   }
 }
