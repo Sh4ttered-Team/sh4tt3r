@@ -50,7 +50,7 @@
     const flashgames = await FFFF("game-sources/-flash", "file");
     flashgames.forEach((game) => {
       let button = document.createElement("button");
-      button.textContent = String(game);
+      button.textContent = String(game).replace('.swf','');
       button.onclick = function () {
         window.location.href =
           "./-play.html" + "?id=" + String(game) + "&flash=true";
