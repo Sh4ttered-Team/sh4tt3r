@@ -1,218 +1,163 @@
 <!DOCTYPE html>
 <head>
-  <title>Shatter</title>
+	<title>Shatter</title>
 
-  <link rel="stylesheet" href="CSS/theme-index.css" />
-  <link rel="stylesheet" href="CSS/index.css" />
-  <link rel="icon" type="image/x-icon" href="./UI/favicon.ico" />
+	<link rel="stylesheet" href="/CSS/theme-index.css" />
+	<link rel="stylesheet" href="/CSS/index.css" />
+	<link rel="icon" type="image/x-icon" href="/UI/favicon.ico" />
 
-  <!-- main js stuff, copy paste -->
-  <script src="/JS/supabase.js"></script>
-  <script src="/JS/accounts.js"></script>
-  <script src="/JS/fetch.js"></script>
-  <script src="/JS/main.js" type="module"></script>
+	<!-- main js stuff, copy paste -->
+	<script src="/JS/supabase.js"></script>
+	<script src="/JS/accounts.js"></script>
+	<script src="/JS/fetch.js"></script>
+	<script src="/JS/main.js" type="module"></script>
+
+  <style>
+		body {
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		.titlecontainer {
+			position: absolute;
+			top: 2%;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 2;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.title {
+			max-width: 74%;
+			max-height: 74%;
+			padding: 10px;
+			object-fit: contain;
+			display: block;
+			user-select: none;
+		}
+
+		.background {
+			background: var(--color-major);
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: -5;
+		}
+
+		.vbutton {
+			position: absolute;
+			width: 80px;
+			height: 40px;
+			background-color: var(--color-minor);
+			color: white;
+			border: 2px solid var(--color-accent);
+			border-radius: 5px;
+			cursor: pointer;
+			text-align: center;
+			line-height: 40px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			font-size: 16px;
+			font-weight: bold;
+			text-decoration: none;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.vbutton:hover {
+			border-radius: 10px;
+			border-color: var(--color-button-hover);
+			background-color: var(--color-accent-hover);
+			color: #fff;
+		}
+	</style>
 </head>
 
 <body>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
+	<div class="background"></div>
 
-    .titlecontainer {
-      position: absolute;
-      top: 2%;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+	<div class="titlecontainer">
+		<img src="UI/Title.png" class="title" />
+	</div>
 
-    .title {
-      max-width: 74%;
-      max-height: 74%;
-      padding: 10px;
-      object-fit: contain;
-      display: block;
-      user-select: none;
-    }
+	<div style="position: fixed; top: 50%; right: 5%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; width: auto; max-width: 10%; background-color: var(--color-accent); padding: 20px; border-radius: 10px; box-shadow: 4px 10px rgba(0, 0, 0, 0.2)">
+		<img id="pfp" src="/UI/account-placeholder.svg" draggable="false" style="max-width: 80%; max-height: 80%; background-color: var(--color-text-light); border-radius: 50%; user-select: none; margin-bottom: 20px; border: 4px solid var(--color-border)" />
+		<a id="username" style="color: var(--color-text-light); user-select: none; font-weight: bold; font-size: xx-large; text-align: center"></a>
+		<a id="status" style="font-weight: bold; color: var(--color-text-light); user-select: none; font-size: x-large; text-align: center; padding-bottom: 5%"></a>
+		<button onclick="LOA()" style="font-size: large; font-weight: bold">Logout</button>
+	</div>
 
-    .background {
-      background: var(--color-major);
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -5;
-    }
+	<script type="module">
+		const user = await FDB("profiles");
+		const pfp = user[0].pfp;
+		if (pfp == null || pfp.length > 8) {
+			document.getElementById("pfp").src = "https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/public/profilePictures/" + pfp;
+		}
 
-    .vbutton {
-      position: absolute;
-      width: 80px;
-      height: 40px;
-      background-color: var(--color-minor);
-      color: white;
-      border: 2px solid var(--color-accent);
-      border-radius: 5px;
-      cursor: pointer;
-      text-align: center;
-      line-height: 40px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 16px;
-      font-weight: bold;
-      text-decoration: none;
-      transition: all 0.3s ease-in-out;
-    }
+		document.getElementById("status").style.color = user[0].admin ? "var(--color-uninstall)" : "var(--text-color1)";
+		document.getElementById("status").textContent = user[0].admin ? "Admin" : "Shatter account";
+		document.getElementById("username").textContent = user[0].username;
 
-    .vbutton:hover {
-      border-radius: 10px;
-      border-color: var(--color-button-hover);
-      background-color: var(--color-accent-hover);
-      color: #fff;
-    }
-  </style>
-  <div class="background"></div>
+		const subfolder = "SUB";
 
-  <div class="titlecontainer">
-    <img src="UI/Title.png" class="title" />
-  </div>
+		async function OnRetry() {
+			const network_check = await FICS();
+			if (network_check) {
+				if (document.getElementById("wifi-txt") != null) {
+					document.getElementById("wifi-txt").remove();
+				}
+				if (document.getElementById("retry_button") != null) {
+					document.getElementById("retry_button").remove();
+				}
+				LoadSubmenus();
+			} else {
+				document.getElementById("wifi-txt").textContent = "No Internet Connection!";
+			}
+		}
 
-  <div
-    style="
-      position: fixed;
-      top: 50%;
-      right: 5%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: auto;
-      max-width: 10%;
-      background-color: var(--color-accent);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 4px 10px rgba(0, 0, 0, 0.2);
-    "
-  >
-    <img
-      id="pfp"
-      src="/UI/account-placeholder.svg"
-      draggable="false"
-      style="
-        max-width: 80%;
-        max-height: 80%;
-        background-color: var(--color-text-light);
-        border-radius: 50%;
-        user-select: none;
-        margin-bottom: 20px;
-        border: 4px solid var(--color-border);
-      "
-    />
-    <a
-      id="username"
-      style="
-        color: var(--color-text-light);
-        user-select: none;
-        font-weight: bold;
-        font-size: xx-large;
-        text-align: center;
-      "
-    ></a>
-    <a
-      id="status"
-      style="
-        font-weight: bold;
-        color: var(--color-text-light);
-        user-select: none;
-        font-size: x-large;
-        text-align: center;
-        padding-bottom: 5%;
-      "
-    ></a>
-    <button onclick="LOA()" style="font-size: large; font-weight: bold;">Logout</button>
-  </div>
+		async function LoadSubmenus() {
+			const menus = await FFFF(subfolder, "file");
+			if (menus == null) {
+				if (document.getElementById("retry_button") == null) {
+					const retry_button = document.createElement("button");
 
-  <script type="module">
-    const user = await FDB("profiles");
-    const pfp = user[0].pfp;
-    if (pfp == null || pfp.length > 8) {
-      document.getElementById("pfp").src =
-        "https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/public/profilePictures/" +
-        pfp;
-    }
+					retry_button.className = "vbutton";
+					retry_button.id = "retry_button";
+					retry_button.textContent = "Retry";
+					retry_button.onclick = OnRetry;
 
-    document.getElementById("status").style.color = user[0].admin
-      ? "var(--color-uninstall)"
-      : "var(--text-color1)";
-    document.getElementById("status").textContent = user[0].admin
-      ? "Admin"
-      : "Shatter account";
-    document.getElementById("username").textContent = user[0].username;
+					document.body.appendChild(retry_button);
+				}
 
-    const subfolder = "SUB";
+				if (document.getElementById("wifi-txt") == null) {
+					const no_internet_txt = document.createElement("h1");
 
-    async function OnRetry() {
-      const network_check = await FICS();
-      if (network_check) {
-        if (document.getElementById("wifi-txt") != null) {
-          document.getElementById("wifi-txt").remove();
-        }
-        if (document.getElementById("retry_button") != null) {
-          document.getElementById("retry_button").remove();
-        }
-        LoadSubmenus();
-      } else {
-        document.getElementById("wifi-txt").textContent =
-          "No Internet Connection!";
-      }
-    }
+					no_internet_txt.className = "wifi-text";
+					no_internet_txt.id = "wifi-txt";
+					no_internet_txt.textContent = "Failed to get web data";
 
-    async function LoadSubmenus() {
-      const menus = await FFFF(subfolder, "file");
-      if (menus == null) {
-        if (document.getElementById("retry_button") == null) {
-          const retry_button = document.createElement("button");
+					document.body.appendChild(no_internet_txt);
+				}
+			} else {
+				menus.forEach((subpage) => {
+					const sub_button = document.createElement("button");
 
-          retry_button.className = "vbutton";
-          retry_button.id = "retry_button";
-          retry_button.textContent = "Retry";
-          retry_button.onclick = OnRetry;
+					//sub_button.className = 'vbutton';
+					sub_button.textContent = subpage.replace(".html", "");
+					sub_button.onclick = function () {
+						window.location.href = "./" + subfolder + "/" + subpage;
+					};
 
-          document.body.appendChild(retry_button);
-        }
+					document.body.appendChild(sub_button);
+				});
+			}
+		}
 
-        if (document.getElementById("wifi-txt") == null) {
-          const no_internet_txt = document.createElement("h1");
-
-          no_internet_txt.className = "wifi-text";
-          no_internet_txt.id = "wifi-txt";
-          no_internet_txt.textContent = "Failed to get web data";
-
-          document.body.appendChild(no_internet_txt);
-        }
-      } else {
-        menus.forEach((subpage) => {
-          const sub_button = document.createElement("button");
-
-          //sub_button.className = 'vbutton';
-          sub_button.textContent = subpage.replace(".html", "");
-          sub_button.onclick = function () {
-            window.location.href = "./" + subfolder + "/" + subpage;
-          };
-
-          document.body.appendChild(sub_button);
-        });
-      }
-    }
-
-    LoadSubmenus();
-  </script>
+		LoadSubmenus();
+	</script>
 </body>
