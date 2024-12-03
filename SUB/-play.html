@@ -2,9 +2,9 @@
 <head>
 	<title>Shatter</title>
 
-	<link rel="stylesheet" href="./CSS/theme-index.css" />
-	<link rel="stylesheet" href="./CSS/index.css" />
-	<link rel="icon" type="image/x-icon" href=".././UI/favicon.ico" />
+	<link rel="stylesheet" href="../CSS/theme-index.css" />
+	<link rel="stylesheet" href="../CSS/index.css" />
+	<link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
 
 	<!-- main js stuff, copy paste -->
 	<script src="../JS/supabase.js"></script>
@@ -43,41 +43,64 @@
 	<div class="background"></div>
 
 	<script src="../ruffle/ruffle.js"></script>
-	<script>
+	<script type="module">
 		const params = new URLSearchParams(window.location.search);
 		const src = params.get("id");
+		if (src != null || src == "") {
+			if (params.has("flash", true)) {
+				const flashContainer = document.createElement("div");
+				flashContainer.id = "flash-container";
+				flashContainer.style.width = "100%";
+				flashContainer.style.height = "100%";
+				flashContainer.style.display = "flex";
+				flashContainer.style.justifyContent = "center";
+				flashContainer.style.alignItems = "center";
+				flashContainer.style.overflow = "hidden";
 
-		if (params.has("flash", true)) {
-			const flashContainer = document.createElement("div");
-			flashContainer.id = "flash-container";
-			flashContainer.style.width = "100%";
-			flashContainer.style.height = "100%";
-			flashContainer.style.display = "flex";
-			flashContainer.style.justifyContent = "center";
-			flashContainer.style.alignItems = "center";
-			flashContainer.style.overflow = "hidden";
+				const rufflePlayerContainer = document.createElement("div");
+				rufflePlayerContainer.id = "ruffle-player";
+				rufflePlayerContainer.style.width = "100%";
+				rufflePlayerContainer.style.height = "100%";
 
-			const rufflePlayerContainer = document.createElement("div");
-			rufflePlayerContainer.id = "ruffle-player";
-			rufflePlayerContainer.style.width = "100%";
-			rufflePlayerContainer.style.height = "100%";
+				flashContainer.appendChild(rufflePlayerContainer);
 
-			flashContainer.appendChild(rufflePlayerContainer);
+				document.body.appendChild(flashContainer);
 
-			document.body.appendChild(flashContainer);
+				const ruffle = window.RufflePlayer.newest();
+				const player = ruffle.createPlayer();
+				rufflePlayerContainer.appendChild(player);
 
-			const ruffle = window.RufflePlayer.newest();
-			const player = ruffle.createPlayer();
-			rufflePlayerContainer.appendChild(player);
-
-			const flashsrc = "../game-sources/-flash/" + src;
-			player.load(flashsrc);
+				const srcFetch = await fetch("https://ssh-lvl.github.io/shatter-games/game-sources/-flash/" + encodeURIComponent(src) + ".swf");
+				const blob = await srcFetch.blob();
+				const objectUrl = URL.createObjectURL(blob);
+				player.load(objectUrl);
+			} else {
+				const display = document.createElement("iframe");
+				display.id = "display";
+				display.frameBorder = 0;
+				document.body.appendChild(display);
+				document.getElementById("display").src = "https://ssh-lvl.github.io/shatter-games/game-sources/" + src;
+			}
 		} else {
-			const display = document.createElement("iframe");
-			display.id = "display";
-			display.frameBorder = 0;
-			document.body.appendChild(display);
-			document.getElementById("display").src = "../game-sources/" + src + "/";
+			const errortext = document.createElement("h1");
+			errortext.id = "error-text";
+			errortext.style.color = "var(--color-text-light)";
+			errortext.style.textAlign = "center";
+			errortext.innerHTML = "Oops! <br>We couldn't find this game...<br>If you think this is an error please report it ";
+			const linktext = document.createElement("a");
+			linktext.textContent = "here!";
+			linktext.style.color = "var(--color-button)";
+			linktext.onmouseover = () => {
+				linktext.style.color = "var(--color-button-hover)";
+			};
+
+			linktext.onmouseout = () => {
+				linktext.style.color = "var(--color-button)";
+			};
+			linktext.href = "support.html";
+
+			errortext.appendChild(linktext);
+			document.body.appendChild(errortext);
 		}
 	</script>
 </body>

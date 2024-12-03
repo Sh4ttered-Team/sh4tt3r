@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<head>
+	<title>Shatter</title>
+
+	<link rel="stylesheet" href="../CSS/theme-index.css" />
+	<link rel="stylesheet" href="../CSS/index.css" />
+	<link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
+</head>
+<style>
+	.background {
+		background: var(--color-major);
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -5;
+	}
+</style>
+<body>
+	<form id="support-form">
+		<textarea id="report" rows="25" style="resize: none; background-color: var(--color-accent); border-style: none; color: var(--color-text-light); width: 40%; font-size: x-large; font-weight: bolder; position: absolute; left: 30%; top: 10%" placeholder="Report the issue here..."></textarea>
+
+		<button type="submit">Submit</button>
+	</form>
+
+	<div class="background"></div>
+
+	<script src="../JS/supabase.js"></script>
+	<script src="../JS/fetch.js"></script>
+
+	<script type="module">
+		document.getElementById("support-form").addEventListener("submit", report);
+
+		const user = await FDB("profiles");
+		const username = user?.[0]?.username ?? "anon";
+
+        if (username == 'anon') {
+            alert('It looks like you aren\'t logged in! \nThis is fine. However, please provide your email\nin the report so we may contact you.')
+        }
+
+		async function report(event) {
+			event.preventDefault();
+			const reporttext = document.getElementById("report").value;
+			if (reporttext) {
+                const ipResponse = await fetch('https://freeipapi.com/api/json');
+                const ipData = await ipResponse.json();
+                const ip = ipData.ipAddress;
+				const { error } = await supabaseClient.from("bug reports").insert([
+					{
+						by_user: username,
+						report: reporttext,
+                        ip: ip,
+					},
+				]);
+
+				if (error) {
+					alert("Oops! Something went wrong, try again later =(");
+					console.error("Error during report:", error.message);
+					return;
+				}
+				alert("Thank's for the feedback! \nIf needed we will email you for further information.\nWe will now send you back to the main menu.");
+				window.location.href = "../";
+			} else {
+				alert("Report must not be blank!");
+				return;
+			}
+		}
+	</script>
+</body>

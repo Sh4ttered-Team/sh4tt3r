@@ -59,7 +59,6 @@
       const filepath = String(data.user.id) + '.' + String(extention)
 
 
-      //TODO!!! fix pfp uploads, malformed request?
       const { pfpdata, pfperror } = await supabaseClient.storage
         .from('profilePictures')
         .upload(filepath,file, {

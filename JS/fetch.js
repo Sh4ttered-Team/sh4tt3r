@@ -1,11 +1,11 @@
 // A custom tool for fetching data from external sources
 
-async function FFFF(folder, itemtype) {
+async function FFFF(repo, folder, itemtype) {
   //Fetch Files From Folder, gets list of filenames in a folder(used for dynamic assets)
   let response;
   try {
     response = await UF(
-      "https://api.github.com/repos/ssh-lvl/new-shatter/contents/" + folder
+      "https://api.github.com/repos/" + repo + "/contents/" + folder
     );
   } catch (e) {
     return null;
