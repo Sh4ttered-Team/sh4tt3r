@@ -12,7 +12,7 @@ An original project inspired by [Fracture](https://github.com/gragin0/fracture)
 
 ## License
 
-> This project is licensed under the [GPL-3.0 License](https://www.gnu.org/licenses/gpl-3.0.html).
+> This project is licensed under the [GPL-3.0 License](https://choosealicense.com/licenses/gpl-3.0/).
 
 ## Contact
 
