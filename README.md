@@ -12,7 +12,9 @@ An original project inspired by [Fracture](https://github.com/gragin0/fracture)
 
 ## License
 
-> This project is licensed under the [GPL-3.0 License](https://choosealicense.com/licenses/gpl-3.0/).
+> This project is licensed under the [GPL-3.0 License](https://choosealicense.com/licenses/gpl-3.0/). <br>
+> also known as 'please don't steal our stuff without credit', you must: Disclose source, include this specific license and copyright notice, State changes, and credit us.
+> Otherwise, you can use this project for pretty much anything you'd like!
 
 ## Contact
 
