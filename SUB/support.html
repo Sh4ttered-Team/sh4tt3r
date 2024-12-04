@@ -28,7 +28,7 @@
 		flex-direction: column;
 		justify-content: space-evenly;
 		align-items: center;
-		gap: 20px;
+		gap: 40px;
 		width: 100%;
 		height: 100%;
 		padding: 20px;
@@ -44,7 +44,7 @@
 		justify-content: center;
 		align-items: center;
 		padding: 20px;
-        box-shadow: 4px 10px rgba(0, 0, 0, 0.2)
+		box-shadow: 4px 10px rgba(0, 0, 0, 0.2);
 	}
 
 	.infobox-header {
@@ -83,7 +83,7 @@
 		border-radius: 7px;
 		padding: 10px;
 		box-sizing: border-box;
-        box-shadow: 4px 10px rgba(0, 0, 0, 0.2)
+		box-shadow: 4px 10px rgba(0, 0, 0, 0.2);
 	}
 	#support-form {
 		width: 50%;
@@ -98,7 +98,7 @@
 		border-radius: 7px;
 		font-size: x-large;
 		font-weight: bolder;
-        box-shadow: 4px 10px rgba(0, 0, 0, 0.2)
+		box-shadow: 4px 10px rgba(0, 0, 0, 0.2);
 	}
 	#submit-button:hover {
 		background-color: var(--color-button-hover);
@@ -114,18 +114,45 @@
 		z-index: 9999;
 		pointer-events: all;
 		display: flex;
-        flex-direction: column;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-        visibility: hidden;
+		visibility: hidden;
+	}
+	.titlecontainer {
+		position: relative;
+		top: 0;
+		margin-top: 2%;
+		left: 50%;
+		max-width: 50%;
+		max-height: 50%;
+		margin-bottom: 4%;
+		transform: translateX(-50%);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		user-select: none;
+	}
+
+	.title {
+		max-width: 74%;
+		max-height: 74%;
+		padding: 10px;
+		object-fit: contain;
+		display: block;
+		user-select: none;
 	}
 </style>
 <body>
 	<div class="background"></div>
 
+	<div class="titlecontainer">
+		<img src="../UI/Title.png" class="title" />
+	</div>
+
 	<div class="overlay">
 		<img src="../UI/loading.svg" style="width: 50%; height: 50%" />
-		<h1 style="font-size: xxx-large; color: var(--color-text-light);">Please wait...</h1>
+		<h1 style="font-size: xxx-large; color: var(--color-text-light)">Please wait...</h1>
 	</div>
 
 	<div class="main-container">
@@ -134,18 +161,59 @@
 			<button type="submit" id="submit-button">Submit</button>
 		</form>
 
-		<!--
+		<div class="infobox">
+			<h1 class="infobox-header">Response times</h1>
+			<p class="infobox-body">We do our best to respond to you as soon as possible or within <a title="1 day">24 hours.</a> However, at the absolute worst, we may respond within <a title="3-ish days">72~ hours.</a></p>
+		</div>
+
+		<!--  Example infobox
+
         <div class="infobox">
 			<h1 class="infobox-header">Lorem ipsum</h1>
 			<p class="infobox-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum scelerisque, erat interdum.</p>
 			<a href="#" class="infobox-body-link">Lorem ipsum</a>
 		</div>
-		<div class="infobox">
-			<h1 class="infobox-header">Lorem ipsum</h1>
-			<p class="infobox-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum scelerisque, erat interdum.</p>
-			<a href="#" class="infobox-body-link">Lorem ipsum</a>
-		</div> -->
-	</div>
+
+		--></div>
+
+	<style>
+		.footer {
+			background-color: #222;
+			color: #fff;
+			text-align: center;
+			padding: 20px 10px;
+			font-size: 14px;
+		}
+
+		.footer-links {
+			margin-bottom: 10px;
+		}
+
+		.footer-links a {
+			color: #aaa;
+			text-decoration: none;
+			margin: 0 10px;
+			font-size: 14px;
+		}
+
+		.footer-links a:hover {
+			color: #fff;
+		}
+
+		.footer-copy {
+			margin-top: 10px;
+			font-size: 12px;
+			color: #777;
+		}
+	</style>
+	<footer class="footer">
+		<div class="footer-links">
+			<a href="-privacy-policy.html">Privacy Policy</a>
+			<a href="-terms-of-service.html">Terms of Service</a>
+			<a href="about.html">About</a>
+		</div>
+		<p class="footer-copy">&copy; 2024 Shatter. All rights reserved.</p>
+	</footer>
 
 	<script src="../JS/supabase.js"></script>
 	<script src="../JS/fetch.js"></script>
@@ -164,7 +232,7 @@
 			event.preventDefault();
 			const reporttext = document.getElementById("report").value;
 			if (reporttext) {
-                document.getElementsByClassName('overlay')[0].style.visibility = 'visible';
+				document.getElementsByClassName("overlay")[0].style.visibility = "visible";
 				const ipResponse = await fetch("https://freeipapi.com/api/json");
 				const ipData = await ipResponse.json();
 				const ip = ipData.ipAddress;
@@ -179,14 +247,14 @@
 				if (error) {
 					alert("Oops! Something went wrong, try again later =(");
 					console.error("Error during report:", error.message);
-                    document.getElementsByClassName('overlay')[0].style.visibility = 'hidden';
+					document.getElementsByClassName("overlay")[0].style.visibility = "hidden";
 					return;
 				}
 				alert("Thank's for the feedback! \nIf needed we will email you for further information.\nWe will now send you back to the main menu.");
 				window.location.href = "../";
 			} else {
 				alert("Report must not be blank!");
-                document.getElementsByClassName('overlay')[0].style.visibility = 'hidden';
+				document.getElementsByClassName("overlay")[0].style.visibility = "hidden";
 				return;
 			}
 		}
