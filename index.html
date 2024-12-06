@@ -64,6 +64,7 @@
 			z-index: 2;
 			overflow: auto;
 			top: 20vh;
+			pointer-events: none;
 		}
 		.sub-button {
 			margin: 3vh;
@@ -79,8 +80,29 @@
 			line-height: 40px;
 			white-space: nowrap;
 			text-overflow: clip;
+			pointer-events: auto;
 		}
 		.sub-button:hover {
+			background-color: var(--color-button-hover);
+		}
+
+		.sub-button-small {
+			margin: 3vh;
+			width: 10vw;
+			background-color: var(--color-minor);
+			color: var(--color-text-light);
+			border: 6px solid var(--color-minor-lesser);
+			font-size: x-large;
+			font-weight: bolder;
+			border-radius: 7px;
+			cursor: pointer;
+			text-align: center;
+			line-height: 40px;
+			white-space: nowrap;
+			text-overflow: clip;
+			pointer-events: auto;
+		}
+		.sub-button-small:hover {
 			background-color: var(--color-button-hover);
 		}
 	</style>
@@ -103,7 +125,7 @@
 			style="color: var(--color-text-light); user-select: none; font-weight: bold; font-size: xx-large; text-align: center"></a>
 		<a id="status"
 			style="font-weight: bold; color: var(--color-text-light); user-select: none; font-size: x-large; text-align: center; padding-bottom: 5%"></a>
-		<button onclick="LOA()" style="font-size: large; font-weight: bold">Logout</button>
+		<button onclick="LOA()" class="sub-button-small">Logout</button>
 	</div>
 
 	<script type="module">

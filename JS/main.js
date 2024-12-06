@@ -4,7 +4,7 @@ const AdminReqConBypass = checkForTag('con-bypass')
 const LoadingScreen = checkForTag('loading')
 
 //fix for different web environments (local dev/github pages)
-window.prefix = '/';
+window.prefix = '';
 if (window.location.href.startsWith('https://shattered-team.github.io/')) {
     window.prefix = '/new-shatter';
 }
@@ -14,7 +14,7 @@ if (window.location.href.startsWith('https://shattered-team.github.io/')) {
 //if admin load console (bypassable)
 
 if(!IsUserBypass) {
-    checkAcc(false);
+    checkAcc();
 }
 
 if(LoadingScreen) {
