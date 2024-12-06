@@ -12,6 +12,8 @@
 	<script src="./JS/fetch.js"></script>
 	<script src="./JS/main.js" type="module"></script>
 
+	<loading />
+
   <style>
 		body {
 			margin: 0;
@@ -122,7 +124,7 @@
 		}
 
 		async function LoadSubmenus() {
-			const menus = await FFFF('ssh-lvl/new-shatter', subfolder, "file");
+			const menus = await FFFF('shattered-team/new-shatter', subfolder, "file");
 			if (menus == null) {
 				if (document.getElementById("retry_button") == null) {
 					const retry_button = document.createElement("button");

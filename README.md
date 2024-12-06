@@ -1,9 +1,9 @@
 ![Project Logo](UI/Title.png)
 ## Info: 
-![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/ssh-lvl/new-shatter)
-![GitHub repo size](https://img.shields.io/github/repo-size/ssh-lvl/new-shatter)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/t/ssh-lvl/new-shatter)
-![GitHub last commit](https://img.shields.io/github/last-commit/ssh-lvl/new-shatter)
+![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/shattered-team/new-shatter)
+![GitHub repo size](https://img.shields.io/github/repo-size/shattered-team/new-shatter)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/shattered-team/new-shatter)
+![GitHub last commit](https://img.shields.io/github/last-commit/shattered-team/new-shatter)
 
 ## Description
 

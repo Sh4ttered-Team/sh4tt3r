@@ -12,6 +12,8 @@
 	<script src="../JS/fetch.js"></script>
 	<script src="../JS/main.js" type="module"></script>
 
+	<loading />
+
 	<style>
 		#display,
 		ruffle-player {
@@ -36,33 +38,15 @@
 			height: 100%;
 			z-index: -5;
 		}
-		.overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 99vh;
-		background-color: rgba(0, 0, 0, 0.5);
-		z-index: 9999;
-		pointer-events: all;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		visibility: hidden;
-	}
 	</style>
 </head>
 
 <body>
 	<div class="background"></div>
-	<div class="overlay">
-		<img src="../UI/loading.svg" style="width: 50%; height: 50%" />
-		<h1 style="font-size: xxx-large; color: var(--color-text-light)">Please wait...</h1>
-	</div>
+	
 	<script src="../ruffle/ruffle.js"></script>
 	<script type="module">
-		document.getElementsByClassName("overlay")[0].style.visibility = "visible";
+		window.showLoadingScreen();
 		const params = new URLSearchParams(window.location.search);
 		const src = params.get("id");
 		let breake;
@@ -71,7 +55,7 @@
 		if (src != null || src == "") {
 			if (params.has("flash", true)) {
 				try {
-					srcFetch = await fetch("https://ssh-lvl.github.io/shatter-games/game-sources/-flash/" + encodeURIComponent(src));
+					srcFetch = await fetch("https://shattered-team.github.io/shatter-games/game-sources/-flash/" + encodeURIComponent(src));
 					if (!srcFetch.ok) {
 						throw new Error('Failed to fetch the game');
 					}
@@ -105,11 +89,11 @@
 					const blob = await srcFetch.blob();
 					const objectUrl = URL.createObjectURL(blob);
 					player.load(objectUrl);
-					document.getElementsByClassName("overlay")[0].style.visibility = "hidden";
+					window.hideLoadingScreen();
 				}
 			} else {
 				// Fetch to check if the resource exists
-				const iframeUrl = "https://ssh-lvl.github.io/shatter-games/game-sources/" + src;
+				const iframeUrl = "https://shattered-team.github.io/shatter-games/game-sources/" + src;
 				try {
 					const iframeFetch = await fetch(iframeUrl, { method: 'HEAD' });
 					if (!iframeFetch.ok) {
@@ -123,14 +107,14 @@
 				} catch (error) {
 					await displayNotFound();
 				}
-				document.getElementsByClassName("overlay")[0].style.visibility = "hidden";
+				window.hideLoadingScreen();
 			}
 		} else {
 			await displayNotFound();
 		}
 	
 		function displayNotFound() {
-			document.getElementsByClassName("overlay")[0].style.visibility = "hidden";
+			window.hideLoadingScreen();
 			const errortext = document.createElement("h1");
 			errortext.id = "error-text";
 			errortext.style.color = "var(--color-text-light)";

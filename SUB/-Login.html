@@ -5,6 +5,15 @@
   <link rel="stylesheet" href="../CSS/theme-index.css" />
   <link rel="stylesheet" href="../CSS/index.css" />
   <link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
+
+  <!-- main js stuff, copy paste -->
+	<script src="../JS/supabase.js"></script>
+	<script src="../JS/accounts.js"></script>
+	<script src="../JS/fetch.js"></script>
+	<script src="../JS/main.js" type="module"></script>
+
+  <loading />
+  <acc-bypass />
 </head>
  <style>
     .background {
@@ -27,13 +36,10 @@
 
   <div class="background"></div>
 
-  <script src="../JS/supabase.js"></script>
-  <script src="../JS/fetch.js"></script>
-  <script src="../JS/accounts.js"></script>
-
   <script type="module">
     async function signIn(event) {
       event.preventDefault(); // Prevent form from submitting the default way
+      window.showLoadingScreen();
 
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;

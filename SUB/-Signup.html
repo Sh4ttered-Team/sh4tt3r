@@ -5,6 +5,16 @@
   <link rel="stylesheet" href="../CSS/theme-index.css" />
   <link rel="stylesheet" href="../CSS/index.css" />
   <link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
+
+
+  <!-- main js stuff, copy paste -->
+	<script src="../JS/supabase.js"></script>
+	<script src="../JS/accounts.js"></script>
+	<script src="../JS/fetch.js"></script>
+	<script src="../JS/main.js" type="module"></script>
+  
+  <loading />
+  <acc-bypass />
 </head>
 <style>
   .background {
@@ -16,21 +26,6 @@
     height: 100%;
     z-index: -5;
   }
-  .overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background-color: rgba(0, 0, 0, 0.5);
-		z-index: 9999;
-		pointer-events: all;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		visibility: hidden;
-	}
 </style>
 <body>
   <form id="login-form">
@@ -44,15 +39,6 @@
 
   <div class="background"></div>
 
-  <div class="overlay">
-		<img src="../UI/loading.svg" style="width: 50%; height: 50%" />
-		<h1 style="font-size: xxx-large; color: var(--color-text-light)">Please wait...</h1>
-	</div>
-
-  <script src="../JS/supabase.js"></script>
-  <script src="../JS/fetch.js"></script>
-  <script src="../JS/accounts.js"></script>
-
   <script type="module">
     document.getElementById("login-form").addEventListener("submit", signUp);
 
@@ -60,7 +46,7 @@
     async function signUp(event) {
       event.preventDefault();
 
-      document.getElementsByClassName("overlay")[0].style.visibility = "visible";
+      window.showLoadingScreen();
 
       const username = document.getElementById("username").value;
       const email = document.getElementById("email").value;
@@ -72,7 +58,7 @@
       });
 
       if (error) {
-        document.getElementsByClassName("overlay")[0].style.visibility = "hidden";
+        window.hideLoadingScreen();
         alert("Oops! Something went wrong, try again later =( \nWe may have reached our email limit for the hour \nplease be patient");
         console.error("Error during signup:", error.message);
         return;
@@ -97,7 +83,7 @@
         },
       ]);
       
-      document.getElementsByClassName("overlay")[0].style.visibility = "hidden";
+      window.hideLoadingScreen();
       alert("Remember to verify your email!");
       //window.location.href = "https://gmail.com";
     }

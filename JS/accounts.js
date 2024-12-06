@@ -5,16 +5,13 @@ async function LTA(Email, Password) {
 		password: Password,
 	});
 
+	if(window.hideLoadingScreen) {
+		window.hideLoadingScreen();
+	}
 	if (error) {
 		alert("Error signing in: " + error.message);
 	} else {
-		let prefix;
-		if (window.location.href.startsWith("https://ssh-lvl.github.io/")) {
-			prefix = "/new-shatter/";
-		} else {
-			prefix = "/";
-		}
-		window.location.href = prefix;
+		window.location.href = window.prefix;
 	}
 }
 

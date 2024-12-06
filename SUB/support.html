@@ -5,6 +5,15 @@
 	<link rel="stylesheet" href="../CSS/theme-index.css" />
 	<link rel="stylesheet" href="../CSS/index.css" />
 	<link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
+
+	<!-- main js stuff, copy paste -->
+	<script src="../JS/supabase.js"></script>
+	<script src="../JS/accounts.js"></script>
+	<script src="../JS/fetch.js"></script>
+	<script src="../JS/main.js" type="module"></script>
+	
+	<loading />
+    <acc-bypass />
 </head>
 <style>
 	.background {
@@ -104,21 +113,6 @@
 		background-color: var(--color-button-hover);
 		border-color: var(--color-button);
 	}
-	.overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background-color: rgba(0, 0, 0, 0.5);
-		z-index: 9999;
-		pointer-events: all;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		visibility: hidden;
-	}
 	.titlecontainer {
 		position: relative;
 		top: 0;
@@ -148,11 +142,6 @@
 
 	<div class="titlecontainer">
 		<img src="../UI/Title.png" class="title" />
-	</div>
-
-	<div class="overlay">
-		<img src="../UI/loading.svg" style="width: 50%; height: 50%" />
-		<h1 style="font-size: xxx-large; color: var(--color-text-light)">Please wait...</h1>
 	</div>
 
 	<div class="main-container">
@@ -215,8 +204,6 @@
 		<p class="footer-copy">&copy; 2024 Shatter. All rights reserved.</p>
 	</footer>
 
-	<script src="../JS/supabase.js"></script>
-	<script src="../JS/fetch.js"></script>
 
 	<script type="module">
 		document.getElementById("support-form").addEventListener("submit", report);
@@ -232,7 +219,7 @@
 			event.preventDefault();
 			const reporttext = document.getElementById("report").value;
 			if (reporttext) {
-				document.getElementsByClassName("overlay")[0].style.visibility = "visible";
+				window.showLoadingScreen();
 				const ipResponse = await fetch("https://freeipapi.com/api/json");
 				const ipData = await ipResponse.json();
 				const ip = ipData.ipAddress;
@@ -247,14 +234,14 @@
 				if (error) {
 					alert("Oops! Something went wrong, try again later =(");
 					console.error("Error during report:", error.message);
-					document.getElementsByClassName("overlay")[0].style.visibility = "hidden";
+					window.hideLoadingScreen();
 					return;
 				}
 				alert("Thank's for the feedback! \nIf needed we will email you for further information.\nWe will now send you back to the main menu.");
 				window.location.href = "../";
 			} else {
 				alert("Report must not be blank!");
-				document.getElementsByClassName("overlay")[0].style.visibility = "hidden";
+				window.hideLoadingScreen();
 				return;
 			}
 		}

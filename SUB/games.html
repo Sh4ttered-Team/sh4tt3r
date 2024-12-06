@@ -11,7 +11,9 @@
   <script src="../JS/accounts.js"></script>
   <script src="../JS/fetch.js"></script>
   <script src="../JS/main.js" type="module"></script>
-
+  
+  <loading />
+  
   <style>
     body {
 			margin: 0;
@@ -37,7 +39,8 @@
   <script src="../JS/fetch.js"></script>
 
   <script type="module">
-    const games = await FFFF('ssh-lvl/shatter-games', "game-sources", "dir");
+    window.showLoadingScreen();
+    const games = await FFFF('shattered-team/shatter-games', "game-sources", "dir");
     games.forEach((game) => {
       let button = document.createElement("button");
       button.textContent = String(game);
@@ -47,7 +50,7 @@
 
       document.body.appendChild(button);
     });
-    const flashgames = await FFFF('ssh-lvl/shatter-games', "game-sources/-flash", "file");
+    const flashgames = await FFFF('shattered-team/shatter-games', "game-sources/-flash", "file");
     flashgames.forEach((game) => {
       let button = document.createElement("button");
       button.textContent = String(game).replace('.swf','');
@@ -57,6 +60,7 @@
       };
 
       document.body.appendChild(button);
+      window.hideLoadingScreen();
     });
   </script>
 </body>
