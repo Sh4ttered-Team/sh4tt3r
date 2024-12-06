@@ -188,7 +188,6 @@
 					const sub_button = document.createElement("button");
 
 					sub_button.textContent = subpage.replace(".html", "");
-					sub_button.textContent = sub_button.textContent.replace(/[^a-zA-Z]/g, '');
 					sub_button.className = 'sub-button';
 					sub_button.onclick = function () {
 						window.location.href = "./" + subfolder + "/" + subpage;
