@@ -17,7 +17,7 @@ async function FFFF(repo, folder, itemtype) {
     return null;
   }
   const Files = response
-    .filter((item) => item.type === itemtype && !item.name.startsWith("-"))
+    .filter((item) => item.type === itemtype && !item.name.startsWith("-") && !item.name.startsWith("~"))
     .map((file) => file.name);
 
   return Files;

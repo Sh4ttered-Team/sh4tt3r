@@ -21,13 +21,9 @@
       width: 100%;
       height: 100vh;
     }
-    html,
+    
     body {
       overflow: hidden;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
     }
   </style>
 </head>
@@ -54,16 +50,17 @@
     function createIframe(src) {
       const closeButton = document.createElement("button");
       closeButton.id = "closeButton";
-      document.body.appendChild(closeButton);
+      closeButton.textContent = 'X'; 
       closeButton.onclick = function () {
         document.body.removeChild(document.getElementById("display"));
         document.body.removeChild(document.getElementById("closeButton"));
       };
+      document.body.appendChild(closeButton);
 
       const iframe = document.createElement("iframe");
       iframe.id = "display";
       iframe.src = src;
-      iframe.frameBorder = 0;
+      iframe.frameBorder = 1;
       document.body.appendChild(iframe);
     }
   </script>

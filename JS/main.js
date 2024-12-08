@@ -117,3 +117,7 @@ document.addEventListener('keydown', async function (event) {
 function checkForTag(tag) {
     return (document.getElementsByTagName(tag).length !== 0);
 }
+
+if (window.location.href.includes('/~')) {
+    window.location.href = window.prefix + '/404.html';
+}

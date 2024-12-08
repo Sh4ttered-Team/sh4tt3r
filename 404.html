@@ -1,28 +1,34 @@
 <!DOCTYPE html>
+
 <head>
   <title>404 page not found!</title>
 
   <link rel="stylesheet" href="./CSS/theme-index.css" />
   <link rel="stylesheet" href="./CSS/index.css" />
+
   <link rel="icon" type="image/x-icon" href="./UI/favicon.ico" />
-</head>
 
-<body>
-
-  <div class="background"></div>
-  <h1 id="text" style="color: var(--color-text-light); position: absolute; right: 45vw; text-align: center;">Oops! <br> this page doesn't exist =(</h1>
-
-
+  <!-- main js stuff, copy paste -->
   <script src="./JS/supabase.js"></script>
   <script src="./JS/accounts.js"></script>
   <script src="./JS/fetch.js"></script>
+  <script src="./JS/main.js" type="module"></script>
+
+  <acc-bypass />
+
+</head>
+
+<body>
+  <div class="background"></div>
+
+  <h1 id="text" style="color: var(--color-text-light); right: 45vw; text-align: center;">Oops! <br>
+    this page doesn't exist =(</h1>
 
 
   <script type="module">
     const user = await FDB('profiles');
     if (user[0].banned) {
-        document.getElementById('text').textContent = "You've been banned! \n How'd you manage that? \n Reason: \'" + user[0].ban_reason + '\'';
+      document.getElementById('text').textContent = "You've been banned! \n How'd you manage that? \n Reason: \'" + user[0].ban_reason + '\'';
     }
   </script>
-
 </body>
