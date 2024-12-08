@@ -1,139 +1,5 @@
-nav li a:hover {
-  background-color: #521B73;
-transition: 0.5s background-color;
-}
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@600&display=swap');
 
-		body {
-			color: #1e0041;
-			margin: 0;
-			padding: 0;
-}
-		@font-face {
-  font-family: 'Lexend Semi-Bold';
-  src: url('path/to/lexend-semibold.woff2') format('woff2'), /* Modern Browsers */
-       url('path/to/lexend-semibold.woff') format('woff'); /* Older Browsers */
-  font-weight: 600; /* Specify the font weight */
-  font-style: normal; /* Specify the font style */
-}
-body {
-    font-family: 'lexend-semibold', sans-serif;
-}
-
-/* Additional styling goes here */
-
-
-  /* Styles for searchbar */
-    .searchbar {
-	color: black;
-      width: 80%;
-      padding: 12px 20px;
-      margin: 8px 0;
-      box-sizing: border-box;
-      border: 2px solid black;
-      border-radius: 12px;
-      font-size: 19px;
-      background-color: rgb(215, 107, 255);
-    }
-
-    .game-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .game-square {
-      position: relative;
-      width: 170px;
-      height: 240px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid black;
-      border-radius: 5px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.2s;
-	  margin-top: 8px;
-	  margin-bottom: 8px;
-	  margin-left: 8px;
-	  margin-right: 8px;
-	  background-color: rgb(54, 13, 69);
-    }
-
-    .game-square:hover {
-      transform: scale(1.1);
-	    transition: all 0.2s ease-in-out;
-  animation: rainbow 5s linear infinite;
-  	text-align: center;
-				font-weight: bold;
-    }
-
-    .game-name {
-      font-size: 20px;
-      text-align: center;
-      margin-top: 6px;
-	  align-items: center;
-color: white;
-	  
-    }
-
-
-    /* Styles for nogames section */
-    .nogames {
-      text-align: center;
-      margin-top: 50px;
-	  display: none;
-    }
-
-    .nogames h1 {
-	text-align: center;
-      font-size: 60px;
-      margin-bottom: 20px;
-    }
-
-    .game-image {
-      position: relative;
-	  margin-top: 8px;
-	  margin-right: auto;
-      width: 90%;
-      height: 80%;
-      align-items: center;
-	  margin-left: 8px;
-	  margin-right: 8px;
-	  border: 2px solid black;
-      border-radius: 5px;
-	  object-fit: cover;
-	  display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-/* Bounce effect */
-.game-square:hover .game-image {
-  animation: bounce 0.5s ease-out;
-}
-
-	@keyframes bounce {
-  0% {
-    transform: translate(0, 0);
-  }
-  25% {
-    transform: translate(0, -10px);
-  }
-  50% {
-    transform: translate(0, 0);
-  }
-  75% {
-    transform: translate(0, -5px);
-  }
-  100% {
-    transform: translate(0, 0);
-  }
-}
-
-/* Set the width and color of the scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   background-color: rgba(119, 0, 163, 0.11);
@@ -155,67 +21,93 @@ color: white;
   background-color: #1c1c1c;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  /* best font, fight me */
+  font-family: 'Lexend';
+  font-weight: 600;
+}
+
+h1,h2,h3,h4,h5,h6,a,p {
+  color: var(--color-text-light);
+  font-weight: bolder;
+}
+
+html {
+  user-select: none;
+}
+
 .background {
+  background: var(--color-major);
   position: fixed;
+  align-content: center;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: -5;
 }
 
-
-
-.container {
-  position: absolute;
-  bottom: 22.2%;
-  right: 10%;
-  text-align: center;
-  border: 2px solid var(--color-button);
+.c-button {
+  margin: 3vh;
+  width: 30vw;
   background-color: var(--color-minor);
-  padding: 20px;
-  border-radius: 15px;
-}
-.profile-picture {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #000000;
-}
-.name {
-  margin-top: 15px;
-  font-size: 24px;
-  font-weight: bold;
-}
-.premium-status {
-  margin-top: 10px;
-  font-size: 18px;
-}
-.premium {
-  color: rgb(42, 212, 255);
-}
-.non-premium {
-  color: silver;
-}
-.logout-button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  border: 2px solid var(--color-button);
-  background-color: var(--color-minor);
-  color: #B16BFF;
-  color: white;
+  color: var(--color-text-light);
+  border: 6px solid var(--color-accent);
+  font-size: xxx-large;
+  font-weight: bolder;
+  border-radius: 7px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: clip;
+  pointer-events: auto;
 }
 
-
-.logout-button:hover {
-  transition: all 0.3s ease-in-out;
-  border: 2px solid var(--color-accent2);
+.c-button:hover {
   background-color: var(--color-button-hover);
-  color: #B16BFF;
+}
+
+.c-button-small {
+  margin: 3vh;
+  width: 10vw;
+  background-color: var(--color-minor);
+  color: var(--color-text-light);
+  border: 6px solid var(--color-minor-lesser);
+  font-size: x-large;
+  font-weight: bolder;
+  border-radius: 7px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: clip;
+  pointer-events: auto;
+}
+
+.c-button-small:hover {
+  background-color: var(--color-button-hover);
+}
+
+.titlecontainer {
+  position: relative;
+  top: 2%;
+  left: 50%;
+  margin-bottom: 1vh;
+  height: fit-content;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.title {
+  max-width: 38%;
+  max-height: 38%;
+  padding: 10px;
+  object-fit: contain;
+  display: block;
+  user-select: none;
 }

@@ -13,11 +13,11 @@ if (window.location.href.startsWith('https://shattered-team.github.io/')) {
 //go to banned or login,
 //if admin load console (bypassable)
 
-if(!IsUserBypass) {
+if (!IsUserBypass) {
     checkAcc();
 }
 
-if(LoadingScreen) {
+if (LoadingScreen) {
     addLoadingScreen();
 }
 
@@ -43,7 +43,7 @@ function addLoadingScreen() {
             }
         `;
         document.head.appendChild(style);
-    
+
         const overlay = document.createElement('div');
         overlay.className = 'overlay';
         overlay.innerHTML = `
@@ -53,67 +53,67 @@ function addLoadingScreen() {
 
         document.body.appendChild(overlay);
 
-        window.showLoadingScreen = function() {
+        window.showLoadingScreen = function () {
             document.getElementsByClassName('overlay')[0].style.visibility = 'visible';
         };
-    
-        window.hideLoadingScreen = function() {
+
+        window.hideLoadingScreen = function () {
             document.getElementsByClassName('overlay')[0].style.visibility = 'hidden';
         };
-    
+
     }
-    }
+}
 
 
 //check for account 
 async function checkAcc() {
     let user = await FDB('profiles');
 
-if (user) {
-    if (user[0].banned) {
-        window.location.href = window.prefix + '/404.html';
-    } else if (!user) {
+    if (user) {
+        if (user[0].banned) {
+            window.location.href = window.prefix + '/404.html';
+        } else if (!user) {
+            window.location.href = window.prefix + '/SUB/-Login.html';
+        }
+
+    } else if (!await loggedIn()) {
         window.location.href = window.prefix + '/SUB/-Login.html';
     }
-    
-} else if (!await loggedIn()) {
-    window.location.href = window.prefix + '/SUB/-Login.html';
-}
 }
 
 
 //load eruda console
-async function loadConsole() {
+function loadConsole() {
     if (!document.getElementById('console')) {
-    let user = await FDB('profiles');
-    if (user[0].admin == false && !AdminReqConBypass) {
-        return;        
-    }
-    let erudaScript = document.createElement('script');
+        let erudaScript = document.createElement('script');
         erudaScript.src = '//cdn.jsdelivr.net/npm/eruda';
         erudaScript.type = 'module';
         erudaScript.id = 'console';
-    
+
         document.body.appendChild(erudaScript);
-    
-        erudaScript.onload = function() {
+
+        erudaScript.onload = function () {
             eruda.init();
         };
-    
-        erudaScript.onerror = function() {
+
+        erudaScript.onerror = function () {
             alert('eruda failed to load');
         };
-}
+    }
 }
 
 //ctrl + i, keybind to load eruda console
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', async function (event) {
     if (event.ctrlKey && event.key === 'i') {
         event.preventDefault();
+        let user = await FDB('profiles');
+        if (user && user[0] && user[0].admin === false && !AdminReqConBypass) {
+            return;
+        }
         loadConsole();
     }
 });
 
 function checkForTag(tag) {
-    return (document.getElementsByTagName(tag).length != 0) ? true : false;
+    return (document.getElementsByTagName(tag).length !== 0);
 }

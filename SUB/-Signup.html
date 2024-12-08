@@ -1,49 +1,62 @@
 <!DOCTYPE html>
+
 <head>
   <title>Shatter</title>
 
   <link rel="stylesheet" href="../CSS/theme-index.css" />
   <link rel="stylesheet" href="../CSS/index.css" />
+  <link rel="stylesheet" href="../CSS/signup-page.css" />
+
   <link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
 
-
   <!-- main js stuff, copy paste -->
-	<script src="../JS/supabase.js"></script>
-	<script src="../JS/accounts.js"></script>
-	<script src="../JS/fetch.js"></script>
-	<script src="../JS/main.js" type="module"></script>
-  
+  <script src="../JS/supabase.js"></script>
+  <script src="../JS/accounts.js"></script>
+  <script src="../JS/fetch.js"></script>
+  <script src="../JS/main.js" type="module"></script>
+
   <loading />
   <acc-bypass />
 </head>
-<style>
-  .background {
-    background: var(--color-major);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -5;
-  }
-</style>
+
 <body>
+  <div class="background"></div>
+
   <form id="login-form">
-    <input type="file" id="pfp" accept="image/*" required />
+    <h1>Shatter Signup</h1>
+    <img id="pfp" draggable="false" title="Please fill out this field." />
     <input id="username" placeholder="Username" required />
     <input type="email" id="email" placeholder="Email" required />
     <input type="password" id="password" placeholder="Password" required />
-
-    <button type="submit">Sign Up</button>
+    <button class="c-button" type="submit">Sign Up</button>
+    <input type="file" id="pfpDialog" accept="image/*" />
   </form>
 
-  <div class="background"></div>
-
   <script type="module">
+    document.getElementById('pfp').src = window.prefix + '/UI/account-placeholder.svg';
+    document.getElementById('pfp').onclick = (function pfpSelect() {
+      document.getElementById('pfpDialog').click();
+    });
+
+    document.getElementById('pfpDialog').addEventListener('change', updatePfp);
     document.getElementById("login-form").addEventListener("submit", signUp);
 
-
+    function updatePfp() {
+      const file = document.getElementById('pfpDialog').files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('pfp').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
     async function signUp(event) {
+      if (document.getElementById('pfpDialog').files.length == 0) {
+        alert('A profile picture is required!');
+        event.preventDefault();
+        return;
+      }
       event.preventDefault();
 
       window.showLoadingScreen();
@@ -59,22 +72,21 @@
 
       if (error) {
         window.hideLoadingScreen();
-        alert("Oops! Something went wrong, try again later =( \nWe may have reached our email limit for the hour \nplease be patient");
-        console.error("Error during signup:", error.message);
+        alert("Oops! Something went wrong, try again later =( \nError: " + String(error).replace('AuthApiError: ', ''));
         return;
       }
-      const file = document.getElementById('pfp').files[0];
+      const file = document.getElementById('pfpDialog').files[0];
       const extention = String(file.type).split('/').pop();
       const filepath = String(data.user.id) + '.' + String(extention)
 
 
       const { pfpdata, pfperror } = await supabaseClient.storage
         .from('profilePictures')
-        .upload(filepath,file, {
-        cacheControl: '0',
-        upsert: false,
-    });
-    
+        .upload(filepath, file, {
+          cacheControl: '0',
+          upsert: false,
+        });
+
       const { error: profileError } = await supabaseClient.from("profiles").insert([
         {
           id: data.user.id,
@@ -82,10 +94,14 @@
           pfp: filepath,
         },
       ]);
-      
+
       window.hideLoadingScreen();
-      alert("Remember to verify your email!");
-      //window.location.href = "https://gmail.com";
+      if (confirm("Would you like to redirect to 'gmail.com' to verify your email?")) {
+        window.location.href = 'https://gmail.com';
+      }
+      else {
+        window.location.href = window.prefix + '/';
+      }
     }
 
   </script>

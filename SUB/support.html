@@ -1,9 +1,13 @@
 <!DOCTYPE html>
+
 <head>
 	<title>Shatter</title>
 
 	<link rel="stylesheet" href="../CSS/theme-index.css" />
 	<link rel="stylesheet" href="../CSS/index.css" />
+	<link rel="stylesheet" href="../CSS/support.css" />
+	<script src="../JS/footer.js"></script>
+
 	<link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
 
 	<!-- main js stuff, copy paste -->
@@ -11,132 +15,11 @@
 	<script src="../JS/accounts.js"></script>
 	<script src="../JS/fetch.js"></script>
 	<script src="../JS/main.js" type="module"></script>
-	
+
 	<loading />
-    <acc-bypass />
+	<acc-bypass />
 </head>
-<style>
-	.background {
-		background: var(--color-major);
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: -5;
-	}
 
-	html,
-	body {
-		padding: 0;
-		margin: 0;
-	}
-
-	.main-container {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-evenly;
-		align-items: center;
-		gap: 40px;
-		width: 100%;
-		height: 100%;
-		padding: 20px;
-		box-sizing: border-box;
-	}
-
-	.infobox {
-		border-radius: 7px;
-		background-color: var(--color-accent);
-		width: 29%;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 20px;
-		box-shadow: 4px 10px rgba(0, 0, 0, 0.2);
-	}
-
-	.infobox-header {
-		color: var(--color-text-light);
-		font-weight: bolder;
-		font-size: xx-large;
-		text-align: center;
-	}
-
-	.infobox-body {
-		color: var(--color-text-light);
-		font-weight: bolder;
-		font-size: large;
-		text-align: center;
-	}
-
-	.infobox-body-link {
-		color: var(--color-button);
-		font-weight: bolder;
-		font-size: large;
-		text-decoration: none;
-	}
-
-	.infobox-body-link:hover {
-		color: var(--color-button-hover);
-	}
-
-	.report-box {
-		resize: none;
-		background-color: var(--color-accent);
-		border: none;
-		color: var(--color-text-light);
-		width: 100%;
-		font-size: x-large;
-		font-weight: bolder;
-		border-radius: 7px;
-		padding: 10px;
-		box-sizing: border-box;
-		box-shadow: 4px 10px rgba(0, 0, 0, 0.2);
-	}
-	#support-form {
-		width: 50%;
-	}
-	#submit-button {
-		width: 100%;
-		height: 5%;
-		cursor: pointer;
-		background-color: var(--color-button);
-		color: var(--color-text-light);
-		border-color: var(--color-button-hover);
-		border-radius: 7px;
-		font-size: x-large;
-		font-weight: bolder;
-		box-shadow: 4px 10px rgba(0, 0, 0, 0.2);
-	}
-	#submit-button:hover {
-		background-color: var(--color-button-hover);
-		border-color: var(--color-button);
-	}
-	.titlecontainer {
-		position: relative;
-		top: 0;
-		margin-top: 2%;
-		left: 50%;
-		max-width: 50%;
-		max-height: 50%;
-		margin-bottom: 4%;
-		transform: translateX(-50%);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		user-select: none;
-	}
-
-	.title {
-		max-width: 74%;
-		max-height: 74%;
-		padding: 10px;
-		object-fit: contain;
-		display: block;
-		user-select: none;
-	}
-</style>
 <body>
 	<div class="background"></div>
 
@@ -152,7 +35,9 @@
 
 		<div class="infobox">
 			<h1 class="infobox-header">Response times</h1>
-			<p class="infobox-body">We do our best to respond to you as soon as possible or within <a title="1 day">24 hours.</a> However, at the absolute worst, we may respond within <a title="3-ish days">72~ hours.</a></p>
+			<p class="infobox-body">We do our best to respond to you as soon as possible or within <a title="1 day">24
+					hours.</a> However, at the absolute worst, we may respond within <a title="3-ish days">72~
+					hours.</a></p>
 		</div>
 
 		<!--  Example infobox
@@ -163,46 +48,10 @@
 			<a href="#" class="infobox-body-link">Lorem ipsum</a>
 		</div>
 
-		--></div>
+		-->
+	</div>
 
-	<style>
-		.footer {
-			background-color: #222;
-			color: #fff;
-			text-align: center;
-			padding: 20px 10px;
-			font-size: 14px;
-		}
-
-		.footer-links {
-			margin-bottom: 10px;
-		}
-
-		.footer-links a {
-			color: #aaa;
-			text-decoration: none;
-			margin: 0 10px;
-			font-size: 14px;
-		}
-
-		.footer-links a:hover {
-			color: #fff;
-		}
-
-		.footer-copy {
-			margin-top: 10px;
-			font-size: 12px;
-			color: #777;
-		}
-	</style>
-	<footer class="footer">
-		<div class="footer-links">
-			<a href="-privacy-policy.html">Privacy Policy</a>
-			<a href="-terms-of-service.html">Terms of Service</a>
-			<a href="about.html">About</a>
-		</div>
-		<p class="footer-copy">&copy; 2024 Shatter. All rights reserved.</p>
-	</footer>
+	<c-footer />
 
 
 	<script type="module">

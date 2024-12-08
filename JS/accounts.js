@@ -11,7 +11,7 @@ async function LTA(Email, Password) {
 	if (error) {
 		alert("Error signing in: " + error.message);
 	} else {
-		window.location.href = window.prefix;
+		window.location.href = window.prefix + '/';
 	}
 }
 

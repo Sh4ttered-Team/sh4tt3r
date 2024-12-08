@@ -1,0 +1,75 @@
+html, body {
+    overflow: hidden;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 7vh;
+    height: 93vh;
+}
+
+#login-form input {
+    background-color: var(--color-minor);
+    border-style: solid;
+    border: 6px solid var(--color-accent);
+    border-radius: 7px;
+    width: 27vw;
+    height: 8vh;
+    margin: 1vh;
+    text-align: center;
+    font-size: x-large;
+    font-weight: bolder;
+    color: var(--color-text-light);
+}
+
+#login-form input::placeholder {
+    color: var(--color-text-dark);
+    transition: color 0.3s ease;
+}
+
+#login-form input:hover::placeholder {
+    color: var(--color-text-light);
+}
+
+#login-form input::-moz-placeholder {
+    color: var(--color-text-dark);
+    opacity: 1;
+    transition: color 0.3s ease;
+}
+
+#login-form input:hover::-moz-placeholder {
+    color: var(--color-text-light);
+}
+
+#login-form input:focus::placeholder {
+    color: var(--color-text-light);
+}
+
+#login-form input:focus::-moz-placeholder {
+    color: var(--color-text-light);
+}
+
+#login-form h1 {
+    font-size: 8vh;
+    margin-bottom: 2vh;
+}
+
+#pfpDialog {
+    visibility: hidden;
+}
+
+#pfp {
+    cursor: pointer;
+    max-width: 12vw;
+    max-height: 21vh;
+    background-color: var(--color-text-light);
+    border-radius: 50%;
+    border: 6px solid var(--color-text-light);
+    margin-bottom: 3vh;
+    min-width: 12vw;
+    min-height: 21vh;
+}

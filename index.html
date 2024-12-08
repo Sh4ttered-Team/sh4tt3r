@@ -21,17 +21,17 @@
 <body>
 	<div class="background"></div>
 
-	<div class="menu-container"></div>
-
 	<div class="titlecontainer">
 		<img src="./UI/Title.png" class="title" />
 	</div>
+
+	<div class="menu-container"></div>
 
 	<div id="profile">
 		<img id="pfp" src="./UI/account-placeholder.svg" draggable="false" />
 		<a id="username"></a>
 		<a id="status"></a>
-		<button onclick="LOA()" class="sub-button-small">Logout</button>
+		<button onclick="LOA()" class="c-button-small">Logout</button>
 	</div>
 
 	<script type="module">
@@ -94,7 +94,7 @@
 					const sub_button = document.createElement("button");
 
 					sub_button.textContent = subpage.replace(".html", "");
-					sub_button.className = 'sub-button';
+					sub_button.className = 'c-button';
 					sub_button.onclick = function () {
 						window.location.href = "./" + subfolder + "/" + subpage;
 					};

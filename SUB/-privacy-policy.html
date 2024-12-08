@@ -4,6 +4,9 @@
 
 	<link rel="stylesheet" href="../CSS/theme-index.css" />
 	<link rel="stylesheet" href="../CSS/index.css" />
+	<link rel="stylesheet" href="../CSS/Privacy-policy.css" />
+	<script src="../JS/footer.js"></script>
+
 	<link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
 
 	<!-- main js stuff, copy paste -->
@@ -12,102 +15,8 @@
 	<script src="../JS/fetch.js"></script>
 	<script src="../JS/main.js" type="module"></script>
 
-  	<acc-bypass />
+	<acc-bypass />
 </head>
-<style>
-	.background {
-		background: var(--color-major);
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: -5;
-	}
-	.privacy-policy-container {
-		background-color: var(--color-accent);
-		color: var(--color-text-light);
-		padding: 20px;
-		max-width: 900px;
-		margin: 40px auto;
-		border-radius: 7px;
-		box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-		font-family: Arial, sans-serif;
-		line-height: 1.6;
-	}
-
-	.privacy-policy-header {
-		font-size: 2rem;
-		font-weight: bold;
-		text-align: center;
-		margin-bottom: 20px;
-		color: var(--color-text-light);
-	}
-
-	.privacy-policy-section {
-		margin-bottom: 30px;
-	}
-
-	.privacy-policy-section h2 {
-		font-size: 1.5rem;
-		color: var(--color-text-light);
-		margin-bottom: 10px;
-	}
-
-	.privacy-policy-section p {
-		font-size: 1.1rem;
-		color: var(--color-text-light);
-		margin-bottom: 15px;
-	}
-
-	.privacy-policy-section a {
-		color: var(--color-button);
-		text-decoration: none;
-		font-weight: bold;
-	}
-
-	.privacy-policy-section a:hover {
-		color: var(--color-button-hover);
-	}
-
-	.privacy-policy-footer {
-		text-align: center;
-		font-size: 1rem;
-		color: var(--color-text-light);
-		margin-top: 30px;
-	}
-	.footer {
-		background-color: #222;
-		color: #fff;
-		text-align: center;
-		padding: 20px 10px;
-		font-size: 14px;
-        width: 99vw;
-        position: relative;
-        bottom: 0;
-	}
-
-	.footer-links {
-		margin-bottom: 10px;
-	}
-
-	.footer-links a {
-		color: #aaa;
-		text-decoration: none;
-		margin: 0 10px;
-		font-size: 14px;
-	}
-
-	.footer-links a:hover {
-		color: #fff;
-	}
-
-	.footer-copy {
-		margin-top: 10px;
-		font-size: 12px;
-		color: #777;
-	}
-</style>
 
 <body>
 	<div class="background"></div>
@@ -128,7 +37,7 @@
 
 		<div class="privacy-policy-section">
 			<h2>Your Rights</h2>
-			<p>You may request access to, update, or delete your personal data at any time. If you have any questions or concerns, please contact us at <a href="mailto:sshlvl.contact@gmail.com">sshlvl.contact@gmail.com</a> or visit our support page at <a href="https://shattered-team.github.io/new-shatter/SUB/support.html">Support</a>.</p>
+			<p>You may request access to, update, or delete your personal data at any time. If you have any questions or concerns, please contact us at <a href="mailto:sshlvl.contact@gmail.com">sshlvl.contact@gmail.com</a> or visit our support page at <a href="support.html">Support</a>.</p>
 		</div>
 
 		<div class="privacy-policy-section">
@@ -140,15 +49,6 @@
             <h2>This policy is subject to change at any time.</h2>
         </div>
 
-		<div class="privacy-policy-footer">
-			<p>&copy; 2024 Shatter. All rights reserved.</p>
-		</div>
 	</div>
-    <footer class="footer">
-		<div class="footer-links">
-			<a href="-terms-of-service.html">Terms of Service</a>
-			<a href="about.html">About</a>
-		</div>
-		<p class="footer-copy">&copy; 2024 Shatter. All rights reserved.</p>
-	</footer>
+	<c-footer />
 </body>
