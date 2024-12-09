@@ -1,0 +1,38 @@
+.game {
+    background-color: var(--color-accent);
+    width: 17vw;
+    height: 30vh;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: center;
+    border-radius: 7px;
+}
+
+.game img {
+    max-width: 10vw;
+    max-height: 30vh;
+    margin-bottom: 1vh;
+}
+
+.game h2 {
+    margin-top: 0;
+    text-align: center;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.game button {
+    width: 2vw;
+    visibility: hidden;
+
+}
+
+.gamesDiv {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17vw, 1fr));
+    gap: 10px;
+    padding: 10px;
+}

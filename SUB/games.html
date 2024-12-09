@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+
 <head>
   <title>Shatter</title>
 
   <link rel="stylesheet" href="../CSS/theme-index.css" />
-	<link rel="stylesheet" href="../CSS/index.css" />
+  <link rel="stylesheet" href="../CSS/index.css" />
+  <link rel="stylesheet" href="../CSS/games.css" />
   <link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
 
   <!-- main js stuff, copy paste -->
@@ -11,44 +13,64 @@
   <script src="../JS/accounts.js"></script>
   <script src="../JS/fetch.js"></script>
   <script src="../JS/main.js" type="module"></script>
-  
+
   <loading />
-  
+
   <style>
     html {
-			overflow-x: hidden;
-		}
+      overflow-x: hidden;
+    }
   </style>
 </head>
 
 <body>
   <div class="background"></div>
 
-  <script src="../JS/fetch.js"></script>
+  <div class="gamesDiv"></div>
 
   <script type="module">
     window.showLoadingScreen();
-    const games = await FFFF('shattered-team/shatter-games', "game-sources", "dir");
+    let games = await FFFF('shattered-team/shatter-games', "game-sources", "dir");
     games.forEach((game) => {
-      let button = document.createElement("button");
-      button.textContent = String(game);
-      button.onclick = function () {
-        window.location.href = "./-play.html" + "?id=" + String(game);
+      const gameDiv = document.createElement('div');
+      gameDiv.className = 'game';
+      gameDiv.game = game;
+      gameDiv.onclick = function () {
+        window.location.href = '-play.html?id=' + game;
       };
-
-      document.body.appendChild(button);
+      const favButton = document.createElement('button');
+      const icon = document.createElement('img');
+      const text = document.createElement('h2');
+      text.textContent = game;
+      icon.src = 'https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/public/gameIcons/' + game + '.png';
+      favButton.textContent = 'fav';
+      gameDiv.appendChild(favButton);
+      gameDiv.appendChild(icon);
+      gameDiv.appendChild(text);
+      document.getElementsByClassName('gamesDiv')[0].appendChild(gameDiv);
     });
-    const flashgames = await FFFF('shattered-team/shatter-games', "game-sources/-flash", "file");
-    flashgames.forEach((game) => {
-      let button = document.createElement("button");
-      button.textContent = String(game).replace('.swf','');
-      button.onclick = function () {
-        window.location.href =
-          "./-play.html" + "?id=" + String(game) + "&flash=true";
+    
+
+    games = await FFFF('shattered-team/shatter-games', "game-sources/-flash/", "file");
+    games.forEach((game) => {
+      const gameDiv = document.createElement('div');
+      gameDiv.className = 'game';
+      gameDiv.game = game;
+      gameDiv.onclick = function () {
+        window.location.href = '-play.html?id=' + game + '&flash=true';
       };
-
-      document.body.appendChild(button);
-      window.hideLoadingScreen();
+      const favButton = document.createElement('button');
+      const icon = document.createElement('img');
+      const text = document.createElement('h2');
+      text.textContent = game.replace('.swf','');
+      icon.src = 'https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/public/gameIcons/' + game + '.png';
+      favButton.textContent = 'fav';
+      gameDiv.appendChild(favButton);
+      gameDiv.appendChild(icon);
+      gameDiv.appendChild(text);
+      document.getElementsByClassName('gamesDiv')[0].appendChild(gameDiv);
     });
+
+    window.hideLoadingScreen();
   </script>
 </body>
