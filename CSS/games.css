@@ -1,5 +1,6 @@
 .game {
     background-color: var(--color-accent);
+    transition: background-color 0.4s ease;
     width: 17vw;
     height: 30vh;
     padding: 10px;
@@ -9,6 +10,11 @@
     overflow: hidden;
     align-items: center;
     border-radius: 7px;
+    cursor: pointer;
+}
+
+.game:hover {
+    background-color: var(--color-accent2);
 }
 
 .game img {
