@@ -28,7 +28,7 @@
 	<div class="menu-container"></div>
 
 	<div id="profile">
-		<img id="pfp" src="./UI/account-placeholder.svg" draggable="false" />
+		<img id="pfp" draggable="false" />
 		<a id="username"></a>
 		<a id="status"></a>
 		<button onclick="LOA()" class="c-button-small">Logout</button>
@@ -39,7 +39,17 @@
 		const user = await FDB("profiles");
 		const pfp = user[0].pfp;
 		if (pfp == null || pfp.length > 8) {
-			document.getElementById("pfp").src = "https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/public/profilePictures/" + pfp;
+
+			const { data, error } = await supabaseClient
+				.storage
+				.from('profilePictures')
+				.createSignedUrl(pfp, 60)
+			if (error) {
+				document.getElementById("pfp").src = 'UI/account-placeholder.svg';
+			}
+			else {
+				document.getElementById("pfp").src = data.signedUrl;
+			}
 		}
 
 		document.getElementById("status").style.color = user[0].admin ? "var(--color-uninstall)" : "var(--text-color1)";
