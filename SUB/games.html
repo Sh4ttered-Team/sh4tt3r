@@ -113,7 +113,7 @@
         favIcon.src = favs.includes(game) ? '../UI/star.svg' : '../UI/empty-star.svg';
         favButton.onclick = function (event) {
           event.stopPropagation();
-          const isFav = toggleFavorite(game);
+          const isFav = toggleFavorite(game,gameDiv);
           favIcon.src = isFav ? '../UI/star.svg' : '../UI/empty-star.svg';
         };
         favButton.appendChild(favIcon);
