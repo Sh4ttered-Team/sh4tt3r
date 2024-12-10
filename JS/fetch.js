@@ -2,10 +2,11 @@
 
 async function FFFF(repo, folder, itemtype) {
   //Fetch Files From Folder, gets list of filenames in a folder(used for dynamic assets)
+  const gitToken = localStorage.getItem('gitKey'); //uses github api token if set
   let response;
   try {
     response = await UF(
-      "https://api.github.com/repos/" + repo + "/contents/" + folder
+      "https://api.github.com/repos/" + repo + "/contents/" + folder, (gitToken) ? {'Authorization': `token ${gitToken}`} : {}
     );
   } catch (e) {
     return null;
@@ -26,7 +27,7 @@ async function FFFF(repo, folder, itemtype) {
 async function UF(api, headers = {}) {
   //(api required:url, headers optional:other headers like api keys) //URL Fetch(used as a base for fetches), simply returns the response from an api call
   try {
-    const response = await fetch(api, headers);
+    const response = await fetch(api, {'headers':headers});
     if (!response.ok || response.type == TypeError) {
       return null;
     }

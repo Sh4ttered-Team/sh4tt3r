@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<body>
+    <h1>don't touch this, this is for testing</h1>
+    <input id="input">
+    <button onclick="setKey()">set</button>
+    <button onclick="document.getElementById('input').value = localStorage.getItem('gitKey');">get</button>
+    <script>
+        function setKey() {
+            let value = document.getElementById('input').value
+            localStorage.setItem('gitKey',value);
+            alert('set')
+            document.getElementById('input').value = ''
+        }
+    </script>
+</body>
