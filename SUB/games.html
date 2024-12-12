@@ -81,7 +81,7 @@
         const icon = document.createElement('img');
         const text = document.createElement('h2');
         text.textContent = game;
-        icon.src = 'https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/public/gameIcons/' + game + '.png';
+        icon.src = 'https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/public/gameIcons/' + game + '.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJnYW1lSWNvbnMvRG9vbS5wbmciLCJpYXQiOjE3MzQwMjI1MTcsImV4cCI6MTczNDYyNzMxN30.56olI2xpklvt1Ye9xrX4cPnb2S2Epd407qzfrhIzhe4';
         favIcon.src = favs.includes(game) ? '../UI/star.svg' : '../UI/empty-star.svg';
         favButton.onclick = function (event) {
           event.stopPropagation();
@@ -109,7 +109,7 @@
         const icon = document.createElement('img');
         const text = document.createElement('h2');
         text.textContent = game.replace('.swf', '');
-        icon.src = 'https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/public/gameIcons/' + game + '.png';
+        icon.src = 'https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/public/gameIcons/' + game + '.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJnYW1lSWNvbnMvRG9vbS5wbmciLCJpYXQiOjE3MzQwMjI1MTcsImV4cCI6MTczNDYyNzMxN30.56olI2xpklvt1Ye9xrX4cPnb2S2Epd407qzfrhIzhe4';
         favIcon.src = favs.includes(game) ? '../UI/star.svg' : '../UI/empty-star.svg';
         favButton.onclick = function (event) {
           event.stopPropagation();
