@@ -15,7 +15,6 @@
 	<script src="./JS/main.js" type="module"></script>
 
 	<loading />
-
 </head>
 
 <body>
@@ -31,31 +30,55 @@
 		<img id="pfp" draggable="false" />
 		<a id="username"></a>
 		<a id="status"></a>
-		<button onclick="LOA()" class="c-button-small">Logout</button>
+		<button onclick="LOA()" class="c-button-small" styl=>Logout</button>
 	</div>
 
+	<button onclick="cloak('index.html')" class="c-button" id="cloak">
+		cloak
+	</button>
+
+	<script>
+		function cloak(url) {
+			url = window.prefix + url + '?Cloaked=true';
+			let cloak = window.open(
+				"about:blank",
+				"_blank",
+				`width=${window.screen.width}, height=${window.screen.height}`
+			);
+			cloak.document.write("<style>body,html {padding: 0; margin: 0;}</style>");
+
+			cloak.document.write(`<iframe src='/${url}' frameBorder='0' style='width: 100vw; height: 100vh;' />`);
+			window.location.replace("about:blank");
+		}
+	</script>
 	<script type="module">
+		import { isCloaked } from './JS/main.js';
+		if (isCloaked) {
+			document.getElementById('cloak').style.visibility = 'hidden';
+		}
+
 		window.showLoadingScreen();
 		const user = await FDB("profiles");
 		const pfp = user[0].pfp;
 		if (pfp == null || pfp.length > 8) {
-
-			const { data, error } = await supabaseClient
-				.storage
-				.from('profilePictures')
-				.createSignedUrl(pfp, 60)
+			const { data, error } = await supabaseClient.storage
+				.from("profilePictures")
+				.createSignedUrl(pfp, 60);
 			if (error) {
-				document.getElementById("pfp").src = 'UI/account-placeholder.svg';
-			}
-			else {
+				document.getElementById("pfp").src = "UI/account-placeholder.svg";
+			} else {
 				document.getElementById("pfp").src = data.signedUrl;
 			}
 		}
 
-		document.getElementById("status").style.color = user[0].admin ? "var(--color-uninstall)" : "var(--text-color1)";
-		document.getElementById("status").textContent = user[0].admin ? "Admin" : "Shatter account";
+		document.getElementById("status").style.color = user[0].admin
+			? "var(--color-uninstall)"
+			: "var(--text-color1)";
+		document.getElementById("status").textContent = user[0].admin
+			? "Admin"
+			: "Shatter account";
 		document.getElementById("username").textContent = user[0].username;
-		document.getElementById('profile').style.visibility = 'visible';
+		document.getElementById("profile").style.visibility = "visible";
 
 		const subfolder = "SUB";
 
@@ -70,12 +93,13 @@
 				}
 				LoadSubmenus();
 			} else {
-				document.getElementById("wifi-txt").textContent = "No Internet Connection!";
+				document.getElementById("wifi-txt").textContent =
+					"No Internet Connection!";
 			}
 		}
 
 		async function LoadSubmenus() {
-			const menus = await FFFF('shattered-team/new-shatter', subfolder, "file");
+			const menus = await FFFF("shattered-team/new-shatter", subfolder, "file");
 			if (menus == null) {
 				if (document.getElementById("retry_button") == null) {
 					const retry_button = document.createElement("button");
@@ -100,11 +124,12 @@
 				window.hideLoadingScreen();
 			} else {
 				menus.forEach((subpage) => {
-					const container = document.getElementsByClassName('menu-container')[0];
+					const container =
+						document.getElementsByClassName("menu-container")[0];
 					const sub_button = document.createElement("button");
 
 					sub_button.textContent = subpage.replace(".html", "");
-					sub_button.className = 'c-button';
+					sub_button.className = "c-button";
 					sub_button.onclick = function () {
 						window.location.href = "./" + subfolder + "/" + subpage;
 					};

@@ -58,3 +58,11 @@
 body,html {
     overflow-x: hidden;
 }
+
+#cloak {
+    position: relative;
+    bottom: 0;
+    left: 2vw;
+    padding: 0;
+    margin: 0;
+}
