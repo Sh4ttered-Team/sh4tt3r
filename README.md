@@ -18,3 +18,4 @@ An original project inspired by [Fracture](https://github.com/gragin0/fracture)
 ## Contact
 
 Use our support email: [sshlvl.contact@gmail.com](mailto:sshlvl.contact@gmail.com)
+or our support page: [https://shattered-team.github.io/new-shatter/SUB/support.html](https://shattered-team.github.io/new-shatter/SUB/support.html)
