@@ -39,7 +39,12 @@
 
 	<script>
 		function cloak(url) {
-			url = window.prefix + '/' + url + '?Cloaked=true';
+			if (window.prefix == '/' {
+				url = '/' + url + '?Cloaked=true';
+			}
+			else {
+				url = 'https://shattered-team.github.io/new-shatter/' + url + '?Cloaked=true';
+			}
 			let cloak = window.open(
 				"about:blank",
 				"_blank",
