@@ -52,7 +52,14 @@
 		}
 	</script>
 	<script type="module">
+		const NotificationText = (await FDB('key_value_store')).find(object => object.key === "notif_text").value
+		if (NotificationText && localStorage.getItem('last_seen_notif') != NotificationText) {
+			localStorage.setItem('last_seen_notif',NotificationText);
+			alert(NotificationText);
+		}
+
 		import { isCloaked } from './JS/main.js';
+
 		if (isCloaked) {
 			document.getElementById('cloak').style.visibility = 'hidden';
 		}
