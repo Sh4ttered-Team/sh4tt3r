@@ -88,6 +88,8 @@
         const icon = document.createElement('img');
         const text = document.createElement('h2');
         text.textContent = game;
+        icon.draggable = false;
+        favIcon.draggable = false;
         getIcon(game,icon);
         favIcon.src = favs.includes(game) ? '../UI/star.svg' : '../UI/empty-star.svg';
         favButton.onclick = function (event) {
@@ -116,6 +118,8 @@
         const icon = document.createElement('img');
         const text = document.createElement('h2');
         text.textContent = game.replace('.swf', '');
+        icon.draggable = false;
+        favIcon.draggable = false;
         getIcon(game,icon);
         favIcon.src = favs.includes(game) ? '../UI/star.svg' : '../UI/empty-star.svg';
         favButton.onclick = function (event) {
