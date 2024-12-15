@@ -34,6 +34,13 @@
   <div class="gamesDiv"></div>
 
   <script type="module">
+    async function getIcon(game, icon) {
+      const { data, error } = await supabaseClient
+        .storage
+        .from('gameIcons')
+        .createSignedUrl(`${game.replace('.swf','')}.png`, 60)
+      icon.src = data.signedUrl;
+    }
 
     function getFavorites() {
       const favorites = localStorage.getItem('favGames');
@@ -44,7 +51,7 @@
       localStorage.setItem('favGames', JSON.stringify(favorites));
     }
 
-    function toggleFavorite(game,gameDiv) {
+    function toggleFavorite(game, gameDiv) {
       let favorites = getFavorites();
       let state;
       if (favorites.includes(game)) {
@@ -81,11 +88,11 @@
         const icon = document.createElement('img');
         const text = document.createElement('h2');
         text.textContent = game;
-        icon.src = 'https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/sign/gameIcons/' + game + '.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJnYW1lSWNvbnMvRG9vbS5wbmciLCJpYXQiOjE3MzQwMjI1MTcsImV4cCI6MTczNDYyNzMxN30.56olI2xpklvt1Ye9xrX4cPnb2S2Epd407qzfrhIzhe4';
+        getIcon(game,icon);
         favIcon.src = favs.includes(game) ? '../UI/star.svg' : '../UI/empty-star.svg';
         favButton.onclick = function (event) {
           event.stopPropagation();
-          const isFav = toggleFavorite(game,gameDiv);
+          const isFav = toggleFavorite(game, gameDiv);
           favIcon.src = isFav ? '../UI/star.svg' : '../UI/empty-star.svg';
         };
         favButton.appendChild(favIcon);
@@ -109,11 +116,11 @@
         const icon = document.createElement('img');
         const text = document.createElement('h2');
         text.textContent = game.replace('.swf', '');
-        icon.src = 'https://fffwukshwgrcdyqmvahg.supabase.co/storage/v1/object/sign/gameIcons/' + game + '.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJnYW1lSWNvbnMvRG9vbS5wbmciLCJpYXQiOjE3MzQwMjI1MTcsImV4cCI6MTczNDYyNzMxN30.56olI2xpklvt1Ye9xrX4cPnb2S2Epd407qzfrhIzhe4';
+        getIcon(game,icon);
         favIcon.src = favs.includes(game) ? '../UI/star.svg' : '../UI/empty-star.svg';
         favButton.onclick = function (event) {
           event.stopPropagation();
-          const isFav = toggleFavorite(game,gameDiv);
+          const isFav = toggleFavorite(game, gameDiv);
           favIcon.src = isFav ? '../UI/star.svg' : '../UI/empty-star.svg';
         };
         favButton.appendChild(favIcon);
