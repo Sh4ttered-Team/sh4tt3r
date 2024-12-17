@@ -40,7 +40,7 @@
 
 	<script>
 		function cloak(url) {
-			url = window.prefix + '/' + url + '?Cloaked=true';
+			url = window.prefix + '/' + url;
 			let cloak = window.open(
 				"about:blank",
 				"_blank",
@@ -63,9 +63,7 @@
 			alert(NotificationText);
 		}
 
-		import { isCloaked } from './JS/main.js';
-
-		if (isCloaked) {
+		if (window.isCloaked) {
 			document.getElementById('cloak').style.visibility = 'hidden';
 		}
 

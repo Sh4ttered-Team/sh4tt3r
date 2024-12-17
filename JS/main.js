@@ -3,7 +3,9 @@ const IsUserBypass = checkForTag("acc-bypass");
 const AdminReqConBypass = checkForTag("con-bypass");
 const LoadingScreen = checkForTag("loading");
 
-export let isCloaked = false;
+if (window.self !== window.top) {
+	window.isCloaked = true;
+}
 export let settings;
 
 //fix for different web environments (local dev/github pages)
@@ -122,24 +124,18 @@ if (window.location.href.includes("/~")) {
 	window.location.href = window.prefix + "/404.html";
 }
 
-const params = new URLSearchParams(window.location.search);
-if (params.get("Cloaked")) {
-	isCloaked = true;
-}
-
 if (!localStorage.getItem('settings')) {
 	localStorage.setItem('settings', JSON.stringify({}));
 }
 
 settings = JSON.parse(localStorage.getItem('settings'));
 
-if (settings['cloak'] && !isCloaked) {
+if (settings['cloak'] && !window.isCloaked) {
 	cloak(window.location.href)
 }
 
-function cloak(url,relative_path = false) {
-	url = `${relative_path ? '/' : ''}` + url + '?Cloaked=true';
-	alert(url)
+function cloak(url, relative_path = false) {
+	url = `${relative_path ? '/' : ''}` + url;
 	let cloak = window.open(
 		"about:blank",
 		"_blank",
