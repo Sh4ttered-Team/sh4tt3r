@@ -137,8 +137,8 @@ if (settings['cloak'] && !isCloaked) {
 	cloak(window.location.href)
 }
 
-function cloak(url,relative_path = false) {
-	url = `${relative_path ? '/' : ''}` + url + '?Cloaked=true';
+function cloak(url) {
+	url += '?Cloaked=true';
 	alert(url)
 	let cloak = window.open(
 		"about:blank",
