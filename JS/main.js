@@ -147,6 +147,6 @@ function cloak(url,relative_path = false) {
 	);
 	cloak.document.write("<style>body,html {padding: 0; margin: 0;}</style>");
 
-	cloak.document.write(`<iframe src='${url}' frameBorder='0' style='width: 100vw; height: 100vh;' />`);
+	cloak.document.write(`<iframe src='/${url}' frameBorder='0' style='width: 100vw; height: 100vh;' />`);
 	window.location.replace("about:blank");
 }
