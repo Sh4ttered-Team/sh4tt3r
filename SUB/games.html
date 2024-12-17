@@ -38,7 +38,7 @@
       const { data, error } = await supabaseClient
         .storage
         .from('gameIcons')
-        .createSignedUrl(`${game.replace('.swf','')}.png`, 60)
+        .createSignedUrl(`${game.replace('.swf', '')}.png`, 60)
       icon.src = data.signedUrl;
     }
 
@@ -72,68 +72,57 @@
     }
 
     window.showLoadingScreen();
-    let games = await FFFF('shattered-team/shatter-games', "game-sources", "dir");
-    if (games) {
-      const favs = getFavorites();
-      games.forEach((game) => {
-        const gameDiv = document.createElement('div');
-        gameDiv.className = 'game';
-        gameDiv.game = game;
-        gameDiv.onclick = function () {
-          window.location.href = '-play.html?id=' + game;
-        };
+    async function load_games(flash, url, html) {
+      let games
+      if (html) {
+        games = await FFFF('shattered-team/shatter-games', "game-sources", "dir");
+        games = games.map(game => ({ 'name': game, 'url': game }))
+      } else if (flash) {
+        games = await FFFF('shattered-team/shatter-games', "game-sources/-flash/", "file");
+        games = games.map(game => ({ 'name': game, 'url': game }))
+      } else if (url) {
+        games = await (await fetch("https://shattered-team.github.io/shatter-games/game-sources/-url_games.json")).json();
+      }
+      if (games) {
+        const favs = getFavorites();
+        games.forEach((game) => {
+          const gameDiv = document.createElement('div');
+          gameDiv.className = 'game';
+          let prefix = '';
+          if (flash) {
+            prefix = '&flash=true';
+          } else if (url) {
+            prefix = '&url=true';
+          }
+          gameDiv.onclick = function () {
+            window.location.href = '-play.html?id=' + game.url + prefix;
+          };
 
-        const favButton = document.createElement('button');
-        const favIcon = document.createElement('img')
-        const icon = document.createElement('img');
-        const text = document.createElement('h2');
-        text.textContent = game;
-        icon.draggable = false;
-        favIcon.draggable = false;
-        getIcon(game,icon);
-        favIcon.src = favs.includes(game) ? '../UI/star.svg' : '../UI/empty-star.svg';
-        favButton.onclick = function (event) {
-          event.stopPropagation();
-          const isFav = toggleFavorite(game, gameDiv);
-          favIcon.src = isFav ? '../UI/star.svg' : '../UI/empty-star.svg';
-        };
-        favButton.appendChild(favIcon);
-        gameDiv.appendChild(favButton);
-        gameDiv.appendChild(icon);
-        gameDiv.appendChild(text);
-        document.getElementsByClassName(favs.includes(game) ? 'favGames' : 'gamesDiv')[0].appendChild(gameDiv);
-      });
-
-      games = await FFFF('shattered-team/shatter-games', "game-sources/-flash/", "file");
-      games.forEach((game) => {
-        const gameDiv = document.createElement('div');
-        gameDiv.className = 'game';
-        gameDiv.game = game;
-        gameDiv.onclick = function () {
-          window.location.href = '-play.html?id=' + game + '&flash=true';
-        };
-
-        const favButton = document.createElement('button');
-        const favIcon = document.createElement('img');
-        const icon = document.createElement('img');
-        const text = document.createElement('h2');
-        text.textContent = game.replace('.swf', '');
-        icon.draggable = false;
-        favIcon.draggable = false;
-        getIcon(game,icon);
-        favIcon.src = favs.includes(game) ? '../UI/star.svg' : '../UI/empty-star.svg';
-        favButton.onclick = function (event) {
-          event.stopPropagation();
-          const isFav = toggleFavorite(game, gameDiv);
-          favIcon.src = isFav ? '../UI/star.svg' : '../UI/empty-star.svg';
-        };
-        favButton.appendChild(favIcon);
-        gameDiv.appendChild(favButton);
-        gameDiv.appendChild(icon);
-        gameDiv.appendChild(text);
-        document.getElementsByClassName(favs.includes(game) ? 'favGames' : 'gamesDiv')[0].appendChild(gameDiv);
-      });
+          const favButton = document.createElement('button');
+          const favIcon = document.createElement('img')
+          const icon = document.createElement('img');
+          const text = document.createElement('h2');
+          text.textContent = game.name.replace('.swf', '');
+          icon.draggable = false;
+          favIcon.draggable = false;
+          getIcon(game.name, icon);
+          favIcon.src = favs.includes(game.name) ? '../UI/star.svg' : '../UI/empty-star.svg';
+          favButton.onclick = function (event) {
+            event.stopPropagation();
+            const isFav = toggleFavorite(game.name, gameDiv);
+            favIcon.src = isFav ? '../UI/star.svg' : '../UI/empty-star.svg';
+          };
+          favButton.appendChild(favIcon);
+          gameDiv.appendChild(favButton);
+          gameDiv.appendChild(icon);
+          gameDiv.appendChild(text);
+          document.getElementsByClassName(favs.includes(game.name) ? 'favGames' : 'gamesDiv')[0].appendChild(gameDiv);
+        });
+      }
     }
+    load_games(false, false, true)
+    load_games(false, true)
+    load_games(true)
     window.hideLoadingScreen();
   </script>
 </body>

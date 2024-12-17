@@ -36,61 +36,75 @@
 		let srcFetch;
 
 		if (src != null || src == "") {
-			if (params.has("flash", true)) {
-				try {
-					srcFetch = await fetch("https://shattered-team.github.io/shatter-games/game-sources/-flash/" + encodeURIComponent(src));
-					if (!srcFetch.ok) {
-						throw new Error('Failed to fetch the game');
+			if (params.has('url', true)) {
+					try {
+						const display = document.createElement("iframe");
+						display.id = "display";
+						display.frameBorder = 0;
+						document.body.appendChild(display);
+						display.src = src;
+					} catch (error) {
+						await displayNotFound();
 					}
-				} catch (error) {
-					await displayNotFound();
-					breake = true;
-				}
-				if (!breake) {
-					const flashContainer = document.createElement("div");
-					flashContainer.id = "flash-container";
-					flashContainer.style.width = "100%";
-					flashContainer.style.height = "100%";
-					flashContainer.style.display = "flex";
-					flashContainer.style.justifyContent = "center";
-					flashContainer.style.alignItems = "center";
-					flashContainer.style.overflow = "hidden";
+					window.hideLoadingScreen();
+			}
+			else {
+				if (params.has("flash", true)) {
+					try {
+						srcFetch = await fetch("https://shattered-team.github.io/shatter-games/game-sources/-flash/" + encodeURIComponent(src));
+						if (!srcFetch.ok) {
+							throw new Error('Failed to fetch the game');
+						}
+					} catch (error) {
+						await displayNotFound();
+						breake = true;
+					}
+					if (!breake) {
+						const flashContainer = document.createElement("div");
+						flashContainer.id = "flash-container";
+						flashContainer.style.width = "100%";
+						flashContainer.style.height = "100%";
+						flashContainer.style.display = "flex";
+						flashContainer.style.justifyContent = "center";
+						flashContainer.style.alignItems = "center";
+						flashContainer.style.overflow = "hidden";
 
-					const rufflePlayerContainer = document.createElement("div");
-					rufflePlayerContainer.id = "ruffle-player";
-					rufflePlayerContainer.style.width = "100%";
-					rufflePlayerContainer.style.height = "100%";
+						const rufflePlayerContainer = document.createElement("div");
+						rufflePlayerContainer.id = "ruffle-player";
+						rufflePlayerContainer.style.width = "100%";
+						rufflePlayerContainer.style.height = "100%";
 
-					flashContainer.appendChild(rufflePlayerContainer);
+						flashContainer.appendChild(rufflePlayerContainer);
 
-					document.body.appendChild(flashContainer);
+						document.body.appendChild(flashContainer);
 
-					const ruffle = window.RufflePlayer.newest();
-					const player = ruffle.createPlayer();
-					rufflePlayerContainer.appendChild(player);
+						const ruffle = window.RufflePlayer.newest();
+						const player = ruffle.createPlayer();
+						rufflePlayerContainer.appendChild(player);
 
-					const blob = await srcFetch.blob();
-					const objectUrl = URL.createObjectURL(blob);
-					player.load(objectUrl);
+						const blob = await srcFetch.blob();
+						const objectUrl = URL.createObjectURL(blob);
+						player.load(objectUrl);
+						window.hideLoadingScreen();
+					}
+				} else {
+					// Fetch to check if the resource exists
+					const iframeUrl = "https://shattered-team.github.io/shatter-games/game-sources/" + src;
+					try {
+						const iframeFetch = await fetch(iframeUrl, { method: 'HEAD' });
+						if (!iframeFetch.ok) {
+							throw new Error('Failed to load the game');
+						}
+						const display = document.createElement("iframe");
+						display.id = "display";
+						display.frameBorder = 0;
+						document.body.appendChild(display);
+						display.src = iframeUrl;
+					} catch (error) {
+						await displayNotFound();
+					}
 					window.hideLoadingScreen();
 				}
-			} else {
-				// Fetch to check if the resource exists
-				const iframeUrl = "https://shattered-team.github.io/shatter-games/game-sources/" + src;
-				try {
-					const iframeFetch = await fetch(iframeUrl, { method: 'HEAD' });
-					if (!iframeFetch.ok) {
-						throw new Error('Failed to load the game');
-					}
-					const display = document.createElement("iframe");
-					display.id = "display";
-					display.frameBorder = 0;
-					document.body.appendChild(display);
-					display.src = iframeUrl;
-				} catch (error) {
-					await displayNotFound();
-				}
-				window.hideLoadingScreen();
 			}
 		} else {
 			await displayNotFound();
