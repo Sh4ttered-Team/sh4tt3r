@@ -27,9 +27,6 @@
     </div>
 
     <script>
-        if (!localStorage.getItem('settings')) {
-            localStorage.setItem('settings', JSON.stringify({}));
-        }
         const onload_settings = JSON.parse(localStorage.getItem('settings'));
 
         const settings = [{ 'name': 'Auto Cloak', 'key': 'cloak', 'desc': 'Automatically opens the page in cloak', 'type': 'toggle' }];

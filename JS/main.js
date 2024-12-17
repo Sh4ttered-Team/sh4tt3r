@@ -127,6 +127,10 @@ if (params.get("Cloaked")) {
 	isCloaked = true;
 }
 
+if (!localStorage.getItem('settings')) {
+	localStorage.setItem('settings', JSON.stringify({}));
+}
+
 settings = JSON.parse(localStorage.getItem('settings'));
 
 if (settings['cloak'] && !isCloaked) {
