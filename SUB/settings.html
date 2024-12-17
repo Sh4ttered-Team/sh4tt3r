@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Shatter</title>
+
+    <link rel="stylesheet" href="../CSS/theme-index.css" />
+    <link rel="stylesheet" href="../CSS/index.css" />
+    <link rel="stylesheet" href="../CSS/settings.css" />
+    <link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
+
+    <!-- main js stuff, copy paste -->
+    <script src="../JS/supabase.js"></script>
+    <script src="../JS/accounts.js"></script>
+    <script src="../JS/fetch.js"></script>
+    <script src="../JS/main.js" type="module"></script>
+
+</head>
+
+<body>
+    <div class="background"></div>
+
+    <div class="titlecontainer">
+        <img src="../UI/Title.png" class="title" />
+    </div>
+
+    <div class="settings-div">
+    </div>
+
+    <script>
+        if (!localStorage.getItem('settings')) {
+            localStorage.setItem('settings', JSON.stringify({}));
+        }
+        const onload_settings = JSON.parse(localStorage.getItem('settings'));
+
+        const settings = [{ 'name': 'Auto Cloak', 'key': 'cloak', 'desc': 'Automatically opens the page in cloak', 'type': 'toggle' }];
+        const settingsDiv = (document.getElementsByClassName('settings-div'))[0];
+        settings.forEach(setting => {
+            let settingDiv = document.createElement('div');
+            settingDiv.className = 'setting';
+            let setting_input;
+            if (setting.type == 'toggle') {
+                settingDiv.onchange = function () {
+                    let settings = JSON.parse(localStorage.getItem('settings'));
+                    settings[setting.key] = setting_input.checked;
+                    localStorage.setItem('settings', JSON.stringify(settings));
+                };
+                setting_input = document.createElement('input');
+                setting_input.type = 'checkbox';
+                setting_input.checked = onload_settings[setting.key] || false;
+            }
+            let name = document.createElement('h1');
+            name.textContent = setting.name;
+            let desc = document.createElement('h2');
+            desc.textContent = setting.desc;
+            settingDiv.appendChild(setting_input);
+            settingDiv.appendChild(name);
+            settingDiv.appendChild(desc);
+            settingsDiv.appendChild(settingDiv);
+        });
+    </script>
+
+</body>

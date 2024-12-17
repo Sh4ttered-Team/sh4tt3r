@@ -19,6 +19,18 @@
     pointer-events: none;
 }
 
+.titlecontainer {
+    margin-bottom: 2vh;
+}
+
+.titlecontainer h2 {
+    position: absolute;
+    top: 13vh;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-button);
+}
+
 #username {
     color: var(--color-text-light);
     user-select: none;

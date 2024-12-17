@@ -4,6 +4,7 @@ const AdminReqConBypass = checkForTag("con-bypass");
 const LoadingScreen = checkForTag("loading");
 
 export let isCloaked = false;
+export let settings;
 
 //fix for different web environments (local dev/github pages)
 window.prefix = "";
@@ -124,4 +125,24 @@ if (window.location.href.includes("/~")) {
 const params = new URLSearchParams(window.location.search);
 if (params.get("Cloaked")) {
 	isCloaked = true;
+}
+
+settings = JSON.parse(localStorage.getItem('settings'));
+
+if (settings['cloak'] && !isCloaked) {
+	cloak(window.location.href)
+}
+
+function cloak(url,relative_path = false) {
+	url = window.prefix + `${(relative_path) ? '/' : ''}` + url + '?Cloaked=true';
+	alert(url)
+	let cloak = window.open(
+		"about:blank",
+		"_blank",
+		`width=${window.screen.width}, height=${window.screen.height}`
+	);
+	cloak.document.write("<style>body,html {padding: 0; margin: 0;}</style>");
+
+	cloak.document.write(`<iframe src='${url}' frameBorder='0' style='width: 100vw; height: 100vh;' />`);
+	window.location.replace("about:blank");
 }
