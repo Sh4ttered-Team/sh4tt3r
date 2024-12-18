@@ -2,11 +2,29 @@
 const IsUserBypass = checkForTag("acc-bypass");
 const AdminReqConBypass = checkForTag("con-bypass");
 const LoadingScreen = checkForTag("loading");
+const ThemeBypass = checkForTag("theme-bypass");
 
 if (window.self !== window.top) {
 	window.isCloaked = true;
 }
 export let settings;
+
+if (!localStorage.getItem('settings')) {
+	localStorage.setItem('settings', JSON.stringify({})); //default settings
+}
+
+settings = JSON.parse(localStorage.getItem('settings'));
+
+if (!ThemeBypass) {
+	if (settings['theme']) {
+		document.addEventListener('DOMContentLoaded', () => {
+			if (settings['theme']) {
+				document.documentElement.setAttribute('data-theme', settings['theme']);
+			}
+		});
+		
+	}	
+}
 
 //fix for different web environments (local dev/github pages)
 window.prefix = "";
@@ -116,6 +134,20 @@ document.addEventListener("keydown", async function (event) {
 	}
 });
 
+//ctrl + \, edit settings data  // same admin perms as console
+document.addEventListener("keydown", async function (event) {
+	if (event.ctrlKey && event.key === "\\") {
+		event.preventDefault();
+		let user = await FDB("profiles");
+		if (user && user[0] && user[0].admin === false && !AdminReqConBypass) {
+			return;
+		}
+		let input = prompt('settings',JSON.stringify(settings));
+		localStorage.setItem('settings',input);
+		window.location.reload();
+	}
+});
+
 function checkForTag(tag) {
 	return document.getElementsByTagName(tag).length !== 0;
 }
@@ -123,12 +155,6 @@ function checkForTag(tag) {
 if (window.location.href.includes("/~")) {
 	window.location.href = window.prefix + "/404.html";
 }
-
-if (!localStorage.getItem('settings')) {
-	localStorage.setItem('settings', JSON.stringify({}));
-}
-
-settings = JSON.parse(localStorage.getItem('settings'));
 
 if (settings['cloak'] && !window.isCloaked) {
 	cloak(window.location.href)

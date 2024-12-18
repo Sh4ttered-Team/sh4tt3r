@@ -82,3 +82,11 @@
     background-color: var(--color-button-hover);
     border-color: var(--color-button);
 }
+
+.report-box::placeholder {
+    color: var(--color-text-muted);
+}
+
+.report-box::-moz-placeholder {
+    color: var(--color-text-muted);
+}
