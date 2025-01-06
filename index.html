@@ -70,7 +70,7 @@
 		window.showLoadingScreen();
 		const user = await FDB("profiles");
 		const pfp = user[0].pfp;
-		if (pfp == null || pfp.length > 8) {
+		if (pfp != null && pfp.length > 8) {
 			const { data, error } = await supabaseClient.storage
 				.from("profilePictures")
 				.createSignedUrl(pfp, 60);

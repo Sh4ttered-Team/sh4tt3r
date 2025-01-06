@@ -1,6 +1,6 @@
 async function LTA(Email, Password) {
 	//Login To Account
-	const { user, error } = await supabaseClient.auth.signInWithPassword({
+	const { data, error } = await supabaseClient.auth.signInWithPassword({
 		email: Email,
 		password: Password,
 	});

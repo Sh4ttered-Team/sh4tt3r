@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Shatter</title>
+
+    <link rel="stylesheet" href="../CSS/theme-index.css" />
+    <link rel="stylesheet" href="../CSS/index.css" />
+    <link rel="stylesheet" href="../CSS/chat.css" />
+    <link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
+
+    <!-- main js stuff, copy paste -->
+    <script src="../JS/supabase.js"></script>
+    <script src="../JS/accounts.js"></script>
+    <script src="../JS/fetch.js"></script>
+    <script src="../JS/main.js" type="module"></script>
+
+    <loading />
+
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background"></div>
+    <div class="home_menu">
+        <div class="user">
+            <img id="pfp">
+            <h2 draggable="false" id="username"></h2>
+            <script type="module">
+                const profile = await FDB("profiles");
+                const pfp = profile[0].pfp;
+                if (pfp != null && pfp.length > 8) {
+                    const { data, error } = await supabaseClient.storage
+                        .from("profilePictures")
+                        .createSignedUrl(pfp, 60);
+                    if (error) {
+                        document.getElementById("pfp").src = "../UI/account-placeholder.svg";
+                    } else {
+                        document.getElementById("pfp").src = data.signedUrl;
+                    }
+                }
+                document.getElementById("username").style.color = profile[0].admin
+                    ? "var(--color-uninstall)"
+                    : "var(--text-color1)";
+                document.getElementById("username").textContent = profile[0].username;
+            </script>
+        </div>
+        <div class="chat_rooms"></div>
+        <div id="overlay" class="overlay">
+            <div class="overlay-content">
+                <h2>Join Private Room</h2>
+                <div class="join">
+                    <input id="name" placeholder="Room name">
+                    <input id="password" placeholder="Password">
+                    <button id="joinButton">Join</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import { api } from "../JS/api.js"
+        const user = JSON.parse(localStorage.getItem("sb-fffwukshwgrcdyqmvahg-auth-token"))
+        const userId = user.user.id
+        const token = user.access_token
+        const auth = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmZnd1a3Nod2dyY2R5cW12YWhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEzOTkxMjAsImV4cCI6MjA0Njk3NTEyMH0.MsMeFMkrJCeJzRFWMZXM-CZu8gwaScV7feentsgMQvI'
+        const params = new URLSearchParams(window.location.search);
+        const currentRoomId = params.get("room");
+        document.querySelector("#joinButton").onclick = async () => {
+            const name = document.querySelector("#name").value;
+            const password = document.querySelector("#password").value;
+            if (!name) {
+                alert("Please enter a room name");
+                return;
+            }
+            try {
+                window.showLoadingScreen()
+                const Idresponse = await api({
+                    "userId": `${userId}`,
+                    "token": `${token}`,
+                    "mode": "fromname",
+                    "data": `${name}`
+                }, auth, "getRoom");
+                const id = (JSON.parse(Idresponse))["roomId"];
+                const response = await api({
+                    "userId": `${userId}`,
+                    "token": `${token}`,
+                    "roomId": `${id}`,
+                    "password": `${password}`
+                }, auth, "joinRoom");
+                const state = JSON.parse(response);
+
+                switch (state.message) {
+                    case "Room not found":
+                        alert("Room not found");
+                        break;
+                    case "Room is full":
+                        alert("Room is full");
+                        break;
+                    case "User already in room":
+                        alert("You are already in this room");
+                        break;
+                    case "User joined room":
+                        window.location.href = `?room=${id}`;
+                        break;
+                    case "Invalid password":
+                        alert("Room not found");
+                        break;
+                    default:
+                        alert("An unknown error occured! =(");
+                        break;
+                }
+                window.hideLoadingScreen()
+            } catch (error) {
+                window.hideLoadingScreen()
+                console.error("Error joining room:", error);
+                alert("Error joining room =(");
+            }
+        };
+        async function loadRooms() {
+            let bufferDiv = document.getElementById('bufferDiv');
+            if (!bufferDiv) {
+                bufferDiv = document.createElement('div');
+                bufferDiv.id = 'bufferDiv';
+                bufferDiv.style.display = 'none';
+                document.body.appendChild(bufferDiv);
+            }
+            bufferDiv.innerHTML = '';
+            const Rooms = JSON.parse(await api({
+                "userId": `${userId}`,
+                "token": `${token}`
+            }, auth, "getRooms"));
+            const allRooms = [];
+            Rooms.rooms.forEach(room => {
+                const users = room.users ? JSON.parse(room.users) : [];
+                const roomDiv = document.createElement("div");
+                roomDiv.classList.add("room");
+                roomDiv.innerHTML = `
+            <h1>${room.name}</h1>
+            <p>Users: ${users.length}/${room.max_users}</p>
+        `;
+                if (users.length < room.max_users && !users.includes(userId)) {
+                    const joinButton = document.createElement("button");
+                    joinButton.innerText = "Join";
+                    joinButton.onclick = async () => {
+                        try {
+                            window.showLoadingScreen()
+                            const response = await api({
+                                "userId": `${userId}`,
+                                "token": `${token}`,
+                                "roomId": `${room.id}`
+                            }, auth, "joinRoom");
+                            const state = JSON.parse(response);
+
+                            switch (state.message) {
+                                case "Room not found":
+                                    alert("Room not found");
+                                    break;
+                                case "Room is full":
+                                    alert("Room is full");
+                                    break;
+                                case "User already in room":
+                                    alert("You are already in this room");
+                                    break;
+                                case "User joined room":
+                                    alert("Joined room successfully");
+                                    window.location.href = `?room=${room.id}`;
+                                    break;
+                                default:
+                                    alert("An unknown error occurred");
+                                    break;
+                            }
+                            window.hideLoadingScreen();
+                        } catch (error) {
+                            window.hideLoadingScreen();
+                            console.error("Error joining room:", error);
+                            alert("Failed to join room");
+                        }
+                    };
+                    roomDiv.appendChild(joinButton);
+                } else if (users.includes(userId)) {
+                    roomDiv.onclick = () => {
+                        window.location.href = `?room=${room.id}`;
+                    }
+                }
+                allRooms.push({ isJoined: users.includes(userId), element: roomDiv });
+            });
+            allRooms.sort((a, b) => b.isJoined - a.isJoined);
+            if (allRooms.some(room => room.isJoined)) {
+                const joinedSeparator = document.createElement('div');
+                joinedSeparator.className = 'separator';
+                joinedSeparator.innerText = 'Joined Rooms';
+                bufferDiv.appendChild(joinedSeparator);
+            }
+            allRooms.forEach(room => bufferDiv.appendChild(room.element));
+            const firstUnjoinedIndex = allRooms.findIndex(room => !room.isJoined);
+            if (firstUnjoinedIndex > 0) {
+                const availableSeparator = document.createElement('div');
+                availableSeparator.className = 'separator';
+                availableSeparator.innerText = 'Available Rooms';
+                bufferDiv.insertBefore(availableSeparator, bufferDiv.children[firstUnjoinedIndex + 1]);
+            }
+            const joinButton = document.createElement('button');
+            joinButton.className = 'joinB2';
+            joinButton.innerText = 'Join private';
+            bufferDiv.appendChild(joinButton);
+            const createButton = document.createElement('button');
+            createButton.className = 'create';
+            createButton.innerText = 'Create room';
+            bufferDiv.appendChild(createButton);
+            const overlay = document.getElementById('overlay');
+            const closeOverlay = document.getElementById('closeOverlay');
+            joinButton.onclick = () => {
+                overlay.style.visibility = 'visible';
+                overlay.style.opacity = '1';
+            };
+            window.onclick = (event) => {
+                if (event.target === overlay) {
+                    hideOverlay();
+                }
+            };
+            window.addEventListener('keydown', (event) => {
+                if (event.key === "Escape") {
+                    hideOverlay();
+                }
+            });
+            function hideOverlay() {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.style.visibility = 'hidden', 300);
+            }
+            document.querySelector(".chat_rooms").replaceChildren(...bufferDiv.children);
+        }
+        let pfp_cache = {};
+        let user_cache = {};
+        async function loadMessages() {
+            let chatDiv = document.querySelector('.chat');
+            if (!chatDiv) {
+                chatDiv = document.createElement('div');
+                chatDiv.className = 'chat';
+                document.querySelector('.home_menu').appendChild(chatDiv);
+            }
+
+            const bufferDiv = document.createElement('div');
+
+            const inputDiv = document.createElement('div');
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.placeholder = 'Type your message...';
+            inputField.className = 'message-input';
+
+            const sendButton = document.createElement('button');
+            sendButton.innerText = 'Send';
+            sendButton.className = 'send-button';
+
+            inputDiv.appendChild(inputField);
+            inputDiv.appendChild(sendButton);
+
+            bufferDiv.appendChild(inputDiv);
+
+            sendButton.onclick = async () => {
+                const messageText = inputField.value;
+                if (messageText.trim() === '') {
+                    alert('Please enter a message');
+                    return;
+                }
+                try {
+                    window.showLoadingScreen()
+                    await api({
+                        "userId": `${userId}`,
+                        "token": `${token}`,
+                        "roomId": `${currentRoomId}`,
+                        "text": `${messageText}`
+                    }, auth, "sendMessage");
+                    inputField.value = '';
+                } catch (error) {
+                    window.hideLoadingScreen()
+                    console.error('Error sending message:', error);
+                    alert('Failed to send message =(');
+                }
+                window.hideLoadingScreen()
+            };
+
+            let messages = (JSON.parse(await api({
+                "userId": `${userId}`,
+                "token": `${token}`,
+                "roomId": `${currentRoomId}`
+            }, auth, "getMessages")))['messages'];
+
+            for (const message of messages) {
+                let user;
+                if (!user_cache[message.user]) {
+                    try {
+                        user = JSON.parse(await api({
+                            "userId": `${userId}`,
+                            "token": `${token}`,
+                            "data": `${message.user}`,
+                            "mode": 'fromuid'
+                        }, auth, "getUser"));
+                        user_cache[message.user] = user;
+                    } catch (error) {
+                        console.log("userGetError:", error);
+                        continue;
+                    }
+                } else {
+                    user = user_cache[message.user];
+                }
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+
+                const userInfoDiv = document.createElement('div');
+                userInfoDiv.className = 'user-info';
+
+                if (!pfp_cache[message.user]) {
+                    try {
+                        const { data, error } = await supabaseClient.storage
+                            .from("profilePictures")
+                            .createSignedUrl(user.pfp, 60);
+                        if (!error) {
+                            const pfp = document.createElement('img');
+                            pfp_cache[message.user] = data.signedUrl;
+                            pfp.src = pfp_cache[message.user];
+                            userInfoDiv.appendChild(pfp);
+                        }
+                    } catch (error) {
+                        const pfp = document.createElement('img');
+                        pfp.src = '../UI/account-placeholder.svg';
+                        userInfoDiv.appendChild(pfp);
+                        console.error("Error fetching profile picture:", error);
+                    }
+                } else {
+                    const pfp = document.createElement('img');
+                    pfp.src = pfp_cache[message.user];
+                    userInfoDiv.appendChild(pfp);
+                }
+
+                const username = document.createElement('h2');
+                username.textContent = user.username;
+                username.style.color = user.admin
+                    ? "var(--color-uninstall)"
+                    : "var(--text-color1)";
+                userInfoDiv.appendChild(username);
+
+                messageDiv.appendChild(userInfoDiv);
+
+                const body = document.createElement('p');
+                body.textContent = message.text;
+                messageDiv.appendChild(body);
+
+                bufferDiv.appendChild(messageDiv);
+            }
+            chatDiv.replaceChildren(...bufferDiv.children);
+        }
+        if (currentRoomId) {
+            await loadMessages()
+            requestAnimationFrame(() => {
+                document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
+            });
+            let roomChannel = supabaseClient
+                .channel('messages')
+                .on(
+                    'postgres_changes',
+                    {
+                        event: '*',
+                        schema: 'public',
+                        table: 'rooms',
+                        filter: `id=eq.${currentRoomId}`
+                    },
+                    async (payload) => {
+                        try {
+                            await loadMessages();
+                            console.log('Room refreshed');
+                        } catch (error) {
+                            console.error('Error refreshing room:', error);
+                        }
+                    }
+                )
+                .subscribe((status) => {
+                    console.log('Room subscription status:', status);
+                });
+        }
+        loadRooms();
+        setInterval(loadRooms, 7000)
+    </script>
+</body>

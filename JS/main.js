@@ -1,6 +1,7 @@
 //check for if the page is account bypassed
 const IsUserBypass = checkForTag("acc-bypass");
 const AdminReqConBypass = checkForTag("con-bypass");
+const AdminReq = checkForTag("admin-req");
 const LoadingScreen = checkForTag("loading");
 const ThemeBypass = checkForTag("theme-bypass");
 
@@ -22,8 +23,7 @@ if (!ThemeBypass) {
 				document.documentElement.setAttribute('data-theme', settings['theme']);
 			}
 		});
-		
-	}	
+	}
 }
 
 //fix for different web environments (local dev/github pages)
@@ -45,51 +45,53 @@ if (LoadingScreen) {
 }
 
 function addLoadingScreen() {
-	if (document.getElementsByClassName("overlay").length == 0) {
+	if (document.getElementsByClassName("loading-overlay").length == 0) {
 		const style = document.createElement("style");
 		style.innerHTML = `
-            .overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 9999;
-                pointer-events: all;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                visibility: hidden;
-            }
-        `;
+		.loading-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 9999;
+		pointer-events: all;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		visibility: hidden;
+		}
+	`;
 		document.head.appendChild(style);
 
 		const overlay = document.createElement("div");
-		overlay.className = "overlay";
+		overlay.className = "loading-overlay";
 		overlay.innerHTML = `
-            <img src="${window.prefix != "/" ? window.prefix : ""
-			}/UI/loading.svg" style="width: 50%; height: 50%" />
-            <h1 style="font-size: xxx-large; color: var(--color-text-light)">Please wait...</h1>
-        `;
+		<img src="${window.prefix != "/" ? window.prefix : ""}/UI/loading.svg" style="width: 50%; height: 50%" />
+		<h1 style="font-size: xxx-large; color: var(--color-text-light)">Please wait...</h1>
+	`;
 
 		document.body.appendChild(overlay);
 
 		window.showLoadingScreen = function () {
-			document.getElementsByClassName("overlay")[0].style.visibility =
-				"visible";
+			document.querySelector(".loading-overlay").style.visibility = "visible";
 		};
 
 		window.hideLoadingScreen = function () {
-			document.getElementsByClassName("overlay")[0].style.visibility = "hidden";
+			document.querySelector(".loading-overlay").style.visibility = "hidden";
 		};
 	}
 }
 
+
 //check for account
 async function checkAcc() {
 	let user = await FDB("profiles");
+	if (AdminReq && !user.admin) {
+		window.location.href = window.prefix + "/404.html";
+	}
 
 	if (user) {
 		if (user[0].banned) {
@@ -142,8 +144,8 @@ document.addEventListener("keydown", async function (event) {
 		if (user && user[0] && user[0].admin === false && !AdminReqConBypass) {
 			return;
 		}
-		let input = prompt('settings',JSON.stringify(settings));
-		localStorage.setItem('settings',input);
+		let input = prompt('settings', JSON.stringify(settings));
+		localStorage.setItem('settings', input);
 		window.location.reload();
 	}
 });
