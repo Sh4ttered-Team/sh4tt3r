@@ -89,7 +89,7 @@ function addLoadingScreen() {
 //check for account
 async function checkAcc() {
 	let user = await FDB("profiles");
-	if (AdminReq && !user.admin) {
+	if (AdminReq && !user[0].admin) {
 		window.location.href = window.prefix + "/404.html";
 	}
 
@@ -174,3 +174,4 @@ function cloak(url, relative_path = false) {
 	cloak.document.write(`<iframe src='${url}' frameBorder='0' style='width: 100vw; height: 100vh;' />`);
 	window.location.replace("about:blank");
 }
+await loadConsole();

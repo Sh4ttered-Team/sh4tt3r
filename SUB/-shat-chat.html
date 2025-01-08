@@ -15,6 +15,7 @@
     <script src="../JS/main.js" type="module"></script>
 
     <loading></loading>
+    <admin-req></admin-req>
 
     <style>
         html {
@@ -50,17 +51,10 @@
         </div>
         <div class="chat_rooms"></div>
         <div id="overlay" class="overlay">
-            <div class="overlay-content">
-                <h2>Join Private Room</h2>
-                <div class="join">
-                    <input id="name" placeholder="Room name">
-                    <input id="password" placeholder="Password">
-                    <button id="joinButton">Join</button>
-                </div>
-            </div>
         </div>
     </div>
     <script type="module">
+        window.showLoadingScreen()
         import { api } from "../JS/api.js"
         const user = JSON.parse(localStorage.getItem("sb-fffwukshwgrcdyqmvahg-auth-token"))
         const userId = user.user.id
@@ -68,57 +62,117 @@
         const auth = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmZnd1a3Nod2dyY2R5cW12YWhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEzOTkxMjAsImV4cCI6MjA0Njk3NTEyMH0.MsMeFMkrJCeJzRFWMZXM-CZu8gwaScV7feentsgMQvI'
         const params = new URLSearchParams(window.location.search);
         const currentRoomId = params.get("room");
-        document.querySelector("#joinButton").onclick = async () => {
-            const name = document.querySelector("#name").value;
-            const password = document.querySelector("#password").value;
-            if (!name) {
-                alert("Please enter a room name");
-                return;
-            }
-            try {
-                window.showLoadingScreen()
-                const Idresponse = await api({
-                    "userId": `${userId}`,
-                    "token": `${token}`,
-                    "mode": "fromname",
-                    "data": `${name}`
-                }, auth, "getRoom");
-                const id = (JSON.parse(Idresponse))["roomId"];
-                const response = await api({
-                    "userId": `${userId}`,
-                    "token": `${token}`,
-                    "roomId": `${id}`,
-                    "password": `${password}`
-                }, auth, "joinRoom");
-                const state = JSON.parse(response);
-
-                switch (state.message) {
-                    case "Room not found":
-                        alert("Room not found");
-                        break;
-                    case "Room is full":
-                        alert("Room is full");
-                        break;
-                    case "User already in room":
-                        alert("You are already in this room");
-                        break;
-                    case "User joined room":
-                        window.location.href = `?room=${id}`;
-                        break;
-                    case "Invalid password":
-                        alert("Room not found");
-                        break;
-                    default:
-                        alert("An unknown error occured! =(");
-                        break;
+        let clientUser = {};
+        try {
+            clientUser = JSON.parse(await api({
+                "userId": `${userId}`,
+                "token": `${token}`,
+                "data": `${userId}`,
+                "mode": 'fromuid'
+            }, auth, "getUser"));
+        } catch (error) {
+            console.error("userGetError:", error);
+        }
+        document.addEventListener('click', async (event) => {
+            if (event.target && event.target.id === 'joinButton') {
+                const name = document.querySelector("#name").value;
+                const password = document.querySelector("#password").value;
+                if (!name) {
+                    alert("Please enter a room name");
+                    return;
                 }
-                window.hideLoadingScreen()
-            } catch (error) {
-                window.hideLoadingScreen()
-                console.error("Error joining room:", error);
-                alert("Error joining room =(");
+                try {
+                    window.showLoadingScreen()
+                    const Idresponse = await api({
+                        "userId": `${userId}`,
+                        "token": `${token}`,
+                        "mode": "fromname",
+                        "data": `${name}`
+                    }, auth, "getRoom");
+                    const id = (JSON.parse(Idresponse))["roomId"];
+                    const response = await api({
+                        "userId": `${userId}`,
+                        "token": `${token}`,
+                        "roomId": `${id}`,
+                        "password": `${password}`
+                    }, auth, "joinRoom");
+                    const state = JSON.parse(response);
+
+                    switch (state.message) {
+                        case "Room not found":
+                            alert("Room not found");
+                            break;
+                        case "Room is full":
+                            alert("Room is full");
+                            break;
+                        case "User already in room":
+                            alert("You are already in this room");
+                            break;
+                        case "User joined room":
+                            window.location.href = `?room=${id}`;
+                            break;
+                        case "Invalid password":
+                            alert("Room not found");
+                            break;
+                        default:
+                            alert("An unknown error occured! =(");
+                            break;
+                    }
+                    window.hideLoadingScreen()
+                } catch (error) {
+                    window.hideLoadingScreen()
+                    console.error("Error joining room:", error);
+                    alert("Error joining room =(");
+                }
             }
-        };
+            else if (event.target && event.target.id === 'createSubmit') {
+                event.preventDefault()
+                const name = document.querySelector("#createName").value;
+                const password = document.querySelector("#createPassword").value;
+                const isPrivate = document.querySelector("#createPrivate").checked;
+                const maxUsers = document.querySelector("#createMaxUsers").value;
+                if (!name) {
+                    alert('A room name is required')
+                    return
+                }
+
+                try {
+                    window.showLoadingScreen();
+                    const response = await api({
+                        "userId": `${userId}`,
+                        "token": `${token}`,
+                        "roomName": `${name}`,
+                        "password": `${password}`,
+                        "isPrivate": `${isPrivate}`,
+                        "maxUsers": `${maxUsers}`
+                    }, auth, "createRoom");
+
+                    const state = JSON.parse(response);
+
+                    switch (state.message) {
+                        case "Room created":
+                            const Idresponse = await api({
+                                "userId": `${userId}`,
+                                "token": `${token}`,
+                                "mode": "fromname",
+                                "data": `${name}`
+                            }, auth, "getRoom");
+                            const id = (JSON.parse(Idresponse))["roomId"];
+                            console.log(id)
+                            window.location.href = `?room=${id}`;
+                            break;
+                        default:
+                            alert("An unknown error occurred, please try again(room name must be unique)");
+                            break;
+                    }
+                    window.hideLoadingScreen();
+                } catch (error) {
+                    window.hideLoadingScreen();
+                    console.error("Error creating room:", error);
+                    alert("Error creating room =(");
+                }
+            }
+        });
         async function loadRooms() {
             let bufferDiv = document.getElementById('bufferDiv');
             if (!bufferDiv) {
@@ -165,7 +219,6 @@
                                     alert("You are already in this room");
                                     break;
                                 case "User joined room":
-                                    alert("Joined room successfully");
                                     window.location.href = `?room=${room.id}`;
                                     break;
                                 default:
@@ -181,8 +234,21 @@
                     };
                     roomDiv.appendChild(joinButton);
                 } else if (users.includes(userId)) {
-                    roomDiv.onclick = () => {
-                        window.location.href = `?room=${room.id}`;
+                    if (room.id != currentRoomId) {
+                        roomDiv.onmouseover = () => {
+                            roomDiv.style.backgroundColor = 'var(--color-major)';
+                            roomDiv.style.cursor = 'pointer';
+                        };
+                        roomDiv.onmouseout = () => {
+                            roomDiv.style.backgroundColor = '';
+                            roomDiv.style.cursor = '';
+                        };
+                        roomDiv.onclick = () => {
+                            window.location.href = `?room=${room.id}`;
+                        }
+                    }
+                    else {
+                        roomDiv.style.backgroundColor = 'var(--hover-color1)';
                     }
                 }
                 allRooms.push({ isJoined: users.includes(userId), element: roomDiv });
@@ -198,8 +264,8 @@
             const firstUnjoinedIndex = allRooms.findIndex(room => !room.isJoined);
             if (firstUnjoinedIndex > 0) {
                 const availableSeparator = document.createElement('div');
-                availableSeparator.className = 'separator';
                 availableSeparator.innerText = 'Available Rooms';
+                availableSeparator.className = 'separator';
                 bufferDiv.insertBefore(availableSeparator, bufferDiv.children[firstUnjoinedIndex + 1]);
             }
             const joinButton = document.createElement('button');
@@ -209,31 +275,196 @@
             const createButton = document.createElement('button');
             createButton.className = 'create';
             createButton.innerText = 'Create room';
-            bufferDiv.appendChild(createButton);
+
             const overlay = document.getElementById('overlay');
             const closeOverlay = document.getElementById('closeOverlay');
-            joinButton.onclick = () => {
-                overlay.style.visibility = 'visible';
-                overlay.style.opacity = '1';
-            };
+
+            // Single window click handler
             window.onclick = (event) => {
                 if (event.target === overlay) {
                     hideOverlay();
                 }
             };
+
+            // Create button handler
+            createButton.onclick = () => {
+                overlay.innerHTML = `
+                    <div class="overlay-content">
+                        <h2>Create Room</h2>
+                        <form class="join">
+                            <input id="createName" placeholder="Room name" required>
+                            <input id="createPassword" placeholder="Password(optional)">
+                            <div class="createOptions">
+                            <h2 id="privateText">Private</h2>
+                            <input id="createPrivate" value="off" type="checkbox">
+                            <h2 id="maxUsersText">Max users</h2>
+                            <input id="createMaxUsers" value="10" type="number" min="2" max="50" required>
+                            </div>
+                            <button type="submit" id="createSubmit">Create</button>
+                        </form>
+                    </div>
+                `;
+                overlay.style.visibility = 'visible';
+                overlay.style.opacity = '1';
+            };
+
+            bufferDiv.appendChild(createButton);
+
+            // Join button handler
+            joinButton.onclick = () => {
+                overlay.innerHTML = `
+                    <div class="overlay-content">
+                        <h2>Join Private Room</h2>
+                        <div class="join">
+                            <input id="name" placeholder="Room name">
+                            <input id="password" placeholder="Password">
+                            <button id="joinButton">Join</button>
+                        </div>
+                    </div>
+                `;
+                overlay.style.visibility = 'visible';
+                overlay.style.opacity = '1';
+            };
+
+            // Single escape key handler
             window.addEventListener('keydown', (event) => {
                 if (event.key === "Escape") {
                     hideOverlay();
                 }
             });
+
             function hideOverlay() {
                 overlay.style.opacity = '0';
                 setTimeout(() => overlay.style.visibility = 'hidden', 300);
             }
             document.querySelector(".chat_rooms").replaceChildren(...bufferDiv.children);
+            window.hideLoadingScreen()
         }
+        async function deleteMessage(id) {
+            try {
+                window.showLoadingScreen()
+                const response = await api({
+                    "userId": `${userId}`,
+                    "token": `${token}`,
+                    "roomId": `${currentRoomId}`,
+                    "messageId": `${id}`,
+                }, auth, "deleteMessage");
+                const state = JSON.parse(response);
+
+                switch (state.message) {
+                    case "Room not found":
+                        alert("Room not found");
+                        break;
+                    case "you are not the owner of the message!":
+                        alert("you are not the owner of the message!");
+                        break;
+                    case "Message not found":
+                        alert("Message not found");
+                        break;
+                    case "Message deleted":
+                        waitForUpdateFlag = true;
+                        return
+                        break;
+                    default:
+                        alert("An unknown error occurred =(");
+                        break;
+                }
+            } catch (error) {
+                window.hideLoadingScreen();
+                console.error("Error deleting message:", error);
+                alert("Failed to delete message =(");
+            }
+        }
+        async function editMessage(id, text, content) {
+            try {
+                window.showLoadingScreen()
+                const response = await api({
+                    "userId": `${userId}`,
+                    "token": `${token}`,
+                    "roomId": `${currentRoomId}`,
+                    "messageId": `${id}`,
+                    "text": `${text}`,
+                    "content": `${content}`,
+                }, auth, "editMessage");
+                const state = JSON.parse(response);
+
+                switch (state.message) {
+                    case "Room not found":
+                        alert("Room not found");
+                        break;
+                    case "you are not the owner of the message!":
+                        alert("you are not the owner of the message!");
+                        break;
+                    case "Message not found":
+                        alert("Message not found");
+                        break;
+                    case "Message edited":
+                        waitForUpdateFlag = true;
+                        return
+                        break;
+                    default:
+                        alert("An unknown error occurred =(");
+                        break;
+                }
+            } catch (error) {
+                window.hideLoadingScreen();
+                console.error("Error editing message:", error);
+                alert("Failed to edit message =(");
+            }
+        }
+
+        async function report(data, report, mode) {
+            try {
+                window.showLoadingScreen()
+                const response = await api({
+                    "userId": `${userId}`,
+                    "token": `${token}`,
+                    "roomId": `${currentRoomId}`,
+                    "mode": `${mode}`,
+                    "data": `${data}`,
+                    "report": `${report}`,
+                }, auth, "report");
+                const state = JSON.parse(response);
+
+                switch (state.message) {
+                    case "Room not found":
+                        alert("Room not found");
+                        break;
+                    case "Report must not be empty!":
+                        alert("Report must not be empty!");
+                        break;
+                    case "Message not found":
+                        alert("Message not found");
+                        break;
+                    case "Reported":
+                        alert("Reported")
+                        return
+                        break;
+                    default:
+                        alert("An unknown error occurred =(");
+                        break;
+                }
+                window.hideLoadingScreen();
+            } catch (error) {
+                window.hideLoadingScreen();
+                console.error("Error reporting:", error);
+                alert("Failed to report =(");
+            }
+        }
+
         let pfp_cache = {};
         let user_cache = {};
+        let room_cache = {};
+        let waitForUpdateFlag = false;
+        let inputField;
+        let dropdown_cache;
+        let editstatus_cache;
+        let cancelButton_cache;
+        function escCancelEdit(event) {
+            if (event.key == 'Escape') {
+                cancelButton_cache.click();
+            }
+        }
         async function loadMessages() {
             let chatDiv = document.querySelector('.chat');
             if (!chatDiv) {
@@ -245,7 +476,7 @@
             const bufferDiv = document.createElement('div');
 
             const inputDiv = document.createElement('div');
-            const inputField = document.createElement('input');
+            inputField = document.createElement('input');
             inputField.type = 'text';
             inputField.placeholder = 'Type your message...';
             inputField.className = 'message-input';
@@ -258,6 +489,11 @@
             inputDiv.appendChild(sendButton);
 
             bufferDiv.appendChild(inputDiv);
+            inputField.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
 
             sendButton.onclick = async () => {
                 const messageText = inputField.value;
@@ -279,7 +515,7 @@
                     console.error('Error sending message:', error);
                     alert('Failed to send message =(');
                 }
-                window.hideLoadingScreen()
+                waitForUpdateFlag = true;
             };
 
             let messages = (JSON.parse(await api({
@@ -317,7 +553,7 @@
                     try {
                         const { data, error } = await supabaseClient.storage
                             .from("profilePictures")
-                            .createSignedUrl(user.pfp, 60);
+                            .createSignedUrl(user.pfp, 3600);
                         if (!error) {
                             const pfp = document.createElement('img');
                             pfp_cache[message.user] = data.signedUrl;
@@ -335,6 +571,19 @@
                     pfp.src = pfp_cache[message.user];
                     userInfoDiv.appendChild(pfp);
                 }
+                if (!room_cache) {
+                    try {
+                        const { data, error } = await api({
+                            "userId": `${userId}`,
+                            "token": `${token}`,
+                            "mode": "fromid",
+                            "data": `${currentRoomId}`
+                        }, auth, "getRoom");
+                        room_cache = JSON.parse(data);
+                    } catch (error) {
+                        console.error("Error fetching roomData:", error);
+                    }
+                }
 
                 const username = document.createElement('h2');
                 username.textContent = user.username;
@@ -342,22 +591,229 @@
                     ? "var(--color-uninstall)"
                     : "var(--text-color1)";
                 userInfoDiv.appendChild(username);
+                if (clientUser.admin || userId == message.user || userId == room_cache.roomOwner) {
+                    const menuButton = document.createElement('button');
+                    menuButton.className = 'menu-button';
+                    menuButton.innerHTML = '&#x22EE;'; // vertical dots (⋮)
 
+                    menuButton.onclick = (event) => {
+                        event.stopPropagation();
+                        closeAllDropdowns();
+                        toggleDropdown(menuButton, message, inputField, sendButton, messageDiv);
+                    };
+
+                    userInfoDiv.appendChild(menuButton);
+
+                    function toggleDropdown(button, message, inputField, sendButton, messageDiv) {
+                        console.log(dropdown_cache)
+                        if (dropdown_cache) {
+                            dropdown_cache.remove();
+                            dropdown_cache = null;
+                        } else {
+                            let dropdown = document.createElement('div');
+                            dropdown.className = 'dropdown-content';
+
+                            const deleteButton = document.createElement('button');
+                            deleteButton.innerText = 'Delete';
+                            deleteButton.onclick = () => {
+                                dropdown_cache.remove();
+                                dropdown_cache = null;
+                                overlay.innerHTML = `
+                                    <div class="overlay-content">
+                                        <h2>Are you sure you want to delete this message?</h2>
+                                        <button id="confirmDelete">Yes</button>
+                                        <button id="cancelDelete">No</button>
+                                    </div>
+                                `;
+                                overlay.style.visibility = 'visible';
+                                overlay.style.opacity = '1';
+
+                                document.getElementById('confirmDelete').onclick = () => {
+                                    deleteMessage(message.id);
+                                    if (cancelButton_cache) {
+                                        cancelButton_cache.click();
+                                    }
+                                    hideOverlay();
+                                };
+
+                                document.getElementById('cancelDelete').onclick = hideOverlay;
+
+                                function hideOverlay() {
+                                    overlay.style.opacity = '0';
+                                    overlay.style.visibility = 'hidden';
+                                }
+                            };
+                            dropdown.appendChild(deleteButton);
+                            if (!editstatus_cache) {
+                                const editButton = document.createElement('button');
+                                editButton.innerText = 'Edit';
+                                editButton.onclick = () => {
+                                    dropdown_cache.remove();
+                                    dropdown_cache = null;
+                                    messageDiv.style.backgroundColor = 'var(--hover-color1)';
+                                    var doc = new DOMParser().parseFromString(message.text, 'text/html');
+                                    const originalText = doc.documentElement.textContent;
+                                    inputField.value = originalText;
+                                    inputField.focus();
+
+                                    let editingStatusDiv = document.createElement('div');
+                                    editingStatusDiv.className = 'editing-status';
+                                    editstatus_cache = editingStatusDiv;
+
+                                    const statusText = document.createElement('h2');
+                                    statusText.innerText = 'Editing message...';
+                                    editingStatusDiv.appendChild(statusText);
+                                    sendButton.onclick = async () => {
+                                        if (inputField.value != originalText) {
+                                            editMessage(message.id, inputField.value, "");
+                                        }
+                                        cancelButton.click();
+                                    };
+                                    inputField.addEventListener('keydown', (event) => escCancelEdit(event, messageDiv));
+                                    const cancelButton = document.createElement('button');
+                                    cancelButton.innerText = 'x';
+                                    cancelButton.className = 'cancelEdit';
+                                    cancelButton.onclick = () => {
+                                        inputField.value = '';
+                                        messageDiv.style.backgroundColor = '';
+                                        editingStatusDiv.remove();
+                                        editstatus_cache = null;
+                                        cancelButton_cache = null;
+                                        sendButton.onclick = async () => {
+                                            const messageText = inputField.value;
+                                            if (messageText.trim() === '') {
+                                                alert('Please enter a message');
+                                                return;
+                                            }
+                                            try {
+                                                window.showLoadingScreen()
+                                                await api({
+                                                    "userId": `${userId}`,
+                                                    "token": `${token}`,
+                                                    "roomId": `${currentRoomId}`,
+                                                    "text": `${messageText}`
+                                                }, auth, "sendMessage");
+                                                inputField.value = '';
+                                            } catch (error) {
+                                                window.hideLoadingScreen()
+                                                console.error('Error sending message:', error);
+                                                alert('Failed to send message =(');
+                                            }
+                                            waitForUpdateFlag = true;
+                                        };
+                                        window.removeEventListener('keydown', escCancelEdit);
+                                    };
+                                    cancelButton_cache = cancelButton;
+                                    editingStatusDiv.appendChild(cancelButton);
+
+                                    document.body.appendChild(editingStatusDiv);
+                                };
+                                dropdown.appendChild(editButton);
+                            }
+
+                            const reportButton = document.createElement('button');
+                            reportButton.innerText = 'Report Message';
+                            reportButton.onclick = () => {
+                                dropdown_cache.remove();
+                                dropdown_cache = null;
+                                overlay.innerHTML = `
+                                    <div class="overlay-content">
+                                        <h2>Report Message</h2>
+                                        <textarea id="reportReason" placeholder="Reason for reporting"></textarea>
+                                        <button id="submitReport">Submit</button>
+                                        <button id="cancelReport">Cancel</button>
+                                    </div>
+                                `;
+                                overlay.style.visibility = 'visible';
+                                overlay.style.opacity = '1';
+
+                                document.getElementById('submitReport').onclick = () => {
+                                    const reason = document.getElementById('reportReason').value;
+                                    if (reason.trim() === '') {
+                                        alert('Please provide a reason for reporting');
+                                        return;
+                                    }
+                                    report(message.id, reason, "message");
+                                    hideOverlay();
+                                };
+
+                                document.getElementById('cancelReport').onclick = hideOverlay;
+
+                                function hideOverlay() {
+                                    overlay.style.opacity = '0';
+                                    setTimeout(() => overlay.style.visibility = 'hidden', 300);
+                                }
+                            };
+                            dropdown.appendChild(reportButton);
+                            const reportUserButton = document.createElement('button');
+                            reportUserButton.innerText = 'Report User';
+                            reportUserButton.onclick = () => {
+                                dropdown_cache.remove();
+                                dropdown_cache = null;
+                                overlay.innerHTML = `
+                                    <div class="overlay-content">
+                                        <h2>Report User</h2>
+                                        <textarea id="reportUserReason" placeholder="Reason for reporting"></textarea>
+                                        <button id="submitUserReport">Submit</button>
+                                        <button id="cancelUserReport">Cancel</button>
+                                    </div>
+                                `;
+                                overlay.style.visibility = 'visible';
+                                overlay.style.opacity = '1';
+
+                                document.getElementById('submitUserReport').onclick = () => {
+                                    const reason = document.getElementById('reportUserReason').value;
+                                    if (reason.trim() === '') {
+                                        alert('Please provide a reason for reporting');
+                                        return;
+                                    }
+                                    report(message.user, reason, "user");
+                                    hideOverlay();
+                                };
+
+                                document.getElementById('cancelUserReport').onclick = hideOverlay;
+
+                                function hideOverlay() {
+                                    overlay.style.opacity = '0';
+                                    setTimeout(() => overlay.style.visibility = 'hidden', 300);
+                                }
+                            };
+                            dropdown.appendChild(reportUserButton);
+
+                            document.querySelector('.home_menu').appendChild(dropdown);
+                            const buttonRect = button.getBoundingClientRect();
+                            dropdown.style.position = 'absolute';
+                            dropdown.style.top = `${buttonRect.bottom}px`;
+                            dropdown.style.left = `${buttonRect.left}px`;
+
+                            dropdown_cache = dropdown;
+                        }
+                    }
+
+                    document.addEventListener('click', closeAllDropdowns);
+
+                    function closeAllDropdowns() {
+                        document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+                            dropdown.remove();
+                        });
+                    }
+                }
                 messageDiv.appendChild(userInfoDiv);
 
                 const body = document.createElement('p');
-                body.textContent = message.text;
+                var doc = new DOMParser().parseFromString(message.text, 'text/html');
+                body.textContent = doc.documentElement.textContent;
                 messageDiv.appendChild(body);
 
                 bufferDiv.appendChild(messageDiv);
             }
             chatDiv.replaceChildren(...bufferDiv.children);
-        }
-        if (currentRoomId) {
-            await loadMessages()
             requestAnimationFrame(() => {
                 document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
             });
+        }
+        if (currentRoomId) {
+            await loadMessages()
             let roomChannel = supabaseClient
                 .channel('messages')
                 .on(
@@ -371,6 +827,11 @@
                     async (payload) => {
                         try {
                             await loadMessages();
+                            if (waitForUpdateFlag) {
+                                window.hideLoadingScreen();
+                                inputField.focus();
+                                waitForUpdateFlag = false;
+                            }
                             console.log('Room refreshed');
                         } catch (error) {
                             console.error('Error refreshing room:', error);
@@ -385,3 +846,5 @@
         setInterval(loadRooms, 7000)
     </script>
 </body>
+
+</html>
