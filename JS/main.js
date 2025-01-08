@@ -174,4 +174,3 @@ function cloak(url, relative_path = false) {
 	cloak.document.write(`<iframe src='${url}' frameBorder='0' style='width: 100vw; height: 100vh;' />`);
 	window.location.replace("about:blank");
 }
-await loadConsole();
