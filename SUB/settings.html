@@ -26,11 +26,16 @@
     <div class="settings-div">
     </div>
 
-    <script>
+    <script type="module">
         const onload_settings = JSON.parse(localStorage.getItem('settings'));
 
-        const settings = [{ 'name': 'Auto Cloak', 'key': 'cloak', 'desc': 'Automatically opens the page in cloak', 'type': 'toggle' }];
-        const settingsDiv = (document.getElementsByClassName('settings-div'))[0];
+        let settings = [{ 'name': 'Auto Cloak', 'key': 'cloak', 'desc': 'Automatically opens the page in cloak', 'type': 'toggle' }];
+        const admin_settings = [{ 'name': 'Auto Console', 'key': 'console', 'desc': 'Automatically opens console', 'type': 'toggle' }];
+        const user = await FDB("profiles");
+        if (user[0].admin) {
+            settings.push(...admin_settings);
+        }
+        const settingsDiv = document.querySelector('.settings-div');
         settings.forEach(setting => {
             let settingDiv = document.createElement('div');
             settingDiv.className = 'setting';
