@@ -584,9 +584,11 @@
                         }
                     };
                     if (isUsersDivVisible) {
+                        hideButton.remove();
                         usersDiv.insertBefore(hideButton, usersDiv.firstChild);
                     }
                     else {
+                        hideButton.remove();
                         hideButton.classList.add('hide-button-outside');
                         document.querySelector('.profile').appendChild(hideButton);
                     }
