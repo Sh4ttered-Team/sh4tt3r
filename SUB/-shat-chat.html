@@ -1020,14 +1020,13 @@
                 }
             });
 
-            channel.track({
-                user: userId,
-                status: 'online',
-            });
-
             let syncCounter = 0;
 
             channel.on('presence', { event: 'sync' }, () => {
+                channel.track({
+                user: userId,
+                status: 'online',
+            });
                 if (syncCounter === 1) {
                     const currentPresence = channel.presenceState();
                     updateOnlineUsers(currentPresence);
