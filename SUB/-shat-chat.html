@@ -1033,7 +1033,7 @@ channel.track({
 let syncCounter = 0;
 
 channel.on('presence', { event: 'sync' }, () => {
-    if(syncCounter == 2) {
+    if(syncCounter >= 1) {
     const currentPresence = channel.presenceState();
     updateOnlineUsers(currentPresence);
     }else {
@@ -1079,7 +1079,6 @@ async function reconnectChannel() {
 }
         }
         loadRooms();
-        loadUsers();
         setInterval(loadRooms, 7000)
     </script>
 </body>
