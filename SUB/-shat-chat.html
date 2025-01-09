@@ -1053,6 +1053,9 @@ function subscribeToChannel() {
 function updateOnlineUsers(presenceState) {
     const users = Object.values(presenceState).flatMap(userPresences => userPresences.map(p => p.user));
     console.log('Online users:', users);
+    if(!users.indcludes(userId)) {
+        users.append(userId)
+    }
     user_statuses = users;
     loadUsers();
 }
@@ -1065,7 +1068,7 @@ async function reconnectChannel() {
                 presence: { key: 'users' }
             }
         });
-        subscribeToChannel(); // Resubscribe to the new channel
+        subscribeToChannel();
     } catch (error) {
         console.error('Failed to reconnect:', error);
     }
