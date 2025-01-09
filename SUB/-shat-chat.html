@@ -1008,7 +1008,7 @@
                 .subscribe((status) => {
                     console.log('Room subscription status:', status);
                 });
-            const channel = supabaseClient.channel(`room-${currentRoomId}`, {
+            let channel = supabaseClient.channel(`room-${currentRoomId}`, {
     config: {
         presence: {
             key: 'users',
@@ -1016,40 +1016,39 @@
     },
 });
 
-channel.subscribe((status) => {
-    if (status === 'SUBSCRIBED') {
-        console.log('Successfully subscribed to room-' + currentRoomId, 'channel.');
-    } else if (status === 'CLOSED') {
-        console.warn('Channel closed. Attempting to reconnect...');
-        reconnectChannel();
-    } else if (status === 'ERROR') {
-        console.error('An error occurred with the channel subscription.');
-    }
-});
+subscribeToChannel();
 
-channel.track({
-    user: userId,
-    status: 'online',
-});
+function subscribeToChannel() {
+    channel.subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+            console.log('Successfully subscribed to room-' + currentRoomId, 'channel.');
+            updateOnlineUsers(channel.presenceState());
+        } else if (status === 'CLOSED') {
+            console.warn('Channel closed. Attempting to reconnect...');
+            reconnectChannel();
+        } else if (status === 'ERROR') {
+            console.error('An error occurred with the channel subscription.');
+        }
+    });
 
-let syncCounter = 0;
+    channel.track({
+        user: userId,
+        status: 'online',
+    });
 
-channel.on('presence', { event: 'sync' }, () => {
-    if(syncCounter >= 1) {
-    const currentPresence = channel.presenceState();
-    updateOnlineUsers(currentPresence);
-    }else {
-    syncCounter++;
-    }
-});
+    channel.on('presence', { event: 'sync' }, () => {
+        const currentPresence = channel.presenceState();
+        updateOnlineUsers(currentPresence);
+    });
 
-channel.on('presence', { event: 'join' }, ({ key, currentPresences }) => {
-    console.log(`${key} joined`, currentPresences);
-});
+    channel.on('presence', { event: 'join' }, ({ key, currentPresences }) => {
+        console.log(`${key} joined`, currentPresences);
+    });
 
-channel.on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
-    console.log(`${key} left`, leftPresences);
-});
+    channel.on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
+        console.log(`${key} left`, leftPresences);
+    });
+}
 
 function updateOnlineUsers(presenceState) {
     const users = Object.values(presenceState).flatMap(userPresences => userPresences.map(p => p.user));
@@ -1061,26 +1060,17 @@ function updateOnlineUsers(presenceState) {
 async function reconnectChannel() {
     try {
         await channel.unsubscribe();
-        const newChannel = supabaseClient.channel(`room-${currentRoomId}`, {
+        channel = supabaseClient.channel(`room-${currentRoomId}`, {
             config: {
                 presence: { key: 'users' }
             }
         });
-        newChannel.subscribe((status) => {
-            if (status === 'SUBSCRIBED') {
-                console.log('Reconnected to the room.');
-            }
-        });
-        newChannel.track({
-            user: userId,
-            status: 'online',
-        });
-        const currentPresence = newChannel.presenceState();
-        updateOnlineUsers(currentPresence);
+        subscribeToChannel(); // Resubscribe to the new channel
     } catch (error) {
         console.error('Failed to reconnect:', error);
     }
 }
+
         }
         loadRooms();
         setInterval(loadRooms, 7000)
