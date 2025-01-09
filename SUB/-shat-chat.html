@@ -1053,6 +1053,7 @@ function subscribeToChannel() {
 function updateOnlineUsers(presenceState) {
     const users = Object.values(presenceState).flatMap(userPresences => userPresences.map(p => p.user));
     console.log('Online users:', users);
+    console.log(presenceState)
     if(!users.includes(userId)) {
         users.push(userId)
     }
