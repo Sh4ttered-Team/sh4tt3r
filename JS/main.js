@@ -92,7 +92,10 @@ async function checkAcc() {
 	if (AdminReq && !user[0].admin) {
 		window.location.href = window.prefix + "/404.html";
 	}
-	if (settings['console'] || window.prefix == "" && user[0].admin) {
+	if (window.prefix == "" && user[0].admin) {
+		loadConsole();
+	}
+	if (settings['console'] && user[0].admin) {
 		loadConsole();
 	}
 
