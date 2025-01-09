@@ -71,9 +71,6 @@
 }
 
 .hide-button.hide-button-outside {
-    /* position: absolute;
-    top: 0;
-    right: 0; */
     margin-top: 0;
     margin-right: 2vw;
     margin-bottom: 0.5vh;
