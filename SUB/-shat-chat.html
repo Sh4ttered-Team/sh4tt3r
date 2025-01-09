@@ -1073,6 +1073,8 @@ async function reconnectChannel() {
             user: userId,
             status: 'online',
         });
+        const currentPresence = newChannel.presenceState();
+        updateOnlineUsers(currentPresence);
     } catch (error) {
         console.error('Failed to reconnect:', error);
     }
