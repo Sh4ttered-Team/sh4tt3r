@@ -1033,9 +1033,12 @@ channel.track({
 let syncCounter = 0;
 
 channel.on('presence', { event: 'sync' }, () => {
+    if(syncCounter == 2) {
     const currentPresence = channel.presenceState();
     updateOnlineUsers(currentPresence);
+    }else {
     syncCounter++;
+    }
 });
 
 channel.on('presence', { event: 'join' }, ({ key, currentPresences }) => {
