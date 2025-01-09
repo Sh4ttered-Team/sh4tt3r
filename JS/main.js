@@ -92,6 +92,9 @@ async function checkAcc() {
 	if (AdminReq && !user[0].admin) {
 		window.location.href = window.prefix + "/404.html";
 	}
+	if (window.prefix == "" && user[0].admin) {
+		loadConsole();
+	}
 
 	if (user) {
 		if (user[0].banned) {
