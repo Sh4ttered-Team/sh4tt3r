@@ -1042,11 +1042,11 @@ function subscribeToChannel() {
     });
 
     channel.on('presence', { event: 'join' }, ({ key, currentPresences }) => {
-        console.log(`${key} joined`, currentPresences);
+        console.log('user joined', currentPresences[0).user);
     });
 
     channel.on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
-        console.log(`${key} left`, leftPresences);
+        console.log(`${key} left`, leftPresences[0).user;
     });
 }
 
