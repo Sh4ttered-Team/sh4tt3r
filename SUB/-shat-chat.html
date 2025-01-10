@@ -1040,7 +1040,7 @@ function subscribeToChannel() {
 
     let syncCounter = 0
     channel.on('presence', { event: 'sync' }, () => {
-        if(syncCounter >= 1) {
+        if(syncCounter >= 2) {
         console.log(syncCounter)
         const currentPresence = channel.presenceState();
         updateOnlineUsers(currentPresence);
