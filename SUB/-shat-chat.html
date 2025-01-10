@@ -554,11 +554,11 @@
                     bufferDiv.appendChild(userDiv);
                 }
             }
+            hideButton.remove();
             const isUsersDivVisible = usersDiv.style.right === '0px';
             if (bufferDiv.children.length > 0) {
                 usersDiv.replaceChildren(...bufferDiv.children);
                 if (!hideButton) {
-                    hideButton.remove();
                     hideButton = document.createElement('button');
                     hideButton.className = 'hide-button';
                     hideButton.textContent = isUsersDivVisible ? '▶' : '◀';
@@ -1051,8 +1051,6 @@ channel.on('presence', { event: 'sync' }, () => {
         syncCounter = 0;
     }
 });
-
-
 
     channel.on('presence', { event: 'join' }, ({ key, currentPresences }) => {
         console.log(`${key} joined`, currentPresences);
