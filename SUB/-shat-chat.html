@@ -1037,22 +1037,9 @@ function subscribeToChannel() {
         }
     });
 
-    let syncCounter = 0;
-    let syncOffset = 1;
-
 channel.on('presence', { event: 'sync' }, () => {
-    console.log(`Before increment: counter = ${syncCounter}, offset = ${syncOffset}`);
-    syncCounter++;
-    console.log(`After increment: counter = ${syncCounter}, offset = ${syncOffset}`);
-
-    if (syncCounter === syncOffset) {
-        syncOffset = 5;
-        console.log(`Sync offset updated to: ${syncOffset}`);
-        console.log(`Sync event reached: counter = ${syncCounter}, offset = ${syncOffset}`);
         const currentPresence = channel.presenceState();
         updateOnlineUsers(currentPresence, 'presence sync event');
-        syncCounter = 0;
-    }
 });
 
     channel.on('presence', { event: 'join' }, ({ key, currentPresences }) => {
