@@ -1039,7 +1039,7 @@ function subscribeToChannel() {
     });
 
     let syncCounter = 0;
-    let syncOffset = 3;
+    let syncOffset = 2;
 
 channel.on('presence', { event: 'sync' }, () => {
     console.log(`Before increment: counter = ${syncCounter}, offset = ${syncOffset}`);
