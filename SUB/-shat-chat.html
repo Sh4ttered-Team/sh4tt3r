@@ -931,6 +931,24 @@ function positionDropdown(button, dropdown) {
     dropdown.style.top = `${buttonRect.bottom}px`;
     dropdown.style.left = `${buttonRect.left}px`;
 }
+        async function fetchUser(userId) {
+    if (!user_cache[userId]) {
+        try {
+            let user = JSON.parse(await api({
+                "userId": `${userId}`,
+                "token": `${token}`,
+                "data": `${userId}`,
+                "mode": 'fromuid'
+            }, auth, "getUser"));
+            user_cache[userId] = user;
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            return { username: "Unknown", admin: false };
+        }
+    }
+    return user_cache[userId];
+}
+
         if (currentRoomId) {
             await loadMessages()
             let roomChannel = supabaseClient
