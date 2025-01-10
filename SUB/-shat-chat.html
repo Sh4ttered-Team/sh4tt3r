@@ -482,131 +482,135 @@
             return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
         };
         async function loadUsers() {
-            let usersDiv = document.querySelector('.users');
-            let bufferDiv = document.createElement('div');
-            let hideButton = document.querySelector('.hideButton');
+    let usersDiv = document.querySelector('.users');
+    let bufferDiv = document.createElement('div');
+    let hideButton = document.querySelector('.hideButton');
 
-            const response = await api({
-                "userId": `${userId}`,
-                "token": `${token}`,
-                "data": `${currentRoomId}`,
-                "mode": 'fromid',
-            }, auth, "getRoom");
-            let room;
-            try {
-                room = JSON.parse(response);
-            } catch (error) {
-                console.error("Error parsing room data:", error);
-                return;
-            }
-            const users = room.roomUsers ? JSON.parse(room.roomUsers) : [];
-            for (const user_id of users) {
-                let user;
-                if (!user_cache[user_id]) {
-                    try {
-                        user = JSON.parse(await api({
-                            "userId": `${userId}`,
-                            "token": `${token}`,
-                            "data": `${user_id}`,
-                            "mode": 'fromuid'
-                        }, auth, "getUser"));
-                        user_cache[user_id] = user;
-                    } catch (error) {
-                        console.error("Error fetching user data:", error);
-                        return;
-                    }
-                } else {
-                    user = user_cache[user_id];
-                }
-                const userDiv = document.createElement('div');
-                userDiv.className = 'user';
-                const pfp = document.createElement('img');
-                if (!pfp_cache[user_id]) {
-                    try {
-                        const { data, error } = await supabaseClient.storage
-                            .from("profilePictures")
-                            .createSignedUrl(user.pfp, 3600);
-                        if (!error) {
-                            pfp_cache[user_id] = data.signedUrl;
-                        } else {
-                            pfp_cache[user_id] = '../UI/account-placeholder.svg';
-                        }
-                    } catch (error) {
-                        console.error("Error fetching profile picture:", error);
-                        pfp_cache[user_id] = '../UI/account-placeholder.svg';
-                    }
-                }
-                pfp.src = pfp_cache[user_id];
-                userDiv.appendChild(pfp);
-                const username = document.createElement('h2');
-                username.textContent = user.username;
-                username.style.color = user.admin
-                    ? "var(--color-uninstall)"
-                    : "var(--text-color1)";
-                userDiv.appendChild(username);
-                userDiv.style.filter = user_statuses.includes(user_id) ? 'none' : 'grayscale(40%) brightness(60%)';
-                if (user_id == userId) {
-                    userDiv.style.backgroundColor = 'var(--hover-color1)'
-                    bufferDiv.insertBefore(userDiv, bufferDiv.firstChild);
-                } else {
-                    const color = getComputedStyle(document.documentElement).getPropertyValue('--color-major-lesser');
-                    userDiv.style.backgroundColor = `${color}40`;
-                    bufferDiv.appendChild(userDiv);
-                }
-            }
-            const isUsersDivVisible = usersDiv.style.right === '0px';
-            if (bufferDiv.children.length > 0) {
-                usersDiv.replaceChildren(...bufferDiv.children);
-                if (!hideButton) {
-                    hideButton = document.createElement('button');
-                    hideButton.className = 'hide-button';
-                    hideButton.textContent = isUsersDivVisible ? '▶' : '◀';
-                    hideButton.onclick = () => {
-                        usersDiv.style.right = usersDiv.style.right === `0px` ? `-${window.getComputedStyle(usersDiv).width}` : '0';
-                        if (usersDiv.contains(hideButton)) {
-                            hideButton.remove();
-                            document.querySelector('.profile').appendChild(hideButton);
-                            hideButton.textContent = '◀'
-                            hideButton.classList.add('hide-button-outside');
-                            document.querySelector('.inputDiv').style.width = '90vw';
-                            document.querySelector('.chat').style.width = '79vw';
-                            document.querySelector('.send-button').style.borderRight = 'none';
-                            document.querySelector('.profile').style.right = `0`;
-                        } else {
-                            hideButton.remove();
-                            hideButton.textContent = '▶'
-                            usersDiv.insertBefore(hideButton, usersDiv.firstChild);
-                            hideButton.classList.remove('hide-button-outside');
-                            document.querySelector('.inputDiv').style.width = '73.7vw';
-                            document.querySelector('.chat').style.width = '62.7vw';
-                            document.querySelector('.send-button').style.borderRight = '4px solid var(--color-border)';
-                            document.querySelector('.profile').style.right = `-${window.getComputedStyle(document.querySelector('.profile')).width}`;
-                        }
-                    };
-                }
-                if (isUsersDivVisible) {
-                        hideButton.remove();
-                        usersDiv.insertBefore(hideButton, usersDiv.firstChild);
-                    }
-                    else {
-                        hideButton.remove();
-                        hideButton.classList.add('hide-button-outside');
-                        document.querySelector('.profile').appendChild(hideButton);
-                    }
-                if (!isUsersDivVisible) {
-                    usersDiv.style.right = `-${window.getComputedStyle(usersDiv).width}`;
-                    setTimeout(() => {
-                        usersDiv.style.visibility = 'visible';
-                    }, 300);
-                }
-                else {
-                    document.querySelector('.profile').style.right = `-${window.getComputedStyle(document.querySelector('.profile')).width}`;
-                }
-
-            } else {
-                console.warn('No users were loaded into bufferDiv.');
-            }
+    const response = await api({ "userId": userId, "token": token, "data": currentRoomId, "mode": 'fromid' }, auth, "getRoom");
+    let room;
+    try {
+        room = JSON.parse(response);
+    } catch (error) {
+        console.error("Error parsing room data:", error);
+        return;
+    }
+    
+    const users = room.roomUsers ? JSON.parse(room.roomUsers) : [];
+    for (const user_id of users) {
+        let user = user_cache[user_id] || await fetchUserData(user_id);
+        if (!user) continue;
+        
+        const userDiv = createUserDiv(user_id, user);
+        if (user_id === userId) {
+            bufferDiv.insertBefore(userDiv, bufferDiv.firstChild);
+        } else {
+            bufferDiv.appendChild(userDiv);
         }
+    }
+
+    if (bufferDiv.children.length > 0) {
+        usersDiv.replaceChildren(...bufferDiv.children);
+        manageHideButton(usersDiv);
+    } else {
+        console.warn('No users were loaded into bufferDiv.');
+    }
+}
+
+function manageHideButton(usersDiv) {
+    let hideButton = document.querySelector('.hide-button');
+    const isUsersDivVisible = usersDiv.style.right === '0px';
+
+    if (!hideButton) {
+        hideButton = document.createElement('button');
+        hideButton.className = 'hide-button';
+        hideButton.textContent = isUsersDivVisible ? '▶' : '◀';
+        attachHideButton(hideButton, usersDiv);
+    }
+
+    hideButton.onclick = () => {
+        const isVisible = usersDiv.style.right === '0px';
+        usersDiv.style.right = isVisible ? `-${window.getComputedStyle(usersDiv).width}` : '0';
+        toggleHideButtonPosition(hideButton, usersDiv, isVisible);
+    };
+}
+
+function attachHideButton(hideButton, usersDiv) {
+    hideButton.remove(); // Ensure no duplicates
+    hideButton.textContent = '◀';
+    hideButton.classList.add('hide-button-outside');
+    document.querySelector('.profile').appendChild(hideButton);
+}
+
+function toggleHideButtonPosition(hideButton, usersDiv, isVisible) {
+    hideButton.remove();
+    if (isVisible) {
+        hideButton.textContent = '▶';
+        usersDiv.insertBefore(hideButton, usersDiv.firstChild);
+        hideButton.classList.remove('hide-button-outside');
+        adjustLayoutForHiddenUsers();
+    } else {
+        hideButton.textContent = '◀';
+        document.querySelector('.profile').appendChild(hideButton);
+        hideButton.classList.add('hide-button-outside');
+        adjustLayoutForVisibleUsers();
+    }
+}
+
+function adjustLayoutForVisibleUsers() {
+    document.querySelector('.inputDiv').style.width = '90vw';
+    document.querySelector('.chat').style.width = '79vw';
+    document.querySelector('.send-button').style.borderRight = 'none';
+    document.querySelector('.profile').style.right = '0';
+}
+
+function adjustLayoutForHiddenUsers() {
+    document.querySelector('.inputDiv').style.width = '73.7vw';
+    document.querySelector('.chat').style.width = '62.7vw';
+    document.querySelector('.send-button').style.borderRight = '4px solid var(--color-border)';
+    document.querySelector('.profile').style.right = `-${window.getComputedStyle(document.querySelector('.profile')).width}`;
+}
+
+async function fetchUserData(user_id) {
+    if (user_cache[user_id]) return user_cache[user_id];
+    try {
+        const user = JSON.parse(await api({ "userId": userId, "token": token, "data": user_id, "mode": 'fromuid' }, auth, "getUser"));
+        user_cache[user_id] = user;
+        return user;
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        return null;
+    }
+}
+
+function createUserDiv(user_id, user) {
+    const userDiv = document.createElement('div');
+    userDiv.className = 'user';
+    const pfp = document.createElement('img');
+    pfp.src = getProfilePicture(user_id, user);
+    userDiv.appendChild(pfp);
+    
+    const username = document.createElement('h2');
+    username.textContent = user.username;
+    username.style.color = user.admin ? "var(--color-uninstall)" : "var(--text-color1)";
+    userDiv.appendChild(username);
+    
+    userDiv.style.filter = user_statuses.includes(user_id) ? 'none' : 'grayscale(40%) brightness(60%)';
+    userDiv.style.backgroundColor = user_id === userId ? 'var(--hover-color1)' : `${getComputedStyle(document.documentElement).getPropertyValue('--color-major-lesser')}40`;
+    
+    return userDiv;
+}
+
+async function getProfilePicture(user_id, user) {
+    if (!pfp_cache[user_id]) {
+        try {
+            const { data, error } = await supabaseClient.storage.from("profilePictures").createSignedUrl(user.pfp, 3600);
+            pfp_cache[user_id] = !error ? data.signedUrl : '../UI/account-placeholder.svg';
+        } catch {
+            pfp_cache[user_id] = '../UI/account-placeholder.svg';
+        }
+    }
+    return pfp_cache[user_id];
+}
 
         async function loadMessages() {
             let chatDiv = document.querySelector('.chat');
