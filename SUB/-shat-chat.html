@@ -551,6 +551,7 @@ async function loadUsers() {
         }
 
         pfp.src = pfp_cache[user_id];
+        pfp.draggable = false;
         userDiv.appendChild(pfp);
 
         const username = document.createElement('h2');
@@ -723,17 +724,20 @@ async function loadUsers() {
                             const pfp = document.createElement('img');
                             pfp_cache[message.user] = data.signedUrl;
                             pfp.src = pfp_cache[message.user];
+                            pfp.draggable = false;
                             userInfoDiv.appendChild(pfp);
                         }
                     } catch (error) {
                         const pfp = document.createElement('img');
                         pfp.src = '../UI/account-placeholder.svg';
+                        pfp.draggable = false;
                         userInfoDiv.appendChild(pfp);
                         console.error("Error fetching profile picture:", error);
                     }
                 } else {
                     const pfp = document.createElement('img');
                     pfp.src = pfp_cache[message.user];
+                    pfp.draggable = false;
                     userInfoDiv.appendChild(pfp);
                 }
                 if (!room_cache) {
