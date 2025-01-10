@@ -1044,6 +1044,7 @@ function subscribeToChannel() {
         console.log(syncCounter)
         const currentPresence = channel.presenceState();
         updateOnlineUsers(currentPresence);
+        syncCounter = 0;
         }
         else{
             syncCounter++;
