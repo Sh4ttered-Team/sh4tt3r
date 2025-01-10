@@ -163,18 +163,18 @@ function checkForTag(tag) {
 if (window.location.href.includes("/~")) {
 	window.location.href = window.prefix + "/404.html";
 }
-const warnBeforeUnload = (event) => {
-    event.preventDefault();
-    event.returnValue = '';
-}
-if (settings['cloak'] && !window.isCloaked) {
-	window.removeEventListener('beforeunload',warnBeforeUnload)
-	cloak(window.location.href)
-}
+// const warnBeforeUnload = (event) => {
+//     event.preventDefault();
+//     event.returnValue = '';
+// }
+// if (settings['cloak'] && !window.isCloaked) {
+// 	window.removeEventListener('beforeunload',warnBeforeUnload)
+// 	cloak(window.location.href)
+// }
 
-if(settings['preventClose']) {
-	window.addEventListener('beforeunload',warnBeforeUnload);
-}
+// if(settings['preventClose']) {
+// 	window.addEventListener('beforeunload',warnBeforeUnload);
+// }
 
 export function cloak(url, relative_path = false) {
 	url = `${relative_path ? '/' : ''}` + url;
