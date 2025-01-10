@@ -489,7 +489,7 @@ async function loadUsers() {
 
     if (!hideButton) {
         hideButton = document.createElement('button');
-        hideButton.className = 'hide-button';
+        hideButton.className = 'hideButton';
         hideButton.textContent = '◀'; 
         hideButton.onclick = () => toggleUserDivVisibility();
         document.querySelector('.profile').appendChild(hideButton);
@@ -1031,7 +1031,7 @@ subscribeToChannel();
 function subscribeToChannel() {
     channel.subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-            console.log('Successfully subscribed to room-%s' + currentRoomId, 'channel.');
+            console.log('Successfully subscribed to room-' + currentRoomId, 'channel.');
             updateOnlineUsers(channel.presenceState());
         } else if (status === 'CLOSED') {
             console.warn('Channel closed. Attempting to reconnect...');
