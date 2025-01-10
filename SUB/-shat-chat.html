@@ -1038,20 +1038,20 @@ function subscribeToChannel() {
         status: 'online',
     });
 
-    let syncCounter = 0
+    let syncCounter = 0;
     let syncOffset = 2;
-    channel.on('presence', { event: 'sync' }, () => {
-        if(syncCounter >= syncOffset) {
-        syncOffset = 5;
-        console.log(syncCounter,syncOffset)
+
+channel.on('presence', { event: 'sync' }, () => {
+    syncCounter++;
+    if (syncCounter === syncOffset) {
+        console.log(`Sync event reached: counter = ${syncCounter}, offset = ${syncOffset}`);
         const currentPresence = channel.presenceState();
-        updateOnlineUsers(currentPresence);
+        updateOnlineUsers(currentPresence, 'presence sync event');
         syncCounter = 0;
-        }
-        else{
-            syncCounter++;
-        }
-    });
+        syncOffset = 5;
+    }
+});
+
 
     channel.on('presence', { event: 'join' }, ({ key, currentPresences }) => {
         console.log(`${key} joined`, currentPresences);
