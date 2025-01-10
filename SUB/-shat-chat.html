@@ -488,7 +488,6 @@ async function loadUsers() {
     let bufferDiv = document.createElement('div');
 
     if (!hideButton) {
-        usersDiv.style.right = `-${window.getComputedStyle(usersDiv).width}`;
         hideButton = document.createElement('button');
         hideButton.className = 'hide-button';
         hideButton.textContent = '◀'; 
@@ -582,6 +581,7 @@ async function loadUsers() {
             setTimeout(() => {
                 usersDiv.style.visibility = 'visible';
             }, 300);
+            usersDiv.style.right = `-${window.getComputedStyle(usersDiv).width}`;
         }
         if (isUsersDivVisible) {
             hideButton.textContent = '▶';
