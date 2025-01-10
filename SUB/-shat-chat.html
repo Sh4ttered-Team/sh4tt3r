@@ -554,9 +554,6 @@
                     bufferDiv.appendChild(userDiv);
                 }
             }
-            if (hideButton) {
-            hideButton.remove();
-            }
             const isUsersDivVisible = usersDiv.style.right === '0px';
             if (bufferDiv.children.length > 0) {
                 usersDiv.replaceChildren(...bufferDiv.children);
@@ -586,7 +583,8 @@
                             document.querySelector('.profile').style.right = `-${window.getComputedStyle(document.querySelector('.profile')).width}`;
                         }
                     };
-                    if (isUsersDivVisible) {
+                }
+                if (isUsersDivVisible) {
                         hideButton.remove();
                         usersDiv.insertBefore(hideButton, usersDiv.firstChild);
                     }
@@ -595,7 +593,6 @@
                         hideButton.classList.add('hide-button-outside');
                         document.querySelector('.profile').appendChild(hideButton);
                     }
-                }
                 if (!isUsersDivVisible) {
                     usersDiv.style.right = `-${window.getComputedStyle(usersDiv).width}`;
                     setTimeout(() => {
