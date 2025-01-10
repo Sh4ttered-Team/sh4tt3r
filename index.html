@@ -34,12 +34,25 @@
 		<button onclick="LOA()" class="c-button-small" styl=>Logout</button>
 	</div>
 
-	<button class="c-button" id="cloak">
+	<button onclick="cloak('index.html')" class="c-button" id="cloak">
 		cloak
 	</button>
+
+	<script>
+		function cloak(url) {
+			url = window.prefix + '/' + url;
+			let cloak = window.open(
+				"about:blank",
+				"_blank",
+				`width=${window.screen.width}, height=${window.screen.height}`
+			);
+			cloak.document.write("<style>body,html {padding: 0; margin: 0;}</style>");
+
+			cloak.document.write(`<iframe src='${url}' frameBorder='0' style='width: 100vw; height: 100vh;' />`);
+			window.location.replace("about:blank");
+		}
+	</script>
 	<script type="module">
-		// import { cloak } from './JS/main.js'
-		// document.querySelector('#cloak').onclick = () => {cloak('index.html')};
 		const splashString = (await FDB('key_value_store')).find(object => object.key === "splash").value
 		const splashes = splashString.split(' \\ ')
 		document.getElementById('splash').textContent = splashes[(Math.floor(Math.random() * splashes.length))];
