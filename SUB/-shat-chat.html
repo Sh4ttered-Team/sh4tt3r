@@ -1039,12 +1039,14 @@ function subscribeToChannel() {
     });
 
     let syncCounter = 0
+    let syncOffset = 2
     channel.on('presence', { event: 'sync' }, () => {
-        if(syncCounter >= 2) {
+        if(syncCounter >= syncOffset) {
         console.log(syncCounter)
         const currentPresence = channel.presenceState();
         updateOnlineUsers(currentPresence);
         syncCounter = 0;
+        syncOffset = 3;
         }
         else{
             syncCounter++;
