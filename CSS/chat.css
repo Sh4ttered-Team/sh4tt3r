@@ -339,7 +339,6 @@
     color: var(--color-text-light);
     border: none;
     cursor: pointer;
-    transition: border-right 0.3s ease;
 }
 
 
