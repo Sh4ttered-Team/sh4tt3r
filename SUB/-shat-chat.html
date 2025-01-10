@@ -649,7 +649,19 @@ async function loadUsers() {
                 sendButton = document.createElement('button');
                 sendButton.innerText = 'Send';
                 sendButton.className = 'send-button';
-                sendButton.onclick = async () => {
+
+                inputDiv.appendChild(inputField);
+                inputDiv.appendChild(sendButton);
+
+                bufferDiv.appendChild(inputDiv);
+            }
+            inputField.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+            console.log(sendButton)
+            sendButton.onclick = async () => {
                 const messageText = inputField.value;
                 if (messageText.trim() === '') {
                     alert('Please enter a message');
@@ -671,17 +683,6 @@ async function loadUsers() {
                 }
                 waitForUpdateFlag = true;
             };
-
-                inputDiv.appendChild(inputField);
-                inputDiv.appendChild(sendButton);
-
-                bufferDiv.appendChild(inputDiv);
-            }
-            inputField.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter') {
-                    sendButton.click();
-                }
-            });
 
             let messages = (JSON.parse(await api({
                 "userId": `${userId}`,
