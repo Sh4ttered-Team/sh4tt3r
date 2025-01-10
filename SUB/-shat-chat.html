@@ -627,347 +627,374 @@ async function loadUsers() {
 }
 
         async function loadMessages() {
-    let chatDiv = document.querySelector('.chat');
-    if (!chatDiv) {
-        chatDiv = document.createElement('div');
-        chatDiv.className = 'chat';
-        document.querySelector('.home_menu').appendChild(chatDiv);
-    }
-
-    let inputDiv = document.querySelector('.inputDiv');
-    if (!inputDiv) {
-        inputDiv = document.createElement('div');
-        inputDiv.className = 'inputDiv';
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.placeholder = 'Type your message...';
-        inputField.className = 'message-input';
-
-        const sendButton = document.createElement('button');
-        sendButton.innerText = 'Send';
-        sendButton.className = 'send-button';
-
-        inputDiv.appendChild(inputField);
-        inputDiv.appendChild(sendButton);
-        document.querySelector('.home_menu').appendChild(inputDiv);
-
-        inputField.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                sendButton.click();
+            let chatDiv = document.querySelector('.chat');
+            if (!chatDiv) {
+                chatDiv = document.createElement('div');
+                chatDiv.className = 'chat';
+                document.querySelector('.home_menu').appendChild(chatDiv);
             }
-        });
-        sendButton.onclick = async () => {
-            const messageText = inputField.value;
-            if (messageText.trim() === '') {
-                alert('Please enter a message');
-                return;
+
+            const bufferDiv = document.createElement('div');
+
+            let inputDiv = document.querySelector('.inputDiv');
+            let sendButton = document.querySelector('.send-button');
+            if (!inputDiv) {
+                inputDiv = document.createElement('div');
+                inputDiv.className = 'inputDiv';
+                inputField = document.createElement('input');
+                inputField.type = 'text';
+                inputField.placeholder = 'Type your message...';
+                inputField.className = 'message-input';
+
+                sendButton = document.createElement('button');
+                sendButton.innerText = 'Send';
+                sendButton.className = 'send-button';
+                
+                inputDiv.appendChild(inputField);
+                inputDiv.appendChild(sendButton);
+
+                chatDiv.parentElement.appendChild(inputDiv);
             }
-            try {
-                window.showLoadingScreen();
-                await api({
-                    "userId": `${userId}`,
-                    "token": `${token}`,
-                    "roomId": `${currentRoomId}`,
-                    "text": `${messageText}`
-                }, auth, "sendMessage");
-                inputField.value = '';
-            } catch (error) {
-                window.hideLoadingScreen();
-                console.error('Error sending message:', error);
-                alert('Failed to send message =(');
-            }
-            waitForUpdateFlag = true;
-        };
-    }
-
-    const messages = (JSON.parse(await api({
-        "userId": `${userId}`,
-        "token": `${token}`,
-        "roomId": `${currentRoomId}`
-    }, auth, "getMessages"))).messages;
-
-    const bufferDiv = document.createElement('div');
-    for (const message of messages) {
-        let user = user_cache[message.user] || await fetchUser(message.user);
-        user_cache[message.user] = user;
-
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message';
-
-        const userInfoDiv = document.createElement('div');
-        userInfoDiv.className = 'user-info';
-
-        let pfp = await getUserPfp(user,message.user);
-        userInfoDiv.appendChild(pfp);
-
-        const username = document.createElement('h2');
-        username.textContent = user.username;
-        username.style.color = user.admin ? "var(--color-uninstall)" : "var(--text-color1)";
-        userInfoDiv.appendChild(username);
-
-        const timestamp = document.createElement('h2');
-        timestamp.className = 'message-timestamp';
-        userInfoDiv.appendChild(timestamp);
-
-        if (clientUser.admin || userId == message.user || userId == room_cache.roomOwner) {
-            const menuButton = document.createElement('button');
-            menuButton.className = 'menu-button';
-            menuButton.innerHTML = '&#x22EE;';
-
-            menuButton.onclick = (event) => {
-                event.stopPropagation();
-                closeAllDropdowns();
-                toggleDropdown(menuButton, message, inputField, sendButton, messageDiv);
+            inputField.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+            sendButton.onclick = async () => {
+                const messageText = inputField.value;
+                if (messageText.trim() === '') {
+                    alert('Please enter a message');
+                    return;
+                }
+                try {
+                    window.showLoadingScreen()
+                    await api({
+                        "userId": `${userId}`,
+                        "token": `${token}`,
+                        "roomId": `${currentRoomId}`,
+                        "text": `${messageText}`
+                    }, auth, "sendMessage");
+                    inputField.value = '';
+                } catch (error) {
+                    window.hideLoadingScreen()
+                    console.error('Error sending message:', error);
+                    alert('Failed to send message =(');
+                }
+                waitForUpdateFlag = true;
             };
 
-            userInfoDiv.appendChild(menuButton);
+            let messages = (JSON.parse(await api({
+                "userId": `${userId}`,
+                "token": `${token}`,
+                "roomId": `${currentRoomId}`
+            }, auth, "getMessages")))['messages'];
 
-            function toggleDropdown(button, message, inputField, sendButton, messageDiv) {
-                if (dropdown_cache) {
-                    dropdown_cache.remove();
-                    dropdown_cache = null;
+            for (const message of messages) {
+                let user;
+                if (!user_cache[message.user]) {
+                    try {
+                        user = JSON.parse(await api({
+                            "userId": `${userId}`,
+                            "token": `${token}`,
+                            "data": `${message.user}`,
+                            "mode": 'fromuid'
+                        }, auth, "getUser"));
+                        user_cache[message.user] = user;
+                    } catch (error) {
+                        console.log("userGetError:", error);
+                        continue;
+                    }
                 } else {
-                    let dropdown = document.createElement('div');
-                    dropdown.className = 'dropdown-content';
+                    user = user_cache[message.user];
+                }
 
-                    const deleteButton = document.createElement('button');
-                    deleteButton.innerText = 'Delete';
-                    deleteButton.onclick = () => handleDeleteMessage(message);
-                    dropdown.appendChild(deleteButton);
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
 
-                    if (!editstatus_cache) {
-                        const editButton = document.createElement('button');
-                        editButton.innerText = 'Edit';
-                        editButton.onclick = () => handleEditMessage(message, inputField, sendButton, messageDiv);
-                        dropdown.appendChild(editButton);
+                const userInfoDiv = document.createElement('div');
+                userInfoDiv.className = 'user-info';
+
+                if (!pfp_cache[message.user]) {
+                    try {
+                        const { data, error } = await supabaseClient.storage
+                            .from("profilePictures")
+                            .createSignedUrl(user.pfp, 3600);
+                        if (!error) {
+                            const pfp = document.createElement('img');
+                            pfp_cache[message.user] = data.signedUrl;
+                            pfp.src = pfp_cache[message.user];
+                            userInfoDiv.appendChild(pfp);
+                        }
+                    } catch (error) {
+                        const pfp = document.createElement('img');
+                        pfp.src = '../UI/account-placeholder.svg';
+                        userInfoDiv.appendChild(pfp);
+                        console.error("Error fetching profile picture:", error);
+                    }
+                } else {
+                    const pfp = document.createElement('img');
+                    pfp.src = pfp_cache[message.user];
+                    userInfoDiv.appendChild(pfp);
+                }
+                if (!room_cache) {
+                    try {
+                        const { data, error } = await api({
+                            "userId": `${userId}`,
+                            "token": `${token}`,
+                            "mode": "fromid",
+                            "data": `${currentRoomId}`
+                        }, auth, "getRoom");
+                        room_cache = JSON.parse(data);
+                    } catch (error) {
+                        console.error("Error fetching roomData:", error);
+                    }
+                }
+
+                const username = document.createElement('h2');
+                username.textContent = user.username;
+                username.style.color = user.admin
+                    ? "var(--color-uninstall)"
+                    : "var(--text-color1)";
+                userInfoDiv.appendChild(username);
+                const timestamp = document.createElement('h2');
+                timestamp.className = 'message-timestamp';
+                userInfoDiv.appendChild(timestamp);
+                if (clientUser.admin || userId == message.user || userId == room_cache.roomOwner) {
+                    const menuButton = document.createElement('button');
+                    menuButton.className = 'menu-button';
+                    menuButton.innerHTML = '&#x22EE;'; // vertical dots (⋮)
+
+                    menuButton.onclick = (event) => {
+                        event.stopPropagation();
+                        closeAllDropdowns();
+                        toggleDropdown(menuButton, message, inputField, sendButton, messageDiv);
+                    };
+
+                    userInfoDiv.appendChild(menuButton);
+
+                    function toggleDropdown(button, message, inputField, sendButton, messageDiv) {
+                        if (dropdown_cache) {
+                            dropdown_cache.remove();
+                            dropdown_cache = null;
+                        } else {
+                            let dropdown = document.createElement('div');
+                            dropdown.className = 'dropdown-content';
+
+                            const deleteButton = document.createElement('button');
+                            deleteButton.innerText = 'Delete';
+                            deleteButton.onclick = () => {
+                                dropdown_cache.remove();
+                                dropdown_cache = null;
+                                overlay.innerHTML = `
+                                    <div class="overlay-content">
+                                        <h2>Are you sure you want to delete this message?</h2>
+                                        <button id="confirmDelete">Yes</button>
+                                        <button id="cancelDelete">No</button>
+                                    </div>
+                                `;
+                                overlay.style.visibility = 'visible';
+                                overlay.style.opacity = '1';
+
+                                document.getElementById('confirmDelete').onclick = () => {
+                                    deleteMessage(message.id);
+                                    if (cancelButton_cache) {
+                                        cancelButton_cache.click();
+                                    }
+                                    hideOverlay();
+                                };
+
+                                document.getElementById('cancelDelete').onclick = hideOverlay;
+
+                                function hideOverlay() {
+                                    overlay.style.opacity = '0';
+                                    overlay.style.visibility = 'hidden';
+                                }
+                            };
+                            dropdown.appendChild(deleteButton);
+                            if (!editstatus_cache) {
+                                const editButton = document.createElement('button');
+                                editButton.innerText = 'Edit';
+                                editButton.onclick = () => {
+                                    dropdown_cache.remove();
+                                    dropdown_cache = null;
+                                    messageDiv.style.backgroundColor = 'var(--hover-color1)';
+                                    var doc = new DOMParser().parseFromString(message.text, 'text/html');
+                                    const originalText = doc.documentElement.textContent;
+                                    inputField.value = originalText;
+                                    inputField.focus();
+
+                                    let editingStatusDiv = document.createElement('div');
+                                    editingStatusDiv.className = 'editing-status';
+                                    editstatus_cache = editingStatusDiv;
+
+                                    const statusText = document.createElement('h2');
+                                    statusText.innerText = 'Editing message...';
+                                    editingStatusDiv.appendChild(statusText);
+                                    sendButton.onclick = async () => {
+                                        if (inputField.value != originalText) {
+                                            editMessage(message.id, inputField.value, "");
+                                        }
+                                        cancelButton.click();
+                                    };
+                                    inputField.addEventListener('keydown', (event) => escCancelEdit(event, messageDiv));
+                                    const cancelButton = document.createElement('button');
+                                    cancelButton.innerText = 'x';
+                                    cancelButton.className = 'cancelEdit';
+                                    cancelButton.onclick = () => {
+                                        inputField.value = '';
+                                        messageDiv.style.backgroundColor = '';
+                                        editingStatusDiv.remove();
+                                        editstatus_cache = null;
+                                        cancelButton_cache = null;
+                                        sendButton.onclick = async () => {
+                                            const messageText = inputField.value;
+                                            if (messageText.trim() === '') {
+                                                alert('Please enter a message');
+                                                return;
+                                            }
+                                            try {
+                                                window.showLoadingScreen()
+                                                await api({
+                                                    "userId": `${userId}`,
+                                                    "token": `${token}`,
+                                                    "roomId": `${currentRoomId}`,
+                                                    "text": `${messageText}`
+                                                }, auth, "sendMessage");
+                                                inputField.value = '';
+                                            } catch (error) {
+                                                window.hideLoadingScreen()
+                                                console.error('Error sending message:', error);
+                                                alert('Failed to send message =(');
+                                            }
+                                            waitForUpdateFlag = true;
+                                        };
+                                        window.removeEventListener('keydown', escCancelEdit);
+                                    };
+                                    cancelButton_cache = cancelButton;
+                                    editingStatusDiv.appendChild(cancelButton);
+
+                                    document.body.appendChild(editingStatusDiv);
+                                };
+                                dropdown.appendChild(editButton);
+                            }
+
+                            const reportButton = document.createElement('button');
+                            reportButton.innerText = 'Report Message';
+                            reportButton.onclick = () => {
+                                dropdown_cache.remove();
+                                dropdown_cache = null;
+                                overlay.innerHTML = `
+                                    <div class="overlay-content">
+                                        <h2>Report Message</h2>
+                                        <textarea id="reportReason" placeholder="Reason for reporting"></textarea>
+                                        <button id="submitReport">Submit</button>
+                                        <button id="cancelReport">Cancel</button>
+                                    </div>
+                                `;
+                                overlay.style.visibility = 'visible';
+                                overlay.style.opacity = '1';
+
+                                document.getElementById('submitReport').onclick = () => {
+                                    const reason = document.getElementById('reportReason').value;
+                                    if (reason.trim() === '') {
+                                        alert('Please provide a reason for reporting');
+                                        return;
+                                    }
+                                    report(message.id, reason, "message");
+                                    hideOverlay();
+                                };
+
+                                document.getElementById('cancelReport').onclick = hideOverlay;
+
+                                function hideOverlay() {
+                                    overlay.style.opacity = '0';
+                                    setTimeout(() => overlay.style.visibility = 'hidden', 300);
+                                }
+                            };
+                            dropdown.appendChild(reportButton);
+                            const reportUserButton = document.createElement('button');
+                            reportUserButton.innerText = 'Report User';
+                            reportUserButton.onclick = () => {
+                                dropdown_cache.remove();
+                                dropdown_cache = null;
+                                overlay.innerHTML = `
+                                    <div class="overlay-content">
+                                        <h2>Report User</h2>
+                                        <textarea id="reportUserReason" placeholder="Reason for reporting"></textarea>
+                                        <button id="submitUserReport">Submit</button>
+                                        <button id="cancelUserReport">Cancel</button>
+                                    </div>
+                                `;
+                                overlay.style.visibility = 'visible';
+                                overlay.style.opacity = '1';
+
+                                document.getElementById('submitUserReport').onclick = () => {
+                                    const reason = document.getElementById('reportUserReason').value;
+                                    if (reason.trim() === '') {
+                                        alert('Please provide a reason for reporting');
+                                        return;
+                                    }
+                                    report(message.user, reason, "user");
+                                    hideOverlay();
+                                };
+
+                                document.getElementById('cancelUserReport').onclick = hideOverlay;
+
+                                function hideOverlay() {
+                                    overlay.style.opacity = '0';
+                                    setTimeout(() => overlay.style.visibility = 'hidden', 300);
+                                }
+                            };
+                            dropdown.appendChild(reportUserButton);
+
+                            document.querySelector('.home_menu').appendChild(dropdown);
+                            const buttonRect = button.getBoundingClientRect();
+                            dropdown.style.position = 'absolute';
+                            dropdown.style.top = `${buttonRect.bottom}px`;
+                            dropdown.style.left = `${buttonRect.left}px`;
+
+                            dropdown_cache = dropdown;
+                        }
                     }
 
-                    const reportButton = document.createElement('button');
-                    reportButton.innerText = 'Report Message';
-                    reportButton.onclick = () => handleReportMessage(message);
-                    dropdown.appendChild(reportButton);
+                    document.addEventListener('click', closeAllDropdowns);
 
-                    const reportUserButton = document.createElement('button');
-                    reportUserButton.innerText = 'Report User';
-                    reportUserButton.onclick = () => handleReportUser(message.user);
-                    dropdown.appendChild(reportUserButton);
-
-                    document.querySelector('.home_menu').appendChild(dropdown);
-                    positionDropdown(button, dropdown);
-                    dropdown_cache = dropdown;
+                    function closeAllDropdowns() {
+                        document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+                            dropdown.remove();
+                        });
+                        dropdown_cache = null;
+                    }
                 }
+                messageDiv.appendChild(userInfoDiv);
+                const body = document.createElement('p');
+                var doc = new DOMParser().parseFromString(message.text, 'text/html');
+                body.textContent = doc.documentElement.textContent;
+                let editedTag;
+                if (message.edited) {
+                    editedTag = document.createElement('span');
+                    editedTag.className = 'edited-timestamp';
+                }
+                let updateTimestamps = () => {
+                    timestamp.textContent = message.timestamp ? timeAgo(message.timestamp) : "";
+                    if (message.edited) {
+                        editedTag.textContent = ` (edited ${timeAgo(message.editedTimestamp)})`;
+                    }
+                }
+                updateTimestamps();
+                setInterval(updateTimestamps, 1000);
+                messageDiv.appendChild(body);
+                if (message.edited) {
+                    body.appendChild(editedTag);
+                }
+
+                bufferDiv.appendChild(messageDiv);
             }
-
-            function closeAllDropdowns() {
-                document.querySelectorAll('.dropdown-content').forEach(dropdown => dropdown.remove());
-                dropdown_cache = null;
-            }
-
-            document.addEventListener('click', closeAllDropdowns);
+            chatDiv.replaceChildren(...bufferDiv.children);
+            requestAnimationFrame(() => {
+                document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
+            });
         }
-
-        messageDiv.appendChild(userInfoDiv);
-
-        const body = document.createElement('p');
-        const doc = new DOMParser().parseFromString(message.text, 'text/html');
-        body.textContent = doc.documentElement.textContent;
-        if (message.edited) {
-            const editedTag = document.createElement('span');
-            editedTag.className = 'edited-timestamp';
-            body.appendChild(editedTag);
-        }
-        updateTimestamps(timestamp, message);
-        setInterval(() => updateTimestamps(timestamp, message), 1000);
-
-        messageDiv.appendChild(body);
-        bufferDiv.appendChild(messageDiv);
-    }
-    chatDiv.replaceChildren(...bufferDiv.children);
-    requestAnimationFrame(() => chatDiv.scrollTop = chatDiv.scrollHeight);
-}
-
-async function getUserPfp(user,id) {
-    if (!pfp_cache[id]) {
-        try {
-            const { data, error } = await supabaseClient.storage
-                .from("profilePictures")
-                .createSignedUrl(user.pfp, 3600);
-            pfp_cache[id] = error ? '../UI/account-placeholder.svg' : data.signedUrl;
-        } catch (error) {
-            console.error("Error fetching profile picture:", error);
-            pfp_cache[id] = '../UI/account-placeholder.svg';
-        }
-    }
-    const pfpImg = document.createElement('img');
-    pfpImg.src = pfp_cache[user.id];
-    pfpImg.alt = 'Profile Picture';
-    pfpImg.className = 'profile-picture';
-    return pfpImg;
-}
-
-
-function handleDeleteMessage(message) {
-    overlay.innerHTML = `<div class="overlay-content">
-                            <h2>Are you sure you want to delete this message?</h2>
-                            <button id="confirmDelete">Yes</button>
-                            <button id="cancelDelete">No</button>
-                         </div>`;
-    overlay.style.visibility = 'visible';
-    overlay.style.opacity = '1';
-
-    document.getElementById('confirmDelete').onclick = () => {
-        deleteMessage(message.id);
-        hideOverlay();
-    };
-    document.getElementById('cancelDelete').onclick = hideOverlay;
-
-    function hideOverlay() {
-        overlay.style.opacity = '0';
-        overlay.style.visibility = 'hidden';
-    }
-}
-
-function handleEditMessage(message, inputField, sendButton, messageDiv) {
-    dropdown_cache.remove();
-    dropdown_cache = null;
-    messageDiv.style.backgroundColor = 'var(--hover-color1)';
-    var doc = new DOMParser().parseFromString(message.text, 'text/html');
-    const originalText = doc.documentElement.textContent;
-    inputField.value = originalText;
-    inputField.focus();
-
-    let editingStatusDiv = document.createElement('div');
-    editingStatusDiv.className = 'editing-status';
-    editstatus_cache = editingStatusDiv;
-
-    const statusText = document.createElement('h2');
-    statusText.innerText = 'Editing message...';
-    editingStatusDiv.appendChild(statusText);
-    sendButton.onclick = async () => {
-        if (inputField.value !== originalText) {
-            editMessage(message.id, inputField.value, "");
-        }
-        cancelEdit();
-    };
-
-    const cancelButton = document.createElement('button');
-    cancelButton.innerText = 'x';
-    cancelButton.className = 'cancelEdit';
-    cancelButton.onclick = cancelEdit;
-    editingStatusDiv.appendChild(cancelButton);
-    document.body.appendChild(editingStatusDiv);
-
-    function cancelEdit() {
-        inputField.value = '';
-        messageDiv.style.backgroundColor = '';
-        editingStatusDiv.remove();
-        editstatus_cache = null;
-        resetSendButton(sendButton, inputField);
-    }
-}
-
-function resetSendButton(sendButton, inputField) {
-    sendButton.onclick = async () => {
-        const messageText = inputField.value;
-        if (messageText.trim() === '') {
-            alert('Please enter a message');
-            return;
-        }
-        try {
-            window.showLoadingScreen();
-            await api({
-                "userId": `${userId}`,
-                "token": `${token}`,
-                "roomId": `${currentRoomId}`,
-                "text": `${messageText}`
-            }, auth, "sendMessage");
-            inputField.value = '';
-        } catch (error) {
-            window.hideLoadingScreen();
-            console.error('Error sending message:', error);
-            alert('Failed to send message =(');
-        }
-        waitForUpdateFlag = true;
-    };
-}
-
-function handleReportMessage(message) {
-    overlay.innerHTML = `<div class="overlay-content">
-                            <h2>Report Message</h2>
-                            <textarea id="reportReason" placeholder="Reason for reporting"></textarea>
-                            <button id="submitReport">Submit</button>
-                            <button id="cancelReport">Cancel</button>
-                         </div>`;
-    overlay.style.visibility = 'visible';
-    overlay.style.opacity = '1';
-
-    document.getElementById('submitReport').onclick = () => {
-        const reason = document.getElementById('reportReason').value;
-        if (reason.trim() === '') {
-            alert('Please provide a reason for reporting');
-            return;
-        }
-        report(message.id, reason, "message");
-        hideOverlay();
-    };
-    document.getElementById('cancelReport').onclick = hideOverlay;
-
-    function hideOverlay() {
-        overlay.style.opacity = '0';
-        setTimeout(() => overlay.style.visibility = 'hidden', 300);
-    }
-}
-
-function handleReportUser(userId) {
-    overlay.innerHTML = `<div class="overlay-content">
-                            <h2>Report User</h2>
-                            <textarea id="reportUserReason" placeholder="Reason for reporting"></textarea>
-                            <button id="submitUserReport">Submit</button>
-                            <button id="cancelUserReport">Cancel</button>
-                         </div>`;
-    overlay.style.visibility = 'visible';
-    overlay.style.opacity = '1';
-
-    document.getElementById('submitUserReport').onclick = () => {
-        const reason = document.getElementById('reportUserReason').value;
-        if (reason.trim() === '') {
-            alert('Please provide a reason for reporting');
-            return;
-        }
-        report(userId, reason, "user");
-        hideOverlay();
-    };
-    document.getElementById('cancelUserReport').onclick = hideOverlay;
-
-    function hideOverlay() {
-        overlay.style.opacity = '0';
-        setTimeout(() => overlay.style.visibility = 'hidden', 300);
-    }
-}
-
-function positionDropdown(button, dropdown) {
-    const buttonRect = button.getBoundingClientRect();
-    dropdown.style.position = 'absolute';
-    dropdown.style.top = `${buttonRect.bottom}px`;
-    dropdown.style.left = `${buttonRect.left}px`;
-}
-        async function fetchUser(userId) {
-    if (!user_cache[userId]) {
-        try {
-            let user = JSON.parse(await api({
-                "userId": `${userId}`,
-                "token": `${token}`,
-                "data": `${userId}`,
-                "mode": 'fromuid'
-            }, auth, "getUser"));
-            user_cache[userId] = user;
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-            return { username: "Unknown", admin: false };
-        }
-    }
-    return user_cache[userId];
-}
 
         if (currentRoomId) {
             await loadMessages()
