@@ -554,7 +554,9 @@
                     bufferDiv.appendChild(userDiv);
                 }
             }
+            if (hideButton) {
             hideButton.remove();
+            }
             const isUsersDivVisible = usersDiv.style.right === '0px';
             if (bufferDiv.children.length > 0) {
                 usersDiv.replaceChildren(...bufferDiv.children);
