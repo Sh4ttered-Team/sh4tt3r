@@ -1047,12 +1047,12 @@ channel.on('presence', { event: 'sync' }, () => {
     console.log(`After increment: counter = ${syncCounter}, offset = ${syncOffset}`);
 
     if (syncCounter === syncOffset) {
+        syncOffset = 5;
+        console.log(`Sync offset updated to: ${syncOffset}`);
         console.log(`Sync event reached: counter = ${syncCounter}, offset = ${syncOffset}`);
         const currentPresence = channel.presenceState();
         updateOnlineUsers(currentPresence, 'presence sync event');
         syncCounter = 0;
-        syncOffset = 5;
-        console.log(`Sync offset updated to: ${syncOffset}`);
     }
 });
 
