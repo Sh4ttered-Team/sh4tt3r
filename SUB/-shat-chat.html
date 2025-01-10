@@ -1093,6 +1093,7 @@ async function reconnectChannel() {
 
         }
         loadRooms();
+        document.querySelector('.users').style.right = `-${window.getComputedStyle(document.querySelector('.users')).width}`;
         setInterval(loadRooms, 7000)
     </script>
 </body>
