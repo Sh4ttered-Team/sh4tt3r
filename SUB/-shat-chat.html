@@ -610,8 +610,8 @@ async function loadUsers() {
         } else {
             hideButton.textContent = '▶';
             hideButton.classList.remove('hide-button-outside');
-            document.querySelector('.inputDiv').style.width = `calc(100vw - ${usersDiv.offsetWidth}vw)`;
-            document.querySelector('.chat').style.width = `calc(100vw - ${usersDiv.offsetWidth}vw)`;
+            document.querySelector('.inputDiv').style.width = `calc(100vw - ${usersDiv.style.Width}px)`;
+            document.querySelector('.chat').style.width = `calc(100vw - ${usersDiv.style.Width}px)`;
             document.querySelector('.send-button').style.borderRight = '4px solid var(--color-border)';
             document.querySelector('.profile').style.right = `-${window.getComputedStyle(document.querySelector('.profile')).width}`;
             usersDiv.insertBefore(hideButton, usersDiv.firstChild);
