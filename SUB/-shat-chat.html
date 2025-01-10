@@ -558,6 +558,7 @@
             if (bufferDiv.children.length > 0) {
                 usersDiv.replaceChildren(...bufferDiv.children);
                 if (!hideButton) {
+                    hideButton.remove();
                     hideButton = document.createElement('button');
                     hideButton.className = 'hide-button';
                     hideButton.textContent = isUsersDivVisible ? '▶' : '◀';
