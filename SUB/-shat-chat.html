@@ -481,15 +481,24 @@
             if (interval >= 1) return `${interval} minute${interval > 1 ? 's' : ''} ago`;
             return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
         };
-        async function loadUsers() {
+        let hideButton; 
+
+async function loadUsers() {
     let usersDiv = document.querySelector('.users');
     let bufferDiv = document.createElement('div');
-    let hideButton = document.querySelector('.hideButton');
+
+    if (!hideButton) {
+        hideButton = document.createElement('button');
+        hideButton.className = 'hideButton';
+        hideButton.textContent = '◀'; 
+        hideButton.onclick = () => toggleUserDivVisibility();
+        document.querySelector('.profile').appendChild(hideButton);
+    }
 
     const response = await api({
-        "userId": userId,
-        "token": token,
-        "data": currentRoomId,
+        "userId": ${userId},
+        "token": ${token},
+        "data": ${currentRoomId},
         "mode": 'fromid',
     }, auth, "getRoom");
 
@@ -502,14 +511,15 @@
     }
 
     const users = room.roomUsers ? JSON.parse(room.roomUsers) : [];
+
     for (const user_id of users) {
         let user;
         if (!user_cache[user_id]) {
             try {
                 user = JSON.parse(await api({
-                    "userId": userId,
-                    "token": token,
-                    "data": user_id,
+                    "userId": ${userId},
+                    "token": ${token},
+                    "data": ${user_id},
                     "mode": 'fromuid'
                 }, auth, "getUser"));
                 user_cache[user_id] = user;
@@ -523,28 +533,35 @@
 
         const userDiv = document.createElement('div');
         userDiv.className = 'user';
-
         const pfp = document.createElement('img');
         if (!pfp_cache[user_id]) {
             try {
                 const { data, error } = await supabaseClient.storage
                     .from("profilePictures")
                     .createSignedUrl(user.pfp, 3600);
-                pfp_cache[user_id] = !error ? data.signedUrl : '../UI/account-placeholder.svg';
+                if (!error) {
+                    pfp_cache[user_id] = data.signedUrl;
+                } else {
+                    pfp_cache[user_id] = '../UI/account-placeholder.svg';
+                }
             } catch (error) {
                 console.error("Error fetching profile picture:", error);
                 pfp_cache[user_id] = '../UI/account-placeholder.svg';
             }
         }
+
         pfp.src = pfp_cache[user_id];
         userDiv.appendChild(pfp);
 
         const username = document.createElement('h2');
         username.textContent = user.username;
-        username.style.color = user.admin ? "var(--color-uninstall)" : "var(--text-color1)";
+        username.style.color = user.admin
+            ? "var(--color-uninstall)"
+            : "var(--text-color1)";
         userDiv.appendChild(username);
 
         userDiv.style.filter = user_statuses.includes(user_id) ? 'none' : 'grayscale(40%) brightness(60%)';
+
         if (user_id == userId) {
             userDiv.style.backgroundColor = 'var(--hover-color1)';
             bufferDiv.insertBefore(userDiv, bufferDiv.firstChild);
@@ -556,46 +573,49 @@
     }
 
     const isUsersDivVisible = usersDiv.style.right === '0px';
-    usersDiv.replaceChildren(...bufferDiv.children);
 
-    if (!hideButton) {
-        hideButton = document.createElement('button');
-        hideButton.className = 'hide-button';
-        hideButton.textContent = isUsersDivVisible ? '▶' : '◀';
+    if (bufferDiv.children.length > 0) {
+        usersDiv.replaceChildren(...bufferDiv.children);
+        if (!isUsersDivVisible) {
+            usersDiv.style.right = `-${window.getComputedStyle(usersDiv).width}`;
+            setTimeout(() => {
+                usersDiv.style.visibility = 'visible';
+            }, 300);
+        }
+        if (isUsersDivVisible) {
+            hideButton.textContent = '▶';
+            usersDiv.insertBefore(hideButton, usersDiv.firstChild);
+        } else {
+            hideButton.textContent = '◀';
+            hideButton.classList.add('hide-button-outside');
+            document.querySelector('.profile').appendChild(hideButton);
+        }
 
-        hideButton.onclick = () => {
-            const usersDivWidth = window.getComputedStyle(usersDiv).width;
-            const profileDiv = document.querySelector('.profile');
-
-            if (usersDiv.style.right === '0px') {
-                usersDiv.style.right = `-${usersDivWidth}`;
-                hideButton.textContent = '▶';
-                hideButton.classList.add('hide-button-outside');
-                profileDiv.style.right = '0';
-                document.querySelector('.inputDiv').style.width = '90vw';
-                document.querySelector('.chat').style.width = '79vw';
-                document.querySelector('.send-button').style.borderRight = 'none';
-                profileDiv.appendChild(hideButton);
-            } else {
-                usersDiv.style.right = '0';
-                hideButton.textContent = '◀';
-                hideButton.classList.remove('hide-button-outside');
-                document.querySelector('.inputDiv').style.width = '73.7vw';
-                document.querySelector('.chat').style.width = '62.7vw';
-                document.querySelector('.send-button').style.borderRight = '4px solid var(--color-border)';
-                profileDiv.style.right = `-${window.getComputedStyle(profileDiv).width}`;
-                usersDiv.insertBefore(hideButton, usersDiv.firstChild);
-            }
-        };
-    }
-
-    if (isUsersDivVisible) {
-        usersDiv.insertBefore(hideButton, usersDiv.firstChild);
     } else {
-        hideButton.classList.add('hide-button-outside');
-        document.querySelector('.profile').appendChild(hideButton);
+        console.warn('No users were loaded into bufferDiv.');
+    }
+    function toggleUserDivVisibility() {
+        const isVisible = usersDiv.style.right === '0px';
+        usersDiv.style.right = isVisible ? `-${window.getComputedStyle(usersDiv).width}` : '0';
+        
+        if (isVisible) {
+            hideButton.textContent = '▶';
+            hideButton.classList.remove('hide-button-outside');
+            document.querySelector('.inputDiv').style.width = '73.7vw';
+            document.querySelector('.chat').style.width = '62.7vw';
+            document.querySelector('.send-button').style.borderRight = '4px solid var(--color-border)';
+            document.querySelector('.profile').style.right = `-${window.getComputedStyle(document.querySelector('.profile')).width}`;
+        } else {
+            hideButton.textContent = '◀';
+            hideButton.classList.add('hide-button-outside');
+            document.querySelector('.inputDiv').style.width = '90vw';
+            document.querySelector('.chat').style.width = '79vw';
+            document.querySelector('.send-button').style.borderRight = 'none';
+            document.querySelector('.profile').style.right = '0';
+        }
     }
 }
+
         async function loadMessages() {
             let chatDiv = document.querySelector('.chat');
             if (!chatDiv) {
