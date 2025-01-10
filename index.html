@@ -38,7 +38,7 @@
 		cloak
 	</button>
 	<script type="module">
-		import { cloak } from 'JS/main.js'
+		import { cloak } from './JS/main.js'
 		document.querySelector('#cloak').onclick = () => {cloak('index.html')};
 		const splashString = (await FDB('key_value_store')).find(object => object.key === "splash").value
 		const splashes = splashString.split(' \\ ')
