@@ -181,6 +181,9 @@ window.addEventListener('beforeunload', (event) => {
 }
 
 export function cloak(url, relative_path = false) {
+	window.removeEventListener('beforeunload', (event) => {
+        warnBeforeUnload(event)
+	});
 	url = `${relative_path ? '/' : ''}` + url;
 	let cloak = window.open(
 		"about:blank",
