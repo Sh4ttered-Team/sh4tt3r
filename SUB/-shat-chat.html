@@ -774,7 +774,6 @@ async function loadUsers() {
                     userInfoDiv.appendChild(menuButton);
 
                     function toggleDropdown(button, message, inputField, sendButton, messageDiv) {
-                        console.log(dropdown_cache)
                         if (dropdown_cache) {
                             dropdown_cache.remove();
                             dropdown_cache = null;
@@ -965,6 +964,7 @@ async function loadUsers() {
                         document.querySelectorAll('.dropdown-content').forEach(dropdown => {
                             dropdown.remove();
                         });
+                        dropdown_cache = null;
                     }
                 }
                 messageDiv.appendChild(userInfoDiv);
