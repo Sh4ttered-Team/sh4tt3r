@@ -697,7 +697,7 @@ async function loadUsers() {
         const userInfoDiv = document.createElement('div');
         userInfoDiv.className = 'user-info';
 
-        let pfp = await getUserPfp(user);
+        let pfp = await getUserPfp(user,message.user);
         userInfoDiv.appendChild(pfp);
 
         const username = document.createElement('h2');
@@ -785,6 +785,26 @@ async function loadUsers() {
     chatDiv.replaceChildren(...bufferDiv.children);
     requestAnimationFrame(() => chatDiv.scrollTop = chatDiv.scrollHeight);
 }
+
+async function getUserPfp(user,id) {
+    if (!pfp_cache[id]) {
+        try {
+            const { data, error } = await supabaseClient.storage
+                .from("profilePictures")
+                .createSignedUrl(user.pfp, 3600);
+            pfp_cache[id] = error ? '../UI/account-placeholder.svg' : data.signedUrl;
+        } catch (error) {
+            console.error("Error fetching profile picture:", error);
+            pfp_cache[id] = '../UI/account-placeholder.svg';
+        }
+    }
+    const pfpImg = document.createElement('img');
+    pfpImg.src = pfp_cache[user.id];
+    pfpImg.alt = 'Profile Picture';
+    pfpImg.className = 'profile-picture';
+    return pfpImg;
+}
+
 
 function handleDeleteMessage(message) {
     overlay.innerHTML = `<div class="overlay-content">
