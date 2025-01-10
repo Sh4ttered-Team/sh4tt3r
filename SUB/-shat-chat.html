@@ -636,10 +636,9 @@ async function loadUsers() {
 
             const bufferDiv = document.createElement('div');
 
-            let inputDiv;
+            let inputDiv = document.querySelector('.inputDiv');
             let sendButton = document.querySelector('.send-button');
-
-            if (!inputField) {
+            if (!inputDiv) {
                 inputDiv = document.createElement('div');
                 inputDiv.className = 'inputDiv';
                 inputField = document.createElement('input');
@@ -650,7 +649,7 @@ async function loadUsers() {
                 sendButton = document.createElement('button');
                 sendButton.innerText = 'Send';
                 sendButton.className = 'send-button';
-
+                
                 inputDiv.appendChild(inputField);
                 inputDiv.appendChild(sendButton);
 
