@@ -29,7 +29,7 @@
     <script type="module">
         const onload_settings = JSON.parse(localStorage.getItem('settings'));
 
-        let settings = [{ 'name': 'Auto Cloak', 'key': 'cloak', 'desc': 'Automatically opens the page in cloak', 'type': 'toggle' },{ 'name': 'Close Confirm', 'key': 'preventClose', 'desc': 'Confirm before closure of page', 'type': 'toggle' }];
+        let settings = [{ 'name': 'Auto Cloak', 'key': 'cloak', 'desc': 'Automatically opens the page in cloak', 'type': 'toggle' }];
         const admin_settings = [{ 'name': 'Auto Console', 'key': 'console', 'desc': 'Automatically opens console', 'type': 'toggle' }];
         const user = await FDB("profiles");
         if (user[0].admin) {
