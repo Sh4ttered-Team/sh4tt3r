@@ -489,7 +489,7 @@ async function loadUsers() {
 
     if (!hideButton) {
         hideButton = document.createElement('button');
-        hideButton.className = 'hideButton';
+        hideButton.className = 'hide-button';
         hideButton.textContent = '◀'; 
         hideButton.onclick = () => toggleUserDivVisibility();
         document.querySelector('.profile').appendChild(hideButton);
