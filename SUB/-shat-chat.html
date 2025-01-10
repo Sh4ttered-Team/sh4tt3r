@@ -1008,6 +1008,8 @@
                 .subscribe((status) => {
                     console.log('Room subscription status:', status);
                 });
+            
+            
             let channel = supabaseClient.channel(`room-${currentRoomId}`, {
     config: {
         presence: {
@@ -1052,8 +1054,11 @@ function subscribeToChannel() {
 
 function updateOnlineUsers(presenceState) {
     const users = Object.values(presenceState).flatMap(userPresences => userPresences.map(p => p.user));
-    console.log('Online users:', users);
-    console.log(presenceState)
+    console.group(`updateOnlineUsers called`);
+    console.trace();
+    console.log('Presence state:', presenceState);
+    console.log('Current online users:', users);
+    console.groupEnd();
     if(!users.includes(userId)) {
         users.push(userId)
     }
