@@ -163,13 +163,13 @@ function checkForTag(tag) {
 if (window.location.href.includes("/~")) {
 	window.location.href = window.prefix + "/404.html";
 }
+const warnBeforeUnload = (event) => {
+    event.preventDefault();
+    event.returnValue = '';
+}
 if (settings['cloak'] && !window.isCloaked) {
 	window.removeEventListener('beforeunload',warnBeforeUnload)
 	cloak(window.location.href)
-}
-function warnBeforeUnload(event) {
-    event.preventDefault();
-    event.returnValue = '';
 }
 
 if(settings['preventClose']) {
