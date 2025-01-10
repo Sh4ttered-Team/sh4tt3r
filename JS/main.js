@@ -165,9 +165,7 @@ if (window.location.href.includes("/~")) {
 }
 
 if (settings['cloak'] && !window.isCloaked) {
-	window.removeEventListener('beforeunload', (event) => {
-        warnBeforeUnload(event)
-});
+	window.removeEventListener('beforeunload',warnBeforeUnload)
 	cloak(window.location.href)
 }
 function warnBeforeUnload(event) {
@@ -175,15 +173,11 @@ function warnBeforeUnload(event) {
     event.returnValue = '';
 }
 if(settings['preventClose']) {
-window.addEventListener('beforeunload', (event) => {
-        warnBeforeUnload(event)
-});
+window.addEventListener('beforeunload',warnBeforeUnload);
 }
 
 export function cloak(url, relative_path = false) {
-	window.removeEventListener('beforeunload', (event) => {
-        warnBeforeUnload(event)
-	});
+	window.removeEventListener('beforeunload', warnBeforeUnload});
 	url = `${relative_path ? '/' : ''}` + url;
 	let cloak = window.open(
 		"about:blank",
