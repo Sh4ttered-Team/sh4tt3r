@@ -163,17 +163,21 @@ function checkForTag(tag) {
 if (window.location.href.includes("/~")) {
 	window.location.href = window.prefix + "/404.html";
 }
+const warnBeforeUnload = (event) => {
+    event.preventDefault();
+    event.returnValue = '';
+};
 
 if (settings['cloak'] && !window.isCloaked) {
-	window.removeEventListener('beforeunload', (event) => {event.preventDefault()})
+	window.removeEventListener('beforeunload', warnBeforeUnload)
 	cloak(window.location.href)
 }
 if(settings['preventClose']) {
-window.addEventListener('beforeunload', (event) => {event.preventDefault()})
+window.addEventListener('beforeunload', warnBeforeUnload)
 }
 
 export function cloak(url, relative_path = false) {
-	window.removeEventListener('beforeunload', (event) => {event.preventDefault()})
+	window.removeEventListener('beforeunload', warnBeforeUnload)
 	url = `${relative_path ? '/' : ''}` + url;
 	let cloak = window.open(
 		"about:blank",
