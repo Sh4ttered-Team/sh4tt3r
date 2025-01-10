@@ -10,7 +10,7 @@ if (window.self !== window.top) {
 }
 export let settings;
 
-if (!localStorage.getItem('settings')) {
+if (localStorage.getItem('settings')) {
 	localStorage.setItem('settings', JSON.stringify({})); //default settings
 }
 
