@@ -496,9 +496,9 @@ async function loadUsers() {
     }
 
     const response = await api({
-        "userId": ${userId},
-        "token": ${token},
-        "data": ${currentRoomId},
+        "userId": `${userId}`,
+        "token": `${token}`,
+        "data": `${currentRoomId}`,
         "mode": 'fromid',
     }, auth, "getRoom");
 
@@ -517,9 +517,9 @@ async function loadUsers() {
         if (!user_cache[user_id]) {
             try {
                 user = JSON.parse(await api({
-                    "userId": ${userId},
-                    "token": ${token},
-                    "data": ${user_id},
+                    "userId": `${userId}`,
+                    "token": `${token}`,
+                    "data": `${user_id}`,
                     "mode": 'fromuid'
                 }, auth, "getUser"));
                 user_cache[user_id] = user;
