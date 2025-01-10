@@ -1055,8 +1055,7 @@ function subscribeToChannel() {
 function updateOnlineUsers(presenceState) {
     const users = Object.values(presenceState).flatMap(userPresences => userPresences.map(p => p.user));
     console.group(`updateOnlineUsers called`);
-    console.trace();
-    console.log('Presence state:', presenceState);
+    console.trace(presenceState);
     console.log('Current online users:', users);
     console.groupEnd();
     if(!users.includes(userId)) {
