@@ -1031,7 +1031,7 @@ subscribeToChannel();
 function subscribeToChannel() {
     channel.subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-            console.log('Successfully subscribed to room-' + currentRoomId, 'channel.');
+            console.log('Successfully subscribed to room-%s' + currentRoomId, 'channel.');
             updateOnlineUsers(channel.presenceState());
         } else if (status === 'CLOSED') {
             console.warn('Channel closed. Attempting to reconnect...');
