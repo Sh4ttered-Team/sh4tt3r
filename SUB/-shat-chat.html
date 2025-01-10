@@ -636,7 +636,7 @@ async function loadUsers() {
             const bufferDiv = document.createElement('div');
 
             let inputDiv;
-            let sendButton;
+            let sendButton = document.querySelector('.send-button');
 
             if (!inputField) {
                 inputDiv = document.createElement('div');
@@ -660,7 +660,6 @@ async function loadUsers() {
                     sendButton.click();
                 }
             });
-            console.log(sendButton)
             sendButton.onclick = async () => {
                 const messageText = inputField.value;
                 if (messageText.trim() === '') {
