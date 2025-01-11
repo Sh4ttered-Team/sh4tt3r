@@ -973,19 +973,23 @@ async function loadUsers() {
                 messageDiv.appendChild(userInfoDiv);
                 const body = document.createElement('p');
 		var doc = new DOMParser().parseFromString(message.text, 'text/html');
-		const plainText = doc.documentElement.textContent;
-
+		const fragment = document.createDocumentFragment();
 		const urlRegex = /(https?:\/\/[^\s]+)/g;
+		const parts = doc.documentElement.textContent.split(urlRegex);
 
-		const escapeURL = (unsafeURL) => {
-			return unsafeURL.replace(/"/g, "%22").replace(/'/g, "%27");
-		};
-
-		body.innerHTML = doc.documentElement.innerHTML.replace(urlRegex, (url) => {
-			const safeURL = escapeURL(url);
-			return `<a href="${safeURL}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+		parts.forEach((part) => {
+			if (urlRegex.test(part)) {
+				const link = document.createElement('a');
+				link.href = part.replace(/"/g, "%22").replace(/'/g, "%27");
+				link.target = "_blank";
+				link.rel = "noopener noreferrer";
+				link.textContent = part;
+				fragment.appendChild(link);
+			} else {
+				fragment.appendChild(document.createTextNode(part));
+			}
 		});
-
+		body.appendChild(fragment);
                 let editedTag;
                 if (message.edited) {
                     editedTag = document.createElement('span');
