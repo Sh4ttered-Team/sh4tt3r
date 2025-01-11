@@ -972,48 +972,23 @@ async function loadUsers() {
                 }
                 messageDiv.appendChild(userInfoDiv);
                 const body = document.createElement('p');
-var doc = new DOMParser().parseFromString(message.text, 'text/html');
-const text = doc.documentElement.textContent;
+		var doc = new DOMParser().parseFromString(message.text, 'text/html');
+		const fragment = document.createDocumentFragment();
+		const urlRegex = /(https?:\/\/[^\s]+)/g;
+		const parts = doc.documentElement.textContent.split(urlRegex);
 
-const urlRegex = /(https?:\/\/[^\s]+)/g;
-const markdownRules = [
-	{ regex: /\*\*(.*?)\*\*/g, replace: '<strong>$1</strong>' },
-	{ regex: /\*(.*?)\*/g, replace: '<em>$1</em>' },
-	{ regex: /__(.*?)__/g, replace: '<u>$1</u>' },
-	{ regex: /~~(.*?)~~/g, replace: '<s>$1</s>' },
-	{ regex: /`([^`]+)`/g, replace: '<code>$1</code>' }
-];
-
-const escapeHTML = (unsafeText) => {
-	return unsafeText
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#039;");
-};
-const parts = text.split(urlRegex);
-const fragment = document.createDocumentFragment();
-
-parts.forEach((part) => {
-	if (urlRegex.test(part)) {
-		const link = document.createElement('a');
-		link.href = part.replace(/"/g, "%22").replace(/'/g, "%27");
-		link.target = "_blank";
-		link.rel = "noopener noreferrer";
-		link.textContent = part;
-		fragment.appendChild(link);
-	} else {
-		let escapedText = escapeHTML(part);
-				markdownRules.forEach(rule => {
-				escapedText = escapedText.replace(rule.regex, rule.replace);
-			});
-			const span = document.createElement('span');
-			span.innerHTML = escapedText;
-			fragment.appendChild(span);
+		parts.forEach((part) => {
+			if (urlRegex.test(part)) {
+				const link = document.createElement('a');
+				link.href = part.replace(/"/g, "%22").replace(/'/g, "%27");
+				link.target = "_blank";
+				link.rel = "noopener noreferrer";
+				link.textContent = part;
+				fragment.appendChild(link);
+			} else {
+				fragment.appendChild(document.createTextNode(part));
 			}
 		});
-
 		body.appendChild(fragment);
                 let editedTag;
                 if (message.edited) {
