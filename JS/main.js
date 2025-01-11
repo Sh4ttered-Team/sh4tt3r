@@ -9,11 +9,14 @@ if (window.self !== window.top) {
 	window.isCloaked = true;
 }
 export let settings;
-if (!localStorage.getItem('settings')) {
-	localStorage.setItem('settings', JSON.stringify({})); //default settings
-}
 
-settings = JSON.parse(localStorage.getItem('settings'));
+try {
+	settings = JSON.parse(localStorage.getItem('settings')) || {};
+} catch (e) {
+	console.error("Error parsing settings from localStorage, resetting to default.", e);
+	settings = {};
+	localStorage.setItem('settings', JSON.stringify(settings));
+}
 
 if (!ThemeBypass) {
 	if (settings['theme']) {
