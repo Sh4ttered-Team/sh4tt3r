@@ -31,6 +31,7 @@
             <img draggable="false" id="pfp">
             <h2 id="username"></h2>
             <script type="module">
+                alert(localStorage.getItem('settings'))
                 const profile = await FDB("profiles");
                 const pfp = profile[0].pfp;
                 if (pfp != null && pfp.length > 8) {
@@ -57,7 +58,6 @@
     <script type="module">
         window.showLoadingScreen()
         import { api } from "../JS/api.js"
-        alert(localStorage.getItem('settings'))
         const user = JSON.parse(localStorage.getItem("sb-fffwukshwgrcdyqmvahg-auth-token"))
         const userId = user.user.id
         const token = user.access_token
