@@ -972,24 +972,19 @@ async function loadUsers() {
                 }
                 messageDiv.appendChild(userInfoDiv);
                 const body = document.createElement('p');
-var doc = new DOMParser().parseFromString(message.text, 'text/html');
-const plainText = doc.documentElement.textContent;
+		var doc = new DOMParser().parseFromString(message.text, 'text/html');
+		const plainText = doc.documentElement.textContent;
 
-const urlRegex = /(https?:\/\/[^\s]+)/g;
+		const urlRegex = /(https?:\/\/[^\s]+)/g;
 
-const escapeHTML = (unsafeText) => {
-	return unsafeText
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#039;");
-};
+		const escapeURL = (unsafeURL) => {
+			return unsafeURL.replace(/"/g, "%22").replace(/'/g, "%27");
+		};
 
-body.innerHTML = escapeHTML(plainText).replace(urlRegex, (url) => {
-	const safeURL = escapeHTML(url);
-	return `<a href="${safeURL}" target="_blank" rel="noopener noreferrer">${safeURL}</a>`;
-});
+		body.innerHTML = doc.documentElement.innerHTML.replace(urlRegex, (url) => {
+			const safeURL = escapeURL(url);
+			return `<a href="${safeURL}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+		});
 
                 let editedTag;
                 if (message.edited) {
