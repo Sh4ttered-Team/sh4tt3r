@@ -31,7 +31,6 @@
             <img draggable="false" id="pfp">
             <h2 id="username"></h2>
             <script type="module">
-                alert(localStorage.setItem('settings', "{}"))
                 const profile = await FDB("profiles");
                 const pfp = profile[0].pfp;
                 if (pfp != null && pfp.length > 8) {
