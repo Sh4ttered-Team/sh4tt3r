@@ -10,13 +10,28 @@ if (window.self !== window.top) {
 }
 export let settings;
 
-try {
-	settings = JSON.parse(localStorage.getItem('settings')) || {};
-} catch (e) {
-	console.error("Error parsing settings from localStorage, resetting to default.", e);
-	settings = {};
-	localStorage.setItem('settings', JSON.stringify(settings));
+function parseSettings(jsonString) {
+	try {
+		return JSON.parse(jsonString);
+	} catch (e) {
+		console.warn("Initial JSON parsing failed. Attempting recovery...", e);
+		let fixedString = jsonString
+			.replace(/,\s*}/g, '}')
+			.replace(/,\s*]/g, ']')
+			.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2":');
+
+		try {
+			return JSON.parse(fixedString);
+		} catch (secondError) {
+			console.error("JSON recovery failed. Resetting to default settings.", secondError);
+			return {};
+		}
+	}
 }
+
+let rawSettings = localStorage.getItem('settings');
+settings = parseSettings(rawSettings) || {};
+localStorage.setItem('settings', JSON.stringify(settings));
 
 if (!ThemeBypass) {
 	if (settings['theme']) {
