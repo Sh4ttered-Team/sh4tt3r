@@ -8,6 +8,7 @@ const ThemeBypass = checkForTag("theme-bypass");
 if (window.self !== window.top) {
 	window.isCloaked = true;
 }
+loadConsole()
 export let settings;
 
 if (!localStorage.getItem('settings')) {
