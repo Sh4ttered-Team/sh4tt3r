@@ -984,22 +984,25 @@ async function loadUsers() {
                     }
                 messageDiv.appendChild(userInfoDiv);
                 const body = document.createElement('p');
-		var doc = message.text//new DOMParser().parseFromString(message.text, 'text/html');
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(https?:\/\/[^\s]+)/g;
-		const parts = doc/*.documentElement.textContent*/.split(urlRegex);
+		const parts = message.text.split(urlRegex);
 
 		parts.forEach((part) => {
-			if (urlRegex.test(part)) {
-				const link = document.createElement('a');
-				link.href = part.replace(/"/g, "%22").replace(/'/g, "%27");
-				link.target = "_blank";
-				link.rel = "noopener noreferrer";
-				link.textContent = part;
-				fragment.appendChild(link);
-			} else {
-				fragment.appendChild(document.createTextNode(part));
-			}
+ 		   if (urlRegex.test(part)) {
+  		      const link = document.createElement('a');
+  		      link.href = part.replace(/"/g, "%22").replace(/'/g, "%27");
+  		      link.target = "_blank";
+   		     link.rel = "noopener noreferrer";
+   		     link.textContent = part;
+   		     fragment.appendChild(link);
+  		  } else {
+        		const tempDiv = document.createElement('div');
+        		tempDiv.innerHTML = part;  // Direct HTML embedding.
+        		while (tempDiv.firstChild) {
+         	   	    fragment.appendChild(tempDiv.firstChild);
+        		   }
+    			}
 		});
 		body.appendChild(fragment);
                 let editedTag;
