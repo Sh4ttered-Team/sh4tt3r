@@ -53,7 +53,10 @@ async function FDB(table) {
 async function FICS() {
   //Fetch Internet Connection Status, pretty much just checks if you can access the internet
   try {
-    await UF("https://www.google.com", { mode: "no-cors" });
+    let response = await UF("https://www.google.com", { mode: "no-cors" });
+    if(!response) {
+      return false;
+    }
     return true;
   } catch (e) {
     return false;
