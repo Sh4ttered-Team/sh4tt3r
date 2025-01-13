@@ -111,17 +111,6 @@
 		async function LoadSubmenus() {
 			const menus = await FFFF("shattered-team/new-shatter", subfolder, "file");
 			if (menus == null) {
-				if (document.getElementById("retry_button") == null) {
-					const retry_button = document.createElement("button");
-
-					retry_button.className = "vbutton";
-					retry_button.id = "retry_button";
-					retry_button.textContent = "Retry";
-					retry_button.onclick = OnRetry;
-
-					document.body.appendChild(retry_button);
-				}
-
 				if (document.getElementById("wifi-txt") == null) {
 					const no_internet_txt = document.createElement("h1");
 
@@ -129,7 +118,17 @@
 					no_internet_txt.id = "wifi-txt";
 					no_internet_txt.textContent = "Failed to get web data";
 
-					document.body.appendChild(no_internet_txt);
+					document.querySelector('.menu-container').appendChild(no_internet_txt);
+				}
+				if (document.getElementById("retry_button") == null) {
+					const retry_button = document.createElement("button");
+
+					retry_button.className = "c-button";
+					retry_button.id = "retry_button";
+					retry_button.textContent = "Retry";
+					retry_button.onclick = OnRetry;
+
+					document.querySelector('.menu-container').appendChild(retry_button);
 				}
 				window.hideLoadingScreen();
 			} else {
