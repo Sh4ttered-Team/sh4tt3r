@@ -57,7 +57,7 @@ async function FICS() {
   }
 
   try {
-    let response = await fetch("https://www.google.com", { method: "HEAD" });
+    let response = await fetch("https://www.cloudflare.com/cdn-cgi/trace");
     if (response.ok) {
       return true;
     } else {
