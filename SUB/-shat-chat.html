@@ -834,8 +834,8 @@ async function loadUsers() {
                                     dropdown_cache.remove();
                                     dropdown_cache = null;
                                     messageDiv.style.backgroundColor = 'var(--hover-color1)';
-                                    // var doc = new DOMParser().parseFromString(message.text, 'text/html');
-                                    const originalText = message.text//doc.documentElement.textContent;
+                                    var doc = new DOMParser().parseFromString(message.text, 'text/html');
+                                    const originalText = doc.documentElement.textContent;
                                     inputField.value = originalText;
                                     inputField.focus();
 
@@ -984,7 +984,7 @@ async function loadUsers() {
                     }
                 messageDiv.appendChild(userInfoDiv);
                 const body = document.createElement('p');
-		var doc = new DOMParser().parseFromString(message.text, 'text/html');
+		var doc = message.text//new DOMParser().parseFromString(message.text, 'text/html');
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(https?:\/\/[^\s]+)/g;
 		const parts = doc.documentElement.textContent.split(urlRegex);
