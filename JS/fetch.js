@@ -54,6 +54,7 @@ async function FICS() {
   //Fetch Internet Connection Status, pretty much just checks if you can access the internet
   try {
     let response = await UF("https://www.google.com", { mode: "no-cors" });
+    console.log(response);
     if(!response) {
       return false;
     }
