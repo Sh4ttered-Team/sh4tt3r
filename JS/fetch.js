@@ -50,15 +50,19 @@ async function FDB(table) {
     return data;
 }
 
-async function FICS() {
   //Fetch Internet Connection Status, pretty much just checks if you can access the internet
+async function FICS() {
+  if (!navigator.onLine) {
+    return false;
+  }
+
   try {
-    let response = await UF("https://www.google.com", { mode: "no-cors" });
-    console.log(response);
-    if(!response) {
+    let response = await fetch("https://www.google.com", { method: "HEAD" });
+    if (response.ok) {
+      return true;
+    } else {
       return false;
     }
-    return true;
   } catch (e) {
     return false;
   }
