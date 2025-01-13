@@ -93,6 +93,7 @@
 		const subfolder = "SUB";
 
 		async function OnRetry() {
+			window.showLoadingScreen();
 			const network_check = await FICS();
 			if (network_check) {
 				if (document.getElementById("wifi-txt") != null) {
@@ -106,6 +107,7 @@
 				document.getElementById("wifi-txt").textContent =
 					"No Internet Connection!";
 			}
+			window.hideLoadingScreen();
 		}
 
 		async function LoadSubmenus() {
