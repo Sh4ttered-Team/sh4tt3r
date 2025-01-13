@@ -834,8 +834,8 @@ async function loadUsers() {
                                     dropdown_cache.remove();
                                     dropdown_cache = null;
                                     messageDiv.style.backgroundColor = 'var(--hover-color1)';
-                                    var doc = new DOMParser().parseFromString(message.text, 'text/html');
-                                    const originalText = doc.documentElement.textContent;
+                                    // var doc = new DOMParser().parseFromString(message.text, 'text/html');
+                                    const originalText = message.text//doc.documentElement.textContent;
                                     inputField.value = originalText;
                                     inputField.focus();
 
