@@ -987,7 +987,7 @@ async function loadUsers() {
 		var doc = message.text//new DOMParser().parseFromString(message.text, 'text/html');
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(https?:\/\/[^\s]+)/g;
-		const parts = doc.documentElement.textContent.split(urlRegex);
+		const parts = doc./*documentElement.textContent*/.split(urlRegex);
 
 		parts.forEach((part) => {
 			if (urlRegex.test(part)) {
