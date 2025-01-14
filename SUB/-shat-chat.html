@@ -1322,7 +1322,7 @@ function updateOnlineUsers(presenceState) {
 	user: userId,
 	online_at: new Date().toISOString(),
     }
-    const presenceTrackStatus = await chanel.track(userStatus)
+    const presenceTrackStatus = await channel.track(userStatus)
     console.log(presenceTrackStatus)
     const users = Object.values(presenceState).flatMap(userPresences => userPresences.map(p => p.user));
     console.group(`updateOnlineUsers called`);
