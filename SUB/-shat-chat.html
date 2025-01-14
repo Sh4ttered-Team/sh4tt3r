@@ -596,6 +596,21 @@ async function loadUsers() {
     } else {
         console.warn('No users were loaded into bufferDiv.');
     }
+	let roomTitle = document.querySelector('.room-title');
+	if (!roomTitle) {
+	roomTitle = document.createElement('div');
+	roomTitle.className = 'room-title';
+	const roomTitleText = document.createElement('h2');
+	roomTitleText.innerHTML = room.roomName;
+	roomTitle.appendChild(roomTitleText);
+	if (clientUser.admin || userId == room_cache.roomOwner) {
+		const roomSettings = document.createElement('img');
+		roomSettings.className = 'room-settings';
+		roomSettings.src = '../UI/settings-icon.svg';
+		roomTitle.appendChild(roomSettings);
+	}
+	}
+	usersDiv.insertBefore(roomTitle, usersDiv.firstChild);
     function toggleUserDivVisibility() {
         const isVisible = usersDiv.style.right === '0px';
         usersDiv.style.right = isVisible ? `-${window.getComputedStyle(usersDiv).width}` : '0';
