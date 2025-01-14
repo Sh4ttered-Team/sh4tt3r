@@ -1287,15 +1287,14 @@ let channel = supabaseClient.channel(`room-${currentRoomId}`, {
         },
     },
 });
-		
+
+subscribeToChannel();
 const userStatus = {
 	user: userId,
 	online_at: new Date().toISOString(),
 }
 const presenceTrackStatus = await channel.track(userStatus)
 console.log(presenceTrackStatus)
-
-subscribeToChannel();
 
 function subscribeToChannel() {
     channel.subscribe((status) => {
