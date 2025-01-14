@@ -63,6 +63,7 @@
     flex-direction: row;
     margin-right: 1vw;
     width: 100%;
+    align-items: center;
     padding-top: 1vh;
     padding-bottom: 1vh;
 }
