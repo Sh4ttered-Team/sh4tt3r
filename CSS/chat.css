@@ -277,6 +277,7 @@
     margin: 0;
     height: 93vh;
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     z-index: 1;
