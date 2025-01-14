@@ -197,7 +197,7 @@
     flex-direction: column;
 }
 
-.join input {
+.overlay input {
     background-color: var(--color-minor);
     border-style: solid;
     border: 6px solid var(--color-accent);
@@ -211,30 +211,30 @@
     color: var(--color-text-light);
 }
 
-.join input::placeholder {
+.overlay input::placeholder {
     color: var(--color-text-dark);
     transition: color 0.3s ease;
 }
 
-.join input:hover::placeholder {
+.overlay input:hover::placeholder {
     color: var(--color-text-light);
 }
 
-.join input::-moz-placeholder {
+.overlay input::-moz-placeholder {
     color: var(--color-text-dark);
     opacity: 1;
     transition: color 0.3s ease;
 }
 
-.join input:hover::-moz-placeholder {
+.overlay input:hover::-moz-placeholder {
     color: var(--color-text-light);
 }
 
-.join input:focus::placeholder {
+.overlay input:focus::placeholder {
     color: var(--color-text-light);
 }
 
-.join input:focus::-moz-placeholder {
+.overlay input:focus::-moz-placeholder {
     color: var(--color-text-light);
 }
 
