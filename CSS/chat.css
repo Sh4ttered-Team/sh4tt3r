@@ -40,9 +40,10 @@
     background-color: var(--color-text-light);
     mask: url('../UI/settings-icon.svg') no-repeat center / contain;
     position: absolute;
-    width: 4vw;
+    width: 2vw;
     height: 4vh;
     right: 1vw;
+    cursor: pointer;
 }
 .room-settings:hover {
     background-color: var(--color-text-dark);
