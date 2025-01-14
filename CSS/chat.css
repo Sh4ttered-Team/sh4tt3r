@@ -413,6 +413,10 @@
     position: absolute;
 }
 
+.user-menu-button {
+    position: auto;
+}
+
 .menu-button:hover, .user-menu-button:hover {
     color: var(--color-text-dark);
 }
