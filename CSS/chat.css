@@ -372,7 +372,7 @@
     overflow: hidden;
 }
 
-.createOptions {
+.createOptions, .settingsOptions {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -380,11 +380,11 @@
     width: 29vw;
 }
 
-#createPrivate {
+#createPrivate, #settingsPrivate {
     width: 2vw;
 }
 
-#createMaxUsers {
+#createMaxUsers, #settingsMaxUsers {
     width: 6vw;
     font-size: xx-large;
 }
