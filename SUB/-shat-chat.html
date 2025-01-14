@@ -654,7 +654,7 @@ async function loadUsers() {
                             <input id="settingsPassword" placeholder="Password(Current hidden)">
                             <div class="settingsOptions">
                             <h2 id="privateText">Private</h2>
-                            <input id="settingsPrivate" value="${room.isPrivate}" type="checkbox">
+                            <input id="settingsPrivate" value="${room.isPrivate ? 'on' : 'off'}" type="checkbox">
                             <h2 id="maxUsersText">Max users</h2>
                             <input id="settingsMaxUsers" value="${room.maxUsers}" type="number" min="2" max="50">
                             </div>
