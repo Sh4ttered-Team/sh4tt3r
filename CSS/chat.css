@@ -401,7 +401,7 @@
     font-size: xx-large;
 }
 
-.menu-button {
+.menu-button, .user-menu-button {
     background-color: rgba(0, 0, 0, 0);
     color: var(--color-text-light);
     font-weight: bolder;
@@ -413,7 +413,7 @@
     position: absolute;
 }
 
-.menu-button:hover {
+.menu-button:hover, .user-menu-button:hover {
     color: var(--color-text-dark);
 }
 
