@@ -291,6 +291,9 @@
     position: relative;
     z-index: 2;
     background-color: var(--color-major-lesser);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .message img {
@@ -327,6 +330,8 @@
     -ms-user-select: text;
     position: relative;
     font-size: x-large;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .profile-info {
