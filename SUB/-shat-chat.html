@@ -603,6 +603,136 @@ async function loadUsers() {
 	crown.title = 'Room owner'
         userDiv.appendChild(crown);
 	}
+	if (userId != user_id && !user.admin) {
+	const menuButton = document.createElement('button');
+                    menuButton.className = 'user-menu-button';
+                    menuButton.innerHTML = '&#x22EE;'; // vertical dots (⋮)
+
+                    menuButton.onclick = (event) => {
+                        event.stopPropagation();
+                        closeAllDropdowns();
+                        toggleDropdown(menuButton, user);
+                    };
+
+                    userInfoDiv.appendChild(menuButton);
+
+                    function toggleDropdown(button, user) {
+                        if (dropdown_cache) {
+                            dropdown_cache.remove();
+                            dropdown_cache = null;
+                        } else {
+                            let dropdown = document.createElement('div');
+                            dropdown.className = 'dropdown-content';
+				
+                	    if (clientUser.admin || userId == room.roomOwner) {
+                            const deleteButton = document.createElement('button');
+                            deleteButton.innerText = 'Kick User';
+                            deleteButton.onclick = () => {
+                                dropdown_cache.remove();
+                                dropdown_cache = null;
+                                overlay.innerHTML = `
+                                    <div class="overlay-content">
+                                        <h2>Are you sure you want to kick this user?</h2>
+                                        <button id="confirmDelete">Yes</button>
+                                        <button id="cancelDelete">No</button>
+                                    </div>
+                                `;
+                                overlay.style.visibility = 'visible';
+                                overlay.style.opacity = '1';
+
+                                document.getElementById('confirmDelete').onclick = () => {
+                                    kickUser(user_id);
+                                    if (cancelButton_cache) {
+                                        cancelButton_cache.click();
+                                    }
+                                    hideOverlay();
+                                };
+
+                                document.getElementById('cancelDelete').onclick = hideOverlay;
+
+                                function hideOverlay() {
+                                    overlay.style.opacity = '0';
+                                    overlay.style.visibility = 'hidden';
+                                }
+                            };
+			const banButton = document.createElement('button');
+                            banButton.innerText = 'Ban User';
+                            banButton.onclick = () => {
+                                dropdown_cache.remove();
+                                dropdown_cache = null;
+                                overlay.innerHTML = `
+                                    <div class="overlay-content">
+                                        <h2>Are you sure you want to ban this user? (this is permanent)</h2>
+                                        <button id="confirmDelete">Yes</button>
+                                        <button id="cancelDelete">No</button>
+                                    </div>
+                                `;
+                                overlay.style.visibility = 'visible';
+                                overlay.style.opacity = '1';
+
+                                document.getElementById('confirmDelete').onclick = () => {
+                                    banUser(user_id);
+                                    if (cancelButton_cache) {
+                                        cancelButton_cache.click();
+                                    }
+                                    hideOverlay();
+                                };
+
+                                document.getElementById('cancelDelete').onclick = hideOverlay;
+
+                                function hideOverlay() {
+                                    overlay.style.opacity = '0';
+                                    overlay.style.visibility = 'hidden';
+                                }
+                            };
+                            dropdown.appendChild(deleteButton);
+			    dropdown.appendChild(banButton);
+			    }
+                            const reportUserButton = document.createElement('button');
+                            reportUserButton.innerText = 'Report User';
+                            reportUserButton.onclick = () => {
+                                dropdown_cache.remove();
+                                dropdown_cache = null;
+                                overlay.innerHTML = `
+                                    <div class="overlay-content">
+                                        <h2>Report User</h2>
+                                        <textarea id="reportUserReason" placeholder="Reason for reporting"></textarea>
+                                        <button id="submitUserReport">Submit</button>
+                                        <button id="cancelUserReport">Cancel</button>
+                                    </div>
+                                `;
+                                overlay.style.visibility = 'visible';
+                                overlay.style.opacity = '1';
+
+                                document.getElementById('submitUserReport').onclick = () => {
+                                    const reason = document.getElementById('reportUserReason').value;
+                                    if (reason.trim() === '') {
+                                        alert('Please provide a reason for reporting');
+                                        return;
+                                    }
+                                    report(user_id, reason, "user");
+                                    hideOverlay();
+                                };
+
+                                document.getElementById('cancelUserReport').onclick = hideOverlay;
+
+                                function hideOverlay() {
+                                    overlay.style.opacity = '0';
+                                    setTimeout(() => overlay.style.visibility = 'hidden', 300);
+                                }
+                            };
+                            dropdown.appendChild(reportUserButton);
+
+                            document.querySelector('.home_menu').appendChild(dropdown);
+                            const buttonRect = button.getBoundingClientRect();
+                            dropdown.style.position = 'absolute';
+                            dropdown.style.top = `${buttonRect.bottom}px`;
+                            dropdown.style.left = `${buttonRect.left}px`;
+
+                            dropdown_cache = dropdown;
+                        }
+                    }
+	}
 
         userDiv.style.filter = user_statuses.includes(user_id) ? 'none' : 'grayscale(40%) brightness(60%)';
 
