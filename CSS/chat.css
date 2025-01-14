@@ -33,12 +33,11 @@
 .room-title {
     display: flex;
     flex-direction: row;
-/*     justify-content: center; */
     align-items: center;
 }
 .room-title img {
     position: absolute;
-    right: 0;
+    right: 1vw;
 }
 
 .user {
