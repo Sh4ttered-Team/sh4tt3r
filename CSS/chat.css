@@ -37,7 +37,7 @@
     height: fit-content;
 }
 .room-title img {
-    position: relative;
+    position: absolute;
     right: 1vw;
 }
 
