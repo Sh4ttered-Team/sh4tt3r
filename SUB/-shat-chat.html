@@ -727,7 +727,7 @@ async function loadUsers() {
                             const buttonRect = button.getBoundingClientRect();
                             dropdown.style.position = 'absolute';
                             dropdown.style.top = `${buttonRect.bottom}px`;
-                            dropdown.style.left = `${buttonRect.right}px`;
+                            dropdown.style.left = `${buttonRect.left - dropdown.offsetWidth}px`;
 
                             dropdown_cache = dropdown;
                         }
