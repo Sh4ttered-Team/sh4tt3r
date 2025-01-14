@@ -592,23 +592,6 @@ async function loadUsers() {
             hideButton.classList.add('hide-button-outside');
             document.querySelector('.profile').appendChild(hideButton);
         }
-	function update_title() {
-	let roomTitle = document.querySelector('.room-title');
-	if (!roomTitle) {
-	roomTitle = document.createElement('div');
-	roomTitle.className = 'room-title';
-	const roomTitleText = document.createElement('h2');
-	roomTitleText.innerHTML = room.roomName;
-	roomTitle.appendChild(roomTitleText);
-	if (clientUser.admin || userId == room_cache.roomOwner) {
-		const roomSettings = document.createElement('img');
-		roomSettings.className = 'room-settings';
-		roomSettings.src = '../UI/settings-icon.svg';
-		roomTitle.appendChild(roomSettings);
-	}
-	}
-	usersDiv.insertBefore(roomTitle, usersDiv.firstChild);
-	}
 
     } else {
         console.warn('No users were loaded into bufferDiv.');
@@ -641,7 +624,21 @@ async function loadUsers() {
             usersDiv.insertBefore(hideButton, usersDiv.firstChild);
             usersDiv.style.right = '0';
         }
-	    update_title();
+	let roomTitle = document.querySelector('.room-title');
+	if (!roomTitle) {
+	roomTitle = document.createElement('div');
+	roomTitle.className = 'room-title';
+	const roomTitleText = document.createElement('h2');
+	roomTitleText.innerHTML = room.roomName;
+	roomTitle.appendChild(roomTitleText);
+	if (clientUser.admin || userId == room_cache.roomOwner) {
+		const roomSettings = document.createElement('img');
+		roomSettings.className = 'room-settings';
+		roomSettings.src = '../UI/settings-icon.svg';
+		roomTitle.appendChild(roomSettings);
+	}
+	}
+	usersDiv.insertBefore(roomTitle, usersDiv.firstChild);
     }
 }
 
