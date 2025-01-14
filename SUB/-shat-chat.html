@@ -898,6 +898,7 @@ async function loadUsers() {
                     return;
                 }
                 try {
+		    console.log('981')
                     window.showLoadingScreen()
                     await api({
                         "userId": `${userId}`,
@@ -1087,6 +1088,7 @@ async function loadUsers() {
                                                 return;
                                             }
                                             try {
+						console.log('1089')
                                                 window.showLoadingScreen()
                                                 await api({
                                                     "userId": `${userId}`,
