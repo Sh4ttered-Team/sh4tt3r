@@ -42,7 +42,7 @@
     position: absolute;
     width: 2vw;
     height: 4vh;
-    right: 1vw;
+    right: 0.5vw;
     cursor: pointer;
 }
 .room-settings:hover {
