@@ -326,7 +326,6 @@
     -moz-user-select: text;
     -ms-user-select: text;
     position: relative;
-    z-index: 3;
     font-size: x-large;
 }
 
