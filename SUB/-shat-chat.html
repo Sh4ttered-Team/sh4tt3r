@@ -604,17 +604,10 @@ async function loadUsers() {
 	roomTitleText.innerHTML = room.roomName;
 	roomTitle.appendChild(roomTitleText);
 	if (clientUser.admin || userId == room_cache.roomOwner) {
-		const roomSettings = document.createElement('img');
+		const roomSettings = document.createElement('div');
 		roomSettings.className = 'room-settings';
-		roomSettings.src = '../UI/settings-icon.svg';
 		const overlay = document.getElementById('overlay');
             	const closeOverlay = document.getElementById('closeOverlay');
-		roomSettings.onmouseover = () => {
-			roomSettings.src = '../UI/settings-icon-hover.svg';
-		}
-		roomSettings.onmouseout = () => {
-			roomSettings.src = '../UI/settings-icon.svg';
-		}
 		roomSettings.onclick = () => {
 			overlay.innerHTML = `
                                     <div class="overlay-content">
