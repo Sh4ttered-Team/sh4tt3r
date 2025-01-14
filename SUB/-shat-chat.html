@@ -880,17 +880,16 @@ async function loadUsers() {
                 sendButton = document.createElement('button');
                 sendButton.innerText = 'Send';
                 sendButton.className = 'send-button';
-                
+                inputField.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    sendButton.click();
+                }
+            	});
                 inputDiv.appendChild(inputField);
                 inputDiv.appendChild(sendButton);
 
                 chatDiv.parentElement.appendChild(inputDiv);
             }
-            inputField.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter') {
-                    sendButton.click();
-                }
-            });
             sendButton.onclick = async () => {
                 const messageText = inputField.value;
                 if (messageText.trim() === '') {
@@ -898,7 +897,7 @@ async function loadUsers() {
                     return;
                 }
                 try {
-		    console.log('981')
+		    console.log('message send: sendbutton')
                     window.showLoadingScreen()
                     await api({
                         "userId": `${userId}`,
@@ -1088,7 +1087,7 @@ async function loadUsers() {
                                                 return;
                                             }
                                             try {
-						console.log('1089')
+						console.log('message send: edit')
                                                 window.showLoadingScreen()
                                                 await api({
                                                     "userId": `${userId}`,
