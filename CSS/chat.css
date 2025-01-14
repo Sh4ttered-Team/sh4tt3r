@@ -37,6 +37,7 @@
     height: fit-content;
 }
 .room-title img {
+    background-image: url('../UI/settings-icon.svg');
     background-color: var(--color-text-light);
     mask: url('../UI/settings-icon.svg');
     position: absolute;
