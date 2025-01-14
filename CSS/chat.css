@@ -38,7 +38,7 @@
 }
 .room-settings {
     background-color: var(--color-text-light);
-    mask: url('../UI/settings-icon.svg');
+    mask: url('../UI/settings-icon.svg') no-repeat center / contain;
     position: absolute;
     width: 4vw;
     height: 4vh;
