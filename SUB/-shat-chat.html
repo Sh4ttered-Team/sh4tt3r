@@ -732,6 +732,12 @@ async function loadUsers() {
                             dropdown_cache = dropdown;
                         }
                     }
+		function closeAllDropdowns() {
+                        document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+                            dropdown.remove();
+                        });
+                        dropdown_cache = null;
+                    }
 	}
 
         userDiv.style.filter = user_statuses.includes(user_id) ? 'none' : 'grayscale(40%) brightness(60%)';
