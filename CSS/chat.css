@@ -401,7 +401,7 @@
     font-size: xx-large;
 }
 
-.menu-button, .user-menu-button {
+.menu-button {
     background-color: rgba(0, 0, 0, 0);
     color: var(--color-text-light);
     font-weight: bolder;
@@ -414,7 +414,12 @@
 }
 
 .user-menu-button {
-    position: auto;
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--color-text-light);
+    font-weight: bolder;
+    font-size: xx-large;
+    border: none;
+    cursor: pointer;
 }
 
 .menu-button:hover, .user-menu-button:hover {
