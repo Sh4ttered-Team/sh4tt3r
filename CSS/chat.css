@@ -56,6 +56,7 @@
     mask: url('../UI/crown.svg') no-repeat center / contain;
     width: 2vw;
     height: 4vh;
+    margin-left: 0.6vw;
     filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.6));
 }
 
@@ -72,7 +73,6 @@
 
 .user h2 {
     margin-left: 1vw;
-    margin-right: 0.3vw;
 }
 
 .users {
