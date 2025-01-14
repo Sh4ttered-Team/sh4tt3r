@@ -33,8 +33,10 @@
 .room-title {
     display: flex;
     flex-direction: row;
+/*     justify-content: center; */
+    align-items: center;
 }
-.room-title img, .room-title h2 {
+.room-title img {
     position: absolute;
     right: 0;
 }
