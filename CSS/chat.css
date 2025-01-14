@@ -48,6 +48,14 @@
 .room-settings:hover {
     background-color: var(--color-text-dark);
 }
+.room-owner {
+    background-color: var(--color-first);
+    mask: url('../UI/crown.svg') no-repeat center / contain;
+    position: absolute;
+    width: 2vw;
+    height: 4vh;
+    right: 0.5vw;
+}
 
 .user {
     margin-bottom: 2vh;
