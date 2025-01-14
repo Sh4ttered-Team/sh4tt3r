@@ -36,6 +36,9 @@
     align-items: center;
     height: fit-content;
 }
+.room-title h2 {
+    margin-left: 0.5vw;
+}
 .room-settings {
     background-color: var(--color-text-light);
     mask: url('../UI/settings-icon.svg') no-repeat center / contain;
