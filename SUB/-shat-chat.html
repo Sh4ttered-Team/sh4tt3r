@@ -607,6 +607,28 @@ async function loadUsers() {
 		const roomSettings = document.createElement('img');
 		roomSettings.className = 'room-settings';
 		roomSettings.src = '../UI/settings-icon.svg';
+		const overlay = document.getElementById('overlay');
+            	const closeOverlay = document.getElementById('closeOverlay');
+		roomSettings.onclick = () => {
+			overlay.innerHTML = `
+                                    <div class="overlay-content">
+                        <h2>Room Settings</h2>
+                        <form class="settings">
+                            <input id="settingsName" placeholder="Room name">
+                            <input id="settingsPassword" placeholder="Password">
+                            <div class="settingsOptions">
+                            <h2 id="privateText">Private</h2>
+                            <input id="settingsPrivate" value="off" type="checkbox">
+                            <h2 id="maxUsersText">Max users</h2>
+                            <input id="settingsMaxUsers" value="10" type="number" min="2" max="50">
+                            </div>
+                            <button type="submit" id="settingsSubmit">Submit</button>
+                        </form>
+                    </div>
+                                `;
+                        overlay.style.visibility = 'visible';
+                        overlay.style.opacity = '1';
+		}
 		roomTitle.appendChild(roomSettings);
 	}
 	}
