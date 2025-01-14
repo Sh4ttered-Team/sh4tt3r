@@ -173,7 +173,44 @@
                     console.error("Error creating room:", error);
                     alert("Error creating room =(");
                 }
-            }
+            } else if (event.target && event.target.id === 'settingsSubmit') {
+		event.preventDefault()
+                const name = document.querySelector("#settingsName").value;
+                const password = document.querySelector("#settingsPassword").value;
+                const isPrivate = document.querySelector("#settingsPrivate").checked;
+                const maxUsers = document.querySelector("#settingsMaxUsers").value;
+                if (!name) {
+                    alert('A room name is required')
+                    return
+                }
+
+                try {
+                    window.showLoadingScreen();
+                    const response = await api({
+                        "userId": `${userId}`,
+                        "token": `${token}`,
+                        "roomName": `${name}`,
+                        "password": `${password}`,
+                        "isPrivate": `${isPrivate}`,
+                        "maxUsers": `${maxUsers}`
+                    }, auth, "editRoom");
+
+                    const state = JSON.parse(response);
+
+                    switch (state.message) {
+                        case "Room edited":
+                            break;
+                        default:
+                            alert("An unknown error occurred, please try again(room name must be unique)");
+                            break;
+                    }
+                    window.hideLoadingScreen();
+                } catch (error) {
+                    window.hideLoadingScreen();
+                    console.error("Error creating room:", error);
+                    alert("Error creating room =(");
+                }
+	    }
         });
         async function loadRooms() {
             let bufferDiv = document.getElementById('bufferDiv');
@@ -613,13 +650,13 @@ async function loadUsers() {
                                     <div class="overlay-content">
                         <h2>Room Settings</h2>
                         <form class="join">
-                            <input id="settingsName" placeholder="Room name">
-                            <input id="settingsPassword" placeholder="Password">
+                            <input id="settingsName" placeholder="Room name" value="${room.roomName}">
+                            <input id="settingsPassword" placeholder="Password(Current hidden)">
                             <div class="settingsOptions">
                             <h2 id="privateText">Private</h2>
-                            <input id="settingsPrivate" value="off" type="checkbox">
+                            <input id="settingsPrivate" value="${room.isPrivate}" type="checkbox">
                             <h2 id="maxUsersText">Max users</h2>
-                            <input id="settingsMaxUsers" value="10" type="number" min="2" max="50">
+                            <input id="settingsMaxUsers" value="${room.maxUsers}" type="number" min="2" max="50">
                             </div>
                             <button type="submit" id="settingsSubmit">Submit</button>
                         </form>
