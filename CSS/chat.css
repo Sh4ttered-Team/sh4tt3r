@@ -37,7 +37,6 @@
     height: fit-content;
 }
 .room-settings {
-    background-image: url('../UI/settings-icon.svg');
     background-color: var(--color-text-light);
     mask: url('../UI/settings-icon.svg');
     position: absolute;
