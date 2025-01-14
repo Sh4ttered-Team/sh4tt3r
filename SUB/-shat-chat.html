@@ -597,6 +597,12 @@ async function loadUsers() {
             ? "var(--color-uninstall)"
             : "var(--text-color1)";
         userDiv.appendChild(username);
+	if (user_id == room.roomOwner) {
+	const crown = document.createElement('div');
+	crown.className = 'room-owner'
+	crown.title = 'Room owner'
+        userDiv.appendChild(crown);
+	}
 
         userDiv.style.filter = user_statuses.includes(user_id) ? 'none' : 'grayscale(40%) brightness(60%)';
 
