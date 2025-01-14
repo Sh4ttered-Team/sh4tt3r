@@ -36,14 +36,14 @@
     align-items: center;
     height: fit-content;
 }
-.room-title img {
+.room-settings {
     background-image: url('../UI/settings-icon.svg');
     background-color: var(--color-text-light);
     mask: url('../UI/settings-icon.svg');
     position: absolute;
     right: 1vw;
 }
-.room-title img:hover {
+.room-settings:hover {
     background-color: var(--color-text-dark);
 }
 
