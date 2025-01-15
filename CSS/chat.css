@@ -561,7 +561,7 @@
     justify-content: center;
     align-items: center;
 }
-.attach-button {
+.attach-button:hover {
     background-color: var(--color-button-hover);
 }
 
