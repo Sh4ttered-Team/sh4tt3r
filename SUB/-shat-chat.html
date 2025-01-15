@@ -1263,15 +1263,15 @@ document.addEventListener('keydown', function(event) {
    		     link.rel = "noopener noreferrer";
    		     link.textContent = part;
    		     fragment.appendChild(link);
-		     const ogs = require('open-graph-scraper');
-		     ogs({ url: url })
-			  .then((data) => {
-  			    if (data.ogImage) 
-				    const imageEmbed = document.createElement('img');
-				    imageEmbed.src = data.ogImage.url;
-				    body.appendChild(imageEmbed);
-			    }
-			})
+		 //     const ogs = require('open-graph-scraper');
+		 //     ogs({ url: url })
+			//   .then((data) => {
+  	// 		    if (data.ogImage) 
+			// 	    const imageEmbed = document.createElement('img');
+			// 	    imageEmbed.src = data.ogImage.url;
+			// 	    body.appendChild(imageEmbed);
+			//     }
+			// })
   		  } else {
         		const tempDiv = document.createElement('div');
         		tempDiv.innerHTML = part;  // Direct HTML embedding.
