@@ -890,7 +890,7 @@ async function loadUsers() {
 		attachButton = document.createElement('div');
 		attachButton.className = 'attach-button';
 		attachButton.onclick = async() => {
-			let inputElement = document.querySelector('attach-input');
+			let inputElement = document.querySelector('.attach-input');
 			if (!inputElement) {
 			inputElement = document.createElement("input");
 			inputElement.type = 'file';
