@@ -544,6 +544,10 @@
     pointer-events: auto;
 }
 
+.attach-input {
+    display: none;
+}
+
 .overlay button:hover {
     background-color: var(--color-button-hover);
 }
