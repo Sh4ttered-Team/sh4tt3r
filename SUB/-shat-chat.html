@@ -912,13 +912,13 @@ document.addEventListener('keydown', function(event) {
         					const file = files[i];
 						const { data, error } = await bucket.upload(`${currentRoomId}/${file.name}`, file);
 						if (error) {
-          						alert(`Error uploading file: ${error}`);
+          						alert(`Error uploading file: ${error.message}`);
         					} else {
        						   	console.log('File uploaded successfully:', data);
       						}
 					}
 				} catch (error) {
-     					 alert(`Error handling file upload: ${error}`);
+     					 alert(`Error handling file upload: ${error.message}`);
 					}
 				}else {
 					alert('You must select atleast 1 file');
