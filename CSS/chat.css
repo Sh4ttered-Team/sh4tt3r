@@ -556,10 +556,13 @@
     font-size: 1.5em;
     font-weight: bolder;
     color: var(--color-text-light);
-    border: none;
     cursor: pointer;
-    text-align: center;
-    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.attach-button {
+    background-color: var(--color-button-hover);
 }
 
 .overlay button:hover {
