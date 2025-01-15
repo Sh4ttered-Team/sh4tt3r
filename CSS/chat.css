@@ -558,6 +558,8 @@
     color: var(--color-text-light);
     border: none;
     cursor: pointer;
+    justify-content: center;
+    align-items: center;
 }
 
 .overlay button:hover {
