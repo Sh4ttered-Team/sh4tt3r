@@ -893,6 +893,7 @@ async function loadUsers() {
 			let inputElement = document.querySelector('attach-input');
 			if (!inputElement) {
 			inputElement = document.createElement("input");
+			inputElement.type = 'file';
 		    	// inputElement.setAttribute('multiple','');
 		    	inputElement.className = 'attach-input';
 		    	attachButton.appendChild(inputElement);
