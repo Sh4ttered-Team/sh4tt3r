@@ -1257,23 +1257,21 @@ document.addEventListener('keydown', function(event) {
 		parts.forEach((part) => {
  		   if (urlRegex.test(part)) {
   		      const link = document.createElement('a');
-		      var doc = new DOMParser().parseFromString(part, 'text/html');
-		      part = doc.documentElement.textContent;
 		      const url = part.replace(/"/g, "%22").replace(/'/g, "%27")
   		      link.href = url;
   		      link.target = "_blank";
    		     link.rel = "noopener noreferrer";
    		     link.textContent = part;
    		     fragment.appendChild(link);
-		 //     const ogs = require('open-graph-scraper');
-		 //     ogs({ url: url })
-			//   .then((data) => {
-  	// 		    if (data.ogImage) 
-			// 	    const imageEmbed = document.createElement('img');
-			// 	    imageEmbed.src = data.ogImage.url;
-			// 	    body.appendChild(imageEmbed);
-			//     }
-			// })
+		     const ogs = require('open-graph-scraper');
+		     ogs({ url: url })
+			  .then((data) => {
+  			    if (data.ogImage) 
+				    const imageEmbed = document.createElement('img');
+				    imageEmbed.src = data.ogImage.url;
+				    body.appendChild(imageEmbed);
+			    }
+			})
   		  } else {
         		const tempDiv = document.createElement('div');
         		tempDiv.innerHTML = part;  // Direct HTML embedding.
