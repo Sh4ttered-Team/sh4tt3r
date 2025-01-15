@@ -875,8 +875,8 @@ document.addEventListener('keydown', function(event) {
 
             let inputDiv = document.querySelector('.inputDiv');
             let sendButton = document.querySelector('.send-button');
-	    let attachButton = document.querySelector('.attach-button');
-	    let attachButtonText = document.querySelector('.attach-button-text');
+	    // let attachButton = document.querySelector('.attach-button');
+	    // let attachButtonText = document.querySelector('.attach-button-text');
             if (!inputDiv) {
                 inputDiv = document.createElement('div');
                 inputDiv.className = 'inputDiv';
@@ -893,45 +893,45 @@ document.addEventListener('keydown', function(event) {
                     sendButton.click();
                 }
             	});
-		attachButton = document.createElement('div');
-		attachButton.className = 'attach-button';
-		attachButton.onclick = async() => {
-			let inputElement = document.querySelector('.attach-input');
-			if (!inputElement) {
-			inputElement = document.createElement("input");
-			inputElement.type = 'file';
-		    	inputElement.setAttribute('multiple','');
-		    	inputElement.className = 'attach-input';
-		    	document.body.appendChild(inputElement);
-			inputElement.addEventListener("change", async() => {
-				const files = event.target.files;
-				if(files.length > 0) {
-					try {
-					const bucket = supabaseClient.storage.from('chat_content');
-					for (let i = 0; i < files.length; i++) {
-        					const file = files[i];
-						const { data, error } = await bucket.upload(`${currentRoomId}/${file.name}`, file);
-						if (error) {
-          						alert(`Error uploading file: ${error.message}`);
-        					} else {
-       						   	console.log('File uploaded successfully:', data);
-      						}
-					}
-				} catch (error) {
-     					 alert(`Error handling file upload: ${error.message}`);
-					}
-				}else {
-					alert('You must select atleast 1 file');
-				}
-			});
-			}
-			inputElement.click();
-			}
-		attachButtonText = document.createElement('h2');
-		attachButtonText.className = 'attach-button-text';
-		attachButtonText.innerText = '+';
-		attachButton.appendChild(attachButtonText);
-		inputDiv.appendChild(attachButton);
+		// attachButton = document.createElement('div');
+		// attachButton.className = 'attach-button';
+		// attachButton.onclick = async() => {
+		// 	let inputElement = document.querySelector('.attach-input');
+		// 	if (!inputElement) {
+		// 	inputElement = document.createElement("input");
+		// 	inputElement.type = 'file';
+		//     	// inputElement.setAttribute('multiple','');
+		//     	inputElement.className = 'attach-input';
+		//     	document.body.appendChild(inputElement);
+		// 	inputElement.addEventListener("change", async() => {
+		// 		// const files = event.target.files;
+		// 		// if(files.length > 0) {
+		// 			try {
+		// 			const bucket = supabaseClient.storage.from('chat_content');
+		// 			// for (let i = 0; i < files.length; i++) {
+  //       					const file = event.target.files[0]//files[i];
+		// 				const { data, error } = await bucket.upload(`${currentRoomId}/${file.name}`, file);
+		// 				if (error) {
+  //         						alert(`Error uploading file: ${error.message}`);
+  //       					} else {
+  //      						   	console.log('File uploaded successfully:', data);
+  //     						}
+		// 			// }
+		// 		} catch (error) {
+  //    					 alert(`Error handling file upload: ${error.message}`);
+		// 			}
+		// 		// }else {
+		// 		// 	alert('You must select atleast 1 file');
+		// 		// }
+		// 	});
+		// 	}
+		// 	inputElement.click();
+		// 	}
+		// attachButtonText = document.createElement('h2');
+		// attachButtonText.className = 'attach-button-text';
+		// attachButtonText.innerText = '+';
+		// attachButton.appendChild(attachButtonText);
+		// inputDiv.appendChild(attachButton);
                 inputDiv.appendChild(inputField);
                 inputDiv.appendChild(sendButton);
 
