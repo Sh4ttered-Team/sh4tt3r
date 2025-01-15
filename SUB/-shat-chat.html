@@ -1251,13 +1251,9 @@ document.addEventListener('keydown', function(event) {
                 messageDiv.appendChild(userInfoDiv);
                 const body = document.createElement('p');
 		const fragment = document.createDocumentFragment();
-		function parse(text) {
-		const parser = new DOMParser();
-  		const doc = parser.parseFromString(text, 'text/html');
-  		return doc.body.textContent || '';
-		}
 		const urlRegex = /(https?:\/\/(?:www\.)?[a-zA-Z0-9\-._~:/?#[\]@!$&'()*+,;=%]+)/g;
-		const parts = parse(message.text).split(urlRegex);
+		var doc = new DOMParser().parseFromString(message.text, 'text/html');
+		const parts = doc.documentElement.textContent.split(urlRegex);
 
 		parts.forEach((part) => {
  		   if (urlRegex.test(part)) {
