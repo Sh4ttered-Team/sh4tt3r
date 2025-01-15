@@ -861,9 +861,6 @@ document.addEventListener('keydown', function(event) {
 	    let input = document.querySelector('.message-input');
             if (document.activeElement !== input) {
                 input.focus();
-                if (key.length === 1) {
-                    input.value += key;
-                }
             }
         });
         async function loadMessages() {
