@@ -896,7 +896,7 @@ async function loadUsers() {
 			inputElement.type = 'file';
 		    	// inputElement.setAttribute('multiple','');
 		    	inputElement.className = 'attach-input';
-		    	document.appendChild(inputElement);
+		    	document.body.appendChild(inputElement);
 			inputElement.addEventListener("change", async() => {
 				const files = event.target.files;
 				if(files.length > 0) {
