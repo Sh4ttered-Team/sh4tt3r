@@ -1252,12 +1252,13 @@ document.addEventListener('keydown', function(event) {
                 const body = document.createElement('p');
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(https?:\/\/(?:www\.)?[a-zA-Z0-9\-._~:/?#[\]@!$&'()*+,;=%]+)/g;
-		var doc = new DOMParser().parseFromString(message.text, 'text/html');
-		const parts = doc.documentElement.textContent.split(urlRegex);
+		const parts = message.text.split(urlRegex);
 
 		parts.forEach((part) => {
  		   if (urlRegex.test(part)) {
   		      const link = document.createElement('a');
+		      var doc = new DOMParser().parseFromString(part, 'text/html');
+		      part = doc.documentElement.textContent;
 		      const url = part.replace(/"/g, "%22").replace(/'/g, "%27")
   		      link.href = url;
   		      link.target = "_blank";
