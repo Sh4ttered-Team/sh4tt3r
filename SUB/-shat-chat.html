@@ -893,7 +893,7 @@ async function loadUsers() {
 			let inputElement = document.querySelector('attach-input');
 			if (!inputElement) {
 			inputElement = document.getElementById("input");
-		    	inputElement.setAttribute('multiple','');
+		    	// inputElement.setAttribute('multiple','');
 		    	inputElement.className = 'attach-input';
 		    	attachButton.appendChild(inputElement);
 			inputElement.addEventListener("change", async() => {
