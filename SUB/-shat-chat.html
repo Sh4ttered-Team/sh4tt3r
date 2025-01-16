@@ -1281,12 +1281,12 @@ async function loadUsers() {
 				  const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
 				  const data = await response.json();
 				  
-				  console.log(response, data);
+				  console.log(data.html);
 				  const wrapper = document.createElement('div');
 				  wrapper.className = 'embed-player';
 				  var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
+				  fragment.appendChild(wrapper);
 				  wrapper.innerHTML = docHtml.documentElement.textContent;
-				  body.appendChild(wrapper);
 				  console.log(body,wrapper)
 				} catch (e) {
 				  console.error("Error fetching or appending embed content:", e);
