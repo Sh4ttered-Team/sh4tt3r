@@ -863,13 +863,6 @@ async function loadUsers() {
 	usersDiv.insertBefore(roomTitle, usersDiv.firstChild);
     }
 }
-document.addEventListener('keydown', function(event) {
-            const key = event.key;
-	    let input = document.querySelector('.message-input');
-            if (document.activeElement !== input) {
-                input.focus();
-            }
-        });
         async function loadMessages() {
             let chatDiv = document.querySelector('.chat');
             if (!chatDiv) {
@@ -900,6 +893,13 @@ document.addEventListener('keydown', function(event) {
                     sendButton.click();
                 }
             	});
+		document.addEventListener('keydown', function(event) {
+            		const key = event.key;
+	    		let input = document.querySelector('.message-input');
+            		if (document.activeElement !== input) {
+             		   input.focus();
+            		}
+        	});
 		// attachButton = document.createElement('div');
 		// attachButton.className = 'attach-button';
 		// attachButton.onclick = async() => {
