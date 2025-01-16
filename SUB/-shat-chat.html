@@ -1269,29 +1269,17 @@ document.addEventListener('keydown', function(event) {
 			    .then(html => {
 			      const parser = new DOMParser();
 			      const doc = parser.parseFromString(html, 'text/html');
-			      const ogTitle = doc.querySelector('meta[property="og:title"]')?.content;
-			      const ogDescription = doc.querySelector('meta[property="og:description"]')?.content;
+			      // const ogTitle = doc.querySelector('meta[property="og:title"]')?.content;
+			      // const ogDescription = doc.querySelector('meta[property="og:description"]')?.content;
 			      const ogImage = doc.querySelector('meta[property="og:image"]')?.content;
 			
-			      console.log('Open Graph Data:', {
-			        title: ogTitle,
-			        description: ogDescription,
-			        image: ogImage
-			      });
+			      const imageEmbed = document.createElement('img');
+				imageEmbed.src = ogImage;
+				body.appendChild(imageEmbed);
 			    })
 			    .catch(error => {
 			      console.error('Error fetching Open Graph data:', error);
 			    });
-			}
-			//   .then((error, results, response) => {
-			// 	  console.log(results)
-  	// 		    if (data.ogImage) {
-			// 	    const imageEmbed = document.createElement('img');
-			// 	    imageEmbed.src = results.ogImage.url;
-			// 	    body.appendChild(imageEmbed);
-			//     }
-			//     }
-			// })
   		  } else {
         		const tempDiv = document.createElement('div');
         		tempDiv.innerHTML = part;  // Direct HTML embedding.
