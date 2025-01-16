@@ -1255,10 +1255,9 @@ document.addEventListener('keydown', function(event) {
 		const parser = new DOMParser();
 		const decodedText = parser.parseFromString(message.text, 'text/html').documentElement.textContent;
 		const parts = decodedText.split(urlRegex);
-		console.log(user_cache)
+	
 		parts.forEach((part) => {
 	  	if (urlRegex.test(part)) {
-			console.log('url')
 	    		const link = document.createElement('a');
 	    		link.href = part.replace(/"/g, "%22").replace(/'/g, "%27");
 	    		link.target = "_blank";
@@ -1266,13 +1265,13 @@ document.addEventListener('keydown', function(event) {
 	    		link.textContent = part;
 	   		 fragment.appendChild(link);
 	  		} else if (user_cache[message.user].admin){
-			console.log('embed')
 	    		const tempDiv = document.createElement('div');
 	    		tempDiv.innerHTML = part;
-	   		fragment.appendChild(tempDiv);
+	   		 fragment.appendChild(tempDiv);
 	  		} else {
-			console.log('text')
-	    		fragment.textContent = encodeURIComponent(part);
+			const tempDiv = document.createElement('div');
+	    		tempDiv.innerHTML = encodeURIComponent(part);
+	   		fragment.appendChild(tempDiv);
 		}
 		});
 		body.appendChild(fragment);
