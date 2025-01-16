@@ -1281,7 +1281,7 @@ async function loadUsers() {
 				const player = document.createElement('iframe');
 				player.class = 'embed-player';
 				try {
-  					let response = '{}'//await fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`);
+  					let response = await fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`);
   					let data = {}//await response.json();
 					console.log(response);
 					if (data && data.html) {
