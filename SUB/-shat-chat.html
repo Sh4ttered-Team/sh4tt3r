@@ -1253,7 +1253,6 @@ document.addEventListener('keydown', function(event) {
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(?<=^|[\s])((?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
 		const parts = message.text.split(urlRegex).filter(part => part !== "");
-		console.log(parts)
 
 		parts.forEach((part) => {
  		   if (urlRegex.test(part)) {
@@ -1284,7 +1283,7 @@ document.addEventListener('keydown', function(event) {
 			//
 			//I hate cors SO much...
 
-			   if (doc.documentElement.textContent.match(/\b(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/?|(?:v|e(?:mbed)?)\/([a-zA-Z0-9_-]{11}))|youtu\.be\/([a-zA-Z0-9_-]{11}))\b/g)) {
+			   if (/\b(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|v\/|embed\/|e\/|v=)?([a-zA-Z0-9_-]{11})|youtu\.be\/([a-zA-Z0-9_-]{11}))\b/.test(doc.documentElement.textContent)) {
 				const match = doc.documentElement.textContent.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/?|(?:v|e(?:mbed)?)\/([a-zA-Z0-9_-]{11}))|youtu\.be\/([a-zA-Z0-9_-]{11}))\b/);
 				const videoId = match ? (match[1] || match[2]) : null;
 				const playdiv = document.createElement('div');
