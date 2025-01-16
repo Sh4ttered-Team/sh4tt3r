@@ -1264,7 +1264,7 @@ async function loadUsers() {
 		const urlRegex = /(?<=^|[\s])((?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
 		const parts = message.text.split(urlRegex).filter(part => part !== "");
 
-		parts.forEach((part) => {
+		parts.forEach(async (part) => {
  		   if (urlRegex.test(part)) {
   		      const link = document.createElement('a');
 		      var doc = new DOMParser().parseFromString(part, 'text/html');
@@ -1282,7 +1282,7 @@ async function loadUsers() {
 				player.class = 'embed-player';
 				try {
   					let response = await fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`);
-  					let data = {}//await response.json();
+  					let data = await response.json();
 					console.log(response);
 					if (data && data.html) {
   						let html = data.html;
