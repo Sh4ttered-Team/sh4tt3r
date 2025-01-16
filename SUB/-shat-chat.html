@@ -1258,7 +1258,8 @@ document.addEventListener('keydown', function(event) {
 		parts.forEach((part) => {
  		   if (urlRegex.test(part)) {
   		      const link = document.createElement('a');
-  		      link.href = part.replace(/"/g, "%22").replace(/'/g, "%27");
+		      var doc = new DOMParser().parseFromString(part, 'text/html');
+  		      link.href = doc.documentElement.textContent;
   		      link.target = "_blank";
    		     link.rel = "noopener noreferrer";
    		     link.textContent = part;
