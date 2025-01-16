@@ -1282,7 +1282,7 @@ async function loadUsers() {
 				player.class = 'embed-player';
 				try {
   					let response = '{}'//await fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`);
-  					let data = await response.json();
+  					let data = {}//await response.json();
 					console.log(response);
 					if (data && data.html) {
   						let html = data.html;
