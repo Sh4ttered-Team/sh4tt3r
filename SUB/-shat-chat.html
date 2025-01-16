@@ -1251,33 +1251,20 @@ document.addEventListener('keydown', function(event) {
                 messageDiv.appendChild(userInfoDiv);
                 const body = document.createElement('p');
 		const fragment = document.createDocumentFragment();
-		const urlRegex = /(?:https?:&#x2F;&#x2F;|https?:&frasl;&frasl;)(?:www\.)?(?:[a-zA-Z0-9]|&[a-z]+;|&#[0-9]+;|&#x[0-9a-fA-F]+;)+(?:[a-zA-Z0-9\-._~:\/?#[\]@!$&'()*+,;=%]|&[a-z]+;|&#[0-9]+;|&#x[0-9a-fA-F]+;)+/g;
+		const urlRegex = /(https?:\/\/[^\s]+)/g;
 		const parts = message.text.split(urlRegex);
-		console.log(parts)
+
 		parts.forEach((part) => {
  		   if (urlRegex.test(part)) {
   		      const link = document.createElement('a');
-		      const parser = new DOMParser();
-   		      const doc = parser.parseFromString(part, 'text/html');
-		      link.href = doc.body.textContent;
+  		      link.href = part.replace(/"/g, "%22").replace(/'/g, "%27");
   		      link.target = "_blank";
    		     link.rel = "noopener noreferrer";
    		     link.textContent = part;
-			   console.log(link);
    		     fragment.appendChild(link);
-		 //     const ogs = require('open-graph-scraper');
-		 //     ogs({ url: url })
-			//   .then((data) => {
-  	// 		    if (data.ogImage) 
-			// 	    const imageEmbed = document.createElement('img');
-			// 	    imageEmbed.src = data.ogImage.url;
-			// 	    body.appendChild(imageEmbed);
-			//     }
-			// })
   		  } else {
         		const tempDiv = document.createElement('div');
         		tempDiv.innerHTML = part;  // Direct HTML embedding.
-			console.log(tempDiv)
         		while (tempDiv.firstChild) {
          	   	    fragment.appendChild(tempDiv.firstChild);
         		   }
