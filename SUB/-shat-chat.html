@@ -1276,14 +1276,13 @@ async function loadUsers() {
 			if (oembed_providers.length > 0) {
 			const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\./, '').replace(/\/$/, '');
 			const provider = oembed_providers.find((provider) => provider.provider_url.toLowerCase().replace(/^www\./, '').replace(/\/$/, '') === origin);
-			console.log(origin,provider);
 			if(provider) {
 				const player = document.createElement('iframe');
 				player.class = 'embed-player';
 				try {
   					let response = await fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`);
   					let data = await response.json();
-					console.log(response);
+					console.log(response,data);
 					if (data && data.html) {
   						let html = data.html;
 						player.innerHTML = html;
