@@ -1267,6 +1267,7 @@ document.addEventListener('keydown', function(event) {
 		      const ogs = require('open-graph-scraper');
 		      ogs({ url: doc.documentElement.textContent })
 			  .then((data) => {
+				  console.log(data)
   			    if (data.ogImage) 
 				    const imageEmbed = document.createElement('img');
 				    imageEmbed.src = data.ogImage.url;
