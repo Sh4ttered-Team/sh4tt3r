@@ -54,7 +54,6 @@
         <div id="overlay" class="overlay">
         </div>
     </div>
-	<script src="https://www.youtube.com/iframe_api"></script>
     <script type="module">
         window.showLoadingScreen()
         import { api } from "../JS/api.js"
@@ -1287,21 +1286,11 @@ document.addEventListener('keydown', function(event) {
 			   if (/\b(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|v\/|embed\/|e\/|v=)?([a-zA-Z0-9_-]{11})|youtu\.be\/([a-zA-Z0-9_-]{11}))\b/.test(doc.documentElement.textContent)) {
 				const match = doc.documentElement.textContent.match(/\b(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|v\/|embed\/|e\/|v=)?([a-zA-Z0-9_-]{11})|youtu\.be\/([a-zA-Z0-9_-]{11}))\b/);
 				const videoId = match[1] || match[2];
-				const playdiv = document.createElement('div');
-				playdiv.id = 'player';
-				body.appendChild(playdiv);
-				console.log(videoId,playdiv,match)
-			      	var player;
-			      	function onYouTubeIframeAPIReady() {
-					player = new YT.Player('player', {
-					  height: '390',
-					  width: '640',
-					  videoId: videoId,
-				 	 playerVars: {
-				 	   'playsinline': 1
-					}
-				});
-			      }
+				const player = document.createElement('iframe');
+				player.class = 'yt-player';
+				player.src = `https://www.youtube.com/embed/${videoId}?origin=http://example.com`;
+				player.frameborder = '0';
+				body.appendChild(player);
 			}
   		  } else {
         		const tempDiv = document.createElement('div');
