@@ -1265,16 +1265,17 @@ document.addEventListener('keydown', function(event) {
    		     link.rel = "noopener noreferrer";
    		     link.textContent = doc.documentElement.textContent;
    		     fragment.appendChild(link);
-		      openGraphScraperLite({ url: doc.documentElement.textContent })
-			  .then((error, results, response) => {
-				  console.log(results)
-  			  //   if (data.ogImage) {
-				   //  const imageEmbed = document.createElement('img');
-				   //  imageEmbed.src = results.ogImage.url;
-				   //  body.appendChild(imageEmbed);
-			    // }
-			    }
-			})
+		      await openGraphScraperLite({ url: doc.documentElement.textContent })
+			console.log('a')
+			//   .then((error, results, response) => {
+			// 	  console.log(results)
+  	// 		    if (data.ogImage) {
+			// 	    const imageEmbed = document.createElement('img');
+			// 	    imageEmbed.src = results.ogImage.url;
+			// 	    body.appendChild(imageEmbed);
+			//     }
+			//     }
+			// })
   		  } else {
         		const tempDiv = document.createElement('div');
         		tempDiv.innerHTML = part;  // Direct HTML embedding.
