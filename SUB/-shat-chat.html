@@ -1288,8 +1288,8 @@ async function loadUsers() {
 				  wrapper.className = 'embed-player';
 				  var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
 				  wrapper.innerHTML = docHtml.documentElement.textContent;
-				  
-				  fragment.appendChild(wrapper);
+				  body.appendChild(wrapper);
+				  console.log(body,wrapper)
 				} catch (e) {
 				  console.error("Error fetching or appending embed content:", e);
 				}
