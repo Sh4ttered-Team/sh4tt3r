@@ -1252,27 +1252,23 @@ document.addEventListener('keydown', function(event) {
                 const body = document.createElement('p');
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(https?:\/\/[^\s]+)/g;
-		const parser = new DOMParser();
-		const decodedText = parser.parseFromString(message.text, 'text/html').documentElement.textContent;
-		const parts = decodedText.split(urlRegex);
-	
+		const parts = message.text.split(urlRegex);
+
 		parts.forEach((part) => {
-	  	if (urlRegex.test(part)) {
-	    		const link = document.createElement('a');
-	    		link.href = part.replace(/"/g, "%22").replace(/'/g, "%27");
-	    		link.target = "_blank";
-	   		 link.rel = "noopener noreferrer";
-	    		link.textContent = part;
-	   		 fragment.appendChild(link);
-	  		} else if (user_cache[message.user].admin){
-	    		const tempDiv = document.createElement('div');
-	    		tempDiv.innerHTML = part;
-	   		 fragment.appendChild(tempDiv);
-	  		} else {
-			const tempDiv = document.createElement('div');
-	    		tempDiv.innerHTML = encodeURIComponent(part);
-	   		fragment.appendChild(tempDiv);
-		}
+ 		   if (urlRegex.test(part)) {
+  		      const link = document.createElement('a');
+  		      link.href = part.replace(/"/g, "%22").replace(/'/g, "%27");
+  		      link.target = "_blank";
+   		     link.rel = "noopener noreferrer";
+   		     link.textContent = part;
+   		     fragment.appendChild(link);
+  		  } else {
+        		const tempDiv = document.createElement('div');
+        		tempDiv.innerHTML = part;  // Direct HTML embedding.
+        		while (tempDiv.firstChild) {
+         	   	    fragment.appendChild(tempDiv.firstChild);
+        		   }
+    			}
 		});
 		body.appendChild(fragment);
                 let editedTag;
