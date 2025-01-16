@@ -1272,10 +1272,11 @@ document.addEventListener('keydown', function(event) {
 			      // const ogTitle = doc.querySelector('meta[property="og:title"]')?.content;
 			      // const ogDescription = doc.querySelector('meta[property="og:description"]')?.content;
 			      const ogImage = doc.querySelector('meta[property="og:image"]')?.content;
-			
+				if (ogImage) {
 			      const imageEmbed = document.createElement('img');
 				imageEmbed.src = ogImage;
 				body.appendChild(imageEmbed);
+				}
 			    })
 			    .catch(error => {
 			      console.error('Error fetching Open Graph data:', error);
