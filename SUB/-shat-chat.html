@@ -1277,8 +1277,6 @@ async function loadUsers() {
 			const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\./, '').replace(/\/$/, '');
 			const provider = oembed_providers.find((provider) => provider.provider_url.toLowerCase().replace(/^www\./, '').replace(/\/$/, '') === origin);
 			if(provider) {
-				const player = document.createElement('iframe');
-				player.class = 'embed-player';
 				try {
 				  const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
 				  const data = await response.json();
@@ -1293,7 +1291,6 @@ async function loadUsers() {
 				} catch (e) {
 				  console.error("Error fetching or appending embed content:", e);
 				}
-
 			}
 			   }
   		  } else {
