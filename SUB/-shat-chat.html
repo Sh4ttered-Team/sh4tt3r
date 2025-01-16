@@ -1253,6 +1253,7 @@ document.addEventListener('keydown', function(event) {
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+/gi; //~~prob replace this for html encoded urls ig~~
 		const parts = message.text.split(urlRegex);
+		console.log(parts)
 
 		parts.forEach((part) => {
  		   if (urlRegex.test(part)) {
