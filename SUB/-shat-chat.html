@@ -67,7 +67,7 @@
         let clientUser = {};
 	let oembed_providers;
 	try {
-		oembed_providers = JSON.parse(await fetch("https://oembed.com/providers.json"));
+		oembed_providers = JSON.parse(await fetch("../oembed_providers.json")); //I absolutely hate the hell out of this but cors is the worst and won't let me grab it from their api
 	}catch(e) {
 		console.error(e);
 		oembed_providers = [];
