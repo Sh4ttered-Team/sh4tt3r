@@ -1283,11 +1283,12 @@ async function loadUsers() {
 				try {
   					let response = await fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`);
   					let data = await response.json();
-  					let html = data.html;
-  					console.log(html);
-  					player.innerHTML = html;
-					player.setAttribute('frameborder','0');
-					fragment.appendChild(player);
+					console.log(response);
+					if (data && data.html) {
+  						let html = data.html;
+						player.innerHTML = html;
+						fragment.appendChild(player);
+					}
 				}catch(e) {
 					console.error(e);
 				}
