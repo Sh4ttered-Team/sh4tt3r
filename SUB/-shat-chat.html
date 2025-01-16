@@ -1264,6 +1264,7 @@ document.addEventListener('keydown', function(event) {
   		      link.target = "_blank";
    		     link.rel = "noopener noreferrer";
    		     link.textContent = part;
+			   console.log(link);
    		     fragment.appendChild(link);
 		 //     const ogs = require('open-graph-scraper');
 		 //     ogs({ url: url })
@@ -1277,6 +1278,7 @@ document.addEventListener('keydown', function(event) {
   		  } else {
         		const tempDiv = document.createElement('div');
         		tempDiv.innerHTML = part;  // Direct HTML embedding.
+			console.log(tempDiv)
         		while (tempDiv.firstChild) {
          	   	    fragment.appendChild(tempDiv.firstChild);
         		   }
