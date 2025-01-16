@@ -1251,7 +1251,7 @@ document.addEventListener('keydown', function(event) {
                 messageDiv.appendChild(userInfoDiv);
                 const body = document.createElement('p');
 		const fragment = document.createDocumentFragment();
-		const urlRegex = (?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+; //~~prob replace this for html encoded urls ig~~
+		const urlRegex = /(?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+/gi; //~~prob replace this for html encoded urls ig~~
 		const parts = message.text.split(urlRegex);
 
 		parts.forEach((part) => {
