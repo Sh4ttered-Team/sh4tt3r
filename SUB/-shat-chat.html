@@ -1276,9 +1276,13 @@ document.addEventListener('keydown', function(event) {
 			if(provider) {
 				const player = document.createElement('iframe');
 				player.class = 'embed-player';
-				player.src = `${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`;
-				player.setAttribute('frameborder','0');
-				fragment.appendChild(player);
+				try {
+					player.innerHTML = (JSON.parse(fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`))).html;
+					player.setAttribute('frameborder','0');
+					fragment.appendChild(player);
+				}catch(e) {
+					console.error(e);
+				}
 			}
 			   }
   		  } else {
