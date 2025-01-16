@@ -1289,7 +1289,7 @@ document.addEventListener('keydown', function(event) {
 				const player = document.createElement('iframe');
 				player.class = 'yt-player';
 				player.src = `https://www.youtube.com/embed/${videoId}?origin=${window.origin}`;
-				player.frameborder = '0';
+				player.setAttribute('frameborder','0');
 				body.appendChild(player);
 			}
   		  } else {
