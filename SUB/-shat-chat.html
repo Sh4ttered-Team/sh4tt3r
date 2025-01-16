@@ -1265,15 +1265,15 @@ document.addEventListener('keydown', function(event) {
    		     link.rel = "noopener noreferrer";
    		     link.textContent = doc.documentElement.textContent;
    		     fragment.appendChild(link);
-		      ogs({ url: doc.documentElement.textContent })
-			  .then((data) => {
-				  console.log(data)
-  			    if (data.ogImage) 
-				    const imageEmbed = document.createElement('img');
-				    imageEmbed.src = data.ogImage.url;
-				    body.appendChild(imageEmbed);
-			    }
-			})
+		 //      ogs({ url: doc.documentElement.textContent })
+			//   .then((data) => {
+			// 	  console.log(data)
+  	// 		    if (data.ogImage) 
+			// 	    const imageEmbed = document.createElement('img');
+			// 	    imageEmbed.src = data.ogImage.url;
+			// 	    body.appendChild(imageEmbed);
+			//     }
+			// })
   		  } else {
         		const tempDiv = document.createElement('div');
         		tempDiv.innerHTML = part;  // Direct HTML embedding.
