@@ -893,12 +893,14 @@ async function loadUsers() {
                     sendButton.click();
                 }
             	});
-		document.addEventListener('keydown', function(event) {
+		chatDiv.addEventListener('keydown', function(event) {
             		const key = event.key;
+			if (key != 'Control' && key != 'Alt') {
 	    		let input = document.querySelector('.message-input');
             		if (document.activeElement !== input) {
              		   input.focus();
             		}
+			}
         	});
 		// attachButton = document.createElement('div');
 		// attachButton.className = 'attach-button';
@@ -1270,16 +1272,17 @@ async function loadUsers() {
    		     link.rel = "noopener noreferrer";
    		     link.textContent = doc.documentElement.textContent;
    		     fragment.appendChild(link);
-			   if (oembed_providers.length > 0) {
+			if (oembed_providers.length > 0) {
 			const origin = (new URL(doc.documentElement.textContent)).origin;
 			const provider = oembed_providers.find(provider => provider.provider_url.toLowerCase() === origin.toLowerCase());
-			console.log(origin,provider);
+			alert(origin);
+			alert(JSON.stringify(provider));
 			if(provider) {
 				const player = document.createElement('iframe');
 				player.class = 'embed-player';
 				try {
 					const html = (JSON.parse(fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`))).html
-					console.log(html);
+					alert(JSON.stringify(html));
 					player.innerHTML = html;
 					player.setAttribute('frameborder','0');
 					fragment.appendChild(player);
