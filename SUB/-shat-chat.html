@@ -1274,8 +1274,8 @@ async function loadUsers() {
    		     link.textContent = doc.documentElement.textContent;
    		     fragment.appendChild(link);
 			if (oembed_providers.length > 0) {
-			const origin = (new URL(doc.documentElement.textContent)).origin;
-			const provider = oembed_providers.find(provider => provider.provider_url.toLowerCase() === origin.toLowerCase());
+			const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\./, '').replace(/\/$/, '');
+			const provider = oembed_providers.find(provider => provider.provider_url.toLowerCase().replace(/^www\./, '').replace(/\/$/, '') === origin);
 			console.log(origin,provider);
 			if(provider) {
 				const player = document.createElement('iframe');
