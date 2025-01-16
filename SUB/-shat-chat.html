@@ -1281,7 +1281,9 @@ async function loadUsers() {
 				const player = document.createElement('iframe');
 				player.class = 'embed-player';
 				try {
-					const html = (JSON.parse(fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`))).html
+					let html = await fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`)
+					html = html.json();
+					html = html.html;
 					console.log(html);
 					player.innerHTML = html;
 					player.setAttribute('frameborder','0');
