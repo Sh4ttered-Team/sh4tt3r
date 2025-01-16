@@ -58,7 +58,8 @@
         window.showLoadingScreen()
         import { api } from "../JS/api.js"
 	import openGraphScraperLite from 'https://cdn.skypack.dev/open-graph-scraper-lite';
-	console.log(openGraphScraperLite)
+	const ogs = require('open-graph-scraper-lite');
+	console.log(ogs)
         const user = JSON.parse(localStorage.getItem("sb-fffwukshwgrcdyqmvahg-auth-token"))
         const userId = user.user.id
         const token = user.access_token
