@@ -1264,23 +1264,45 @@ document.addEventListener('keydown', function(event) {
    		     link.rel = "noopener noreferrer";
    		     link.textContent = doc.documentElement.textContent;
    		     fragment.appendChild(link);
-			fetch(doc.documentElement.textContent)
-			    .then(response => response.text())
-			    .then(html => {
-			      const parser = new DOMParser();
-			      const doc = parser.parseFromString(html, 'text/html');
-			      // const ogTitle = doc.querySelector('meta[property="og:title"]')?.content;
-			      // const ogDescription = doc.querySelector('meta[property="og:description"]')?.content;
-			      const ogImage = doc.querySelector('meta[property="og:image"]')?.content;
-				if (ogImage) {
-			      const imageEmbed = document.createElement('img');
-				imageEmbed.src = ogImage;
-				body.appendChild(imageEmbed);
-				}
-			    })
-			    .catch(error => {
-			      console.error('Error fetching Open Graph data:', error);
-			    });
+			// fetch(doc.documentElement.textContent)
+			//     .then(response => response.text())
+			//     .then(html => {
+			//       const parser = new DOMParser();
+			//       const doc = parser.parseFromString(html, 'text/html');
+			//       // const ogTitle = doc.querySelector('meta[property="og:title"]')?.content;
+			//       // const ogDescription = doc.querySelector('meta[property="og:description"]')?.content;
+			//       const ogImage = doc.querySelector('meta[property="og:image"]')?.content;
+			// 	if (ogImage) {
+			//       const imageEmbed = document.createElement('img');
+			// 	imageEmbed.src = ogImage;
+			// 	body.appendChild(imageEmbed);
+			// 	}
+			//     })
+			//     .catch(error => {
+			//       console.error('Error fetching Open Graph data:', error);
+			//     });
+			//
+			//I hate cors SO much...
+			   if (doc.documentElement.textContent.match(/\b(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/?|(?:v|e(?:mbed)?)\/([a-zA-Z0-9_-]{11}))|youtu\.be\/([a-zA-Z0-9_-]{11}))\b/g) {
+				const match = doc.documentElement.textContent.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/?|(?:v|e(?:mbed)?)\/([a-zA-Z0-9_-]{11}))|youtu\.be\/([a-zA-Z0-9_-]{11}))\b/);
+				const videoId = match ? (match[1] || match[2]) : null;
+				var tag = document.createElement('script');
+	      			tag.src = "https://www.youtube.com/iframe_api";
+			      	var firstScriptTag = document.getElementsByTagName('script')[0];
+			      	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+			      	var player;
+			      	function onYouTubeIframeAPIReady() {
+					player = new YT.Player('player', {
+					  height: '390',
+					  width: '640',
+					  videoId: videoId,
+				 	 playerVars: {
+				 	   'playsinline': 1
+					}
+				});
+				body.appendChild(player);
+			      }
+			}
   		  } else {
         		const tempDiv = document.createElement('div');
         		tempDiv.innerHTML = part;  // Direct HTML embedding.
