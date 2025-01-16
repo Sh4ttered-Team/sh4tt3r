@@ -1255,6 +1255,7 @@ document.addEventListener('keydown', function(event) {
 		const parts = message.text.split(urlRegex);
 
 		parts.forEach((part) => {
+			console.log(part)
  		   if (urlRegex.test(part)) {
   		      const link = document.createElement('a');
 		      const parser = new DOMParser();
