@@ -1280,15 +1280,20 @@ async function loadUsers() {
 				const player = document.createElement('iframe');
 				player.class = 'embed-player';
 				try {
-  					let response = await fetch(`${provider.endpoints[0].url}?url=${doc.documentElement.textContent}&format=json`);
-  					let data = await response.json();
-					console.log(response,data);
-					let html = data.html;
-					player.innerHTML = html;
-					fragment.appendChild(player);
-				}catch(e) {
-					console.error(e);
+				  const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
+				  const data = await response.json();
+				  
+				  console.log(response, data);
+				  const wrapper = document.createElement('div');
+				  wrapper.className = 'embed-player';
+				  var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
+				  wrapper.innerHTML = docHtml.documentElement.textContent;
+				  
+				  fragment.appendChild(wrapper);
+				} catch (e) {
+				  console.error("Error fetching or appending embed content:", e);
 				}
+
 			}
 			   }
   		  } else {
