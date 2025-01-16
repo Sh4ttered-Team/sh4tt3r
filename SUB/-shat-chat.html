@@ -25,7 +25,6 @@
 </head>
 
 <body>
-	<div id="player"></div>
     <div class="background"></div>
     <div class="home_menu">
         <div class="profile">
@@ -1285,17 +1284,16 @@ document.addEventListener('keydown', function(event) {
 			//
 			//I hate cors SO much...
 
-			   if (doc.documentElement.textContent.match(/\b(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/?|(?:v|e(?:mbed)?)\/([a-zA-Z0-9_-]{11}))|youtu\.be\/([a-zA-Z0-9_-]{11}))\b/g) {
+			   if (doc.documentElement.textContent.match(/\b(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/?|(?:v|e(?:mbed)?)\/([a-zA-Z0-9_-]{11}))|youtu\.be\/([a-zA-Z0-9_-]{11}))\b/g)) {
 				const match = doc.documentElement.textContent.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/?|(?:v|e(?:mbed)?)\/([a-zA-Z0-9_-]{11}))|youtu\.be\/([a-zA-Z0-9_-]{11}))\b/);
 				const videoId = match ? (match[1] || match[2]) : null;
-				// const playdiv = document.createElement('div');
-				// playdiv.id = 'player';
-				// body.appendChild(playdiv);
+				const playdiv = document.createElement('div');
+				playdiv.id = 'player';
+				body.appendChild(playdiv);
 				var tag = document.createElement('script');
 	      			tag.src = "https://www.youtube.com/iframe_api";
 			      	var firstScriptTag = document.getElementsByTagName('script')[0];
 			      	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-				// await tag.onload
 			      	var player;
 			      	function onYouTubeIframeAPIReady() {
 					player = new YT.Player('player', {
