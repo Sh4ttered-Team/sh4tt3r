@@ -1255,6 +1255,8 @@ document.addEventListener('keydown', function(event) {
 		const parts = message.text.split(urlRegex);
 
 		parts.forEach((part) => {
+		   var doc = new DOMParser().parseFromString(part, 'text/html');
+		   let parsed = doc.documentElement.textContent;
  		   if (urlRegex.test(part)) {
   		      const link = document.createElement('a');
 		      const url = part.replace(/"/g, "%22").replace(/'/g, "%27")
