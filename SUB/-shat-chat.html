@@ -896,7 +896,7 @@ async function loadUsers() {
             	});
 		document.addEventListener('keydown', function(event) {
             		const key = event.key;
-			let chat = document.querySelector('..chat');
+			let chat = document.querySelector('.chat');
 			if (key != 'Control' && key != 'Alt' && document.activeElement == chat) {
 	    		let input = document.querySelector('.message-input');
             		if (document.activeElement !== input) {
