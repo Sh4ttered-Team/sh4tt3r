@@ -62,7 +62,7 @@ export function create_game(game_name,game_url, suffix) {
     return gameDiv;
 }
 
-export async function create_game_div(flash, url, game) {
+export async function create_game_div(flash, url, game, favs) {
     let suffix = '';
     if (flash) {
     suffix = '&flash=true';
