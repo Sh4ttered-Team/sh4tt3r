@@ -35,7 +35,7 @@ export function moveGameDiv(gameDiv, isFav) {
       targetDiv.appendChild(gameDiv);
     }
 
-export function create_game(game_name,game_url, suffix) {
+export function create_game(game_name,game_url, suffix, favs) {
     const gameDiv = document.createElement('div');
     gameDiv.className = 'game';
     const favButton = document.createElement('button');
@@ -69,6 +69,6 @@ export async function create_game_div(flash, url, game, favs) {
     } else if (url) {
     suffix = '&url=true';
     }
-    const gameDiv = create_game(game.name, game.url, suffix);
+    const gameDiv = create_game(game.name, game.url, suffix, favs);
     document.querySelector(favs.includes(game.name) ? '.favGames' : '.gamesDiv').appendChild(gameDiv);
 }
