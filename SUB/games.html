@@ -34,6 +34,7 @@
   <h1>All</h1>
   <div class="gamesDiv"></div>
   <script type="module">
+    import { getFavorites, create_game_div } from "../JS/games.js";
     window.showLoadingScreen();
     async function load_games(flash, url, html) {
       let games
