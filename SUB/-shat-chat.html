@@ -1378,12 +1378,55 @@ let channel = supabaseClient.channel(`room-${currentRoomId}`, {
 });
 
 subscribeToChannel();
+let isActive = true;
+let inactivityTimer;
+function resetInactivityTimer() {
+    isActive = true;
+	updateStatus()
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(() => {
+        isActive = false;
+		updateStatus()
+    }, 1 * 60 * 1000);
+}
+document.addEventListener('keydown', resetInactivityTimer);
+document.addEventListener('keyup', resetInactivityTimer);
+document.addEventListener('mousemove', resetInactivityTimer);
+document.addEventListener('click', resetInactivityTimer);
+document.addEventListener('mousedown', resetInactivityTimer);
+document.addEventListener('mouseup', resetInactivityTimer);
+document.addEventListener('touchstart', resetInactivityTimer);
+document.addEventListener('touchmove', resetInactivityTimer);
+document.addEventListener('touchend', resetInactivityTimer);
+resetInactivityTimer();
+
+let isTyping = false;
+let typingTimeout = 3000;
+let typingTimer;
+function setTyping() {
+isTyping = true;
+updateStatus();
+clearTimeout(typingTimer);
+typingTimer = setTimeout(() => {
+        isTyping = false;
+	updateStatus()
+}, typingTimeout);
+}
+const messageInput = document.querySelector('.message-input');
+if (messageInput) {
+    messageInput.addEventListener('input', setTyping);
+}
+		
+let presenceTrackStatus
+async function updateStatus() {
 const userStatus = {
 	user: userId,
 	online_at: new Date().toISOString(),
+	status: isActive,
+	typing: isTyping,
 }
-const presenceTrackStatus = await channel.track(userStatus)
-console.log(presenceTrackStatus)
+presenceTrackStatus = await channel.track(userStatus)
+}
 
 function subscribeToChannel() {
     channel.subscribe((status) => {
@@ -1400,7 +1443,7 @@ function subscribeToChannel() {
 
 channel.on('presence', { event: 'sync' }, () => {
         const currentPresence = channel.presenceState();
-        updateOnlineUsers(currentPresence, 'presence sync event');
+        updateOnlineUsers(currentPresence);
 });
 
     channel.on('presence', { event: 'join' }, ({ key, currentPresences }) => {
