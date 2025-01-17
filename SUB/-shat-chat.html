@@ -1322,7 +1322,9 @@ async function loadUsers() {
                     body.appendChild(editedTag);
                 }
 		console.log(embedDiv.children);
-		if (embedDiv.children.length > 0) {
+		let i = 0;
+		embedDiv.children.forEach((child) => {i++})
+		if (i > 0) {
 			messageDiv.appendChild(embedDiv);
 		}
 
