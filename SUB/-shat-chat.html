@@ -1275,8 +1275,14 @@ async function loadUsers() {
    		     fragment.appendChild(link);
 			if (oembed_providers.length > 0) {
 			const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\./, '').replace(/\/$/, '');
-			const provider = oembed_providers.find((provider) => provider.provider_url.toLowerCase().replace(/^www\./, '').replace(/\/$/, '') === origin);
-			console.log(provider);
+			const provider = oembed_providers.find(provider =>
+			  provider.endpoints.some(endpoint =>
+			    endpoint.schemes?.some(pattern => {
+			      const regex = new RegExp(`^${pattern.replace(/\*/g, '.*')}$`);
+			      return regex.test(doc.documentElement.textContent);
+			    })
+			  )
+			);
 			if(provider) {
 				try {
 				  const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
