@@ -26,35 +26,35 @@
 
 <body>
 	<div class="background"></div>
-	<h2 class="confirm-leave" style="position:absolute;bottom:5vh;left:50%;text-align:center;">Go back? Press <strong>Esc</strong> again to confirm.</h2>
+<!-- 	<h2 class="confirm-leave" style="position:absolute;bottom:5vh;left:50%;transform:translateX(-50%);opacity:0;">Go back? Press <strong>Esc</strong> again to confirm.</h2> -->
 
 	<script src="../ruffle/ruffle.js"></script>
 	<script type="module">
-		if (window.isCloaked) {
-			let isEscHeld = false;
-			const esc_threshhold = 2000;
-			let esc_wait;
-			document.addEventListener('keydown', function(event) {
-  				if (event.key === 'Escape' && !isEscHeld) {
-					isEscHeld = true;
-					const leave_text = document.querySelector('.confirm-leave');
-					leave_text.style.opacity = 1;
-					esc_wait = setTimeout(function() {
-						if(isEscHeld) {
-							window.location.href = 'games.html';
-						}
-				    }, esc_threshhold);
-				  }
-			});
-			document.addEventListener('keyup', function(event) {
-  				if (event.key === 'Escape' && isEscHeld) {
-					isEscHeld = false;
-					const leave_text = document.querySelector('.confirm-leave');
-					leave_text.style.opacity = 0;
-					clearTimeout(esc_wait);
-				  }
-			});
-		}
+		// if (window.isCloaked) {
+		// 	let isEscHeld = false;
+		// 	const esc_threshhold = 2000;
+		// 	let esc_wait;
+		// 	document.addEventListener('keydown', function(event) {
+  // 				if (event.key === 'Escape' && !isEscHeld) {
+		// 			isEscHeld = true;
+		// 			const leave_text = document.querySelector('.confirm-leave');
+		// 			leave_text.style.opacity = 1;
+		// 			esc_wait = setTimeout(function() {
+		// 				if(isEscHeld) {
+		// 					window.location.href = 'games.html';
+		// 				}
+		// 		    }, esc_threshhold);
+		// 		  }
+		// 	});
+		// 	document.addEventListener('keyup', function(event) {
+  // 				if (event.key === 'Escape' && isEscHeld) {
+		// 			isEscHeld = false;
+		// 			const leave_text = document.querySelector('.confirm-leave');
+		// 			leave_text.style.opacity = 0;
+		// 			clearTimeout(esc_wait);
+		// 		  }
+		// 	});
+		// }
 		window.showLoadingScreen();
 		const params = new URLSearchParams(window.location.search);
 		const src = params.get("id");
