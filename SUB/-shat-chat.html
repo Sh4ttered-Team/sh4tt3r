@@ -1382,7 +1382,7 @@ let isActive = true;
 let inactivityTimer;
 function resetInactivityTimer() {
     isActive = true;
-	updateStatus()
+    updateStatus()
     clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(() => {
         isActive = false;
@@ -1398,7 +1398,6 @@ document.addEventListener('mouseup', resetInactivityTimer);
 document.addEventListener('touchstart', resetInactivityTimer);
 document.addEventListener('touchmove', resetInactivityTimer);
 document.addEventListener('touchend', resetInactivityTimer);
-resetInactivityTimer();
 
 let isTyping = false;
 let typingTimeout = 3000;
@@ -1416,6 +1415,7 @@ const messageInput = document.querySelector('.message-input');
 if (messageInput) {
     messageInput.addEventListener('input', setTyping);
 }
+resetInactivityTimer();
 		
 let presenceTrackStatus
 async function updateStatus() {
