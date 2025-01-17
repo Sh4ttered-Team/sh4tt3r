@@ -869,7 +869,7 @@ async function loadUsers() {
             if (!chatDiv) {
                 chatDiv = document.createElement('div');
                 chatDiv.className = 'chat';
-		chatDiv.addEventListener('click', () => {});
+		chatDiv.setAttribute('tabindex', '0');
                 document.querySelector('.home_menu').appendChild(chatDiv);
             }
 
