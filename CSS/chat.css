@@ -295,10 +295,6 @@
     word-wrap: break-word;
     word-break: break-word;
 }
-.message iframe {
-    width: 30vw;
-    height: 25vh;
-}
 
 .message img {
     max-width: 8vw;
