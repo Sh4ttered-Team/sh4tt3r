@@ -530,6 +530,7 @@
 
 async function loadUsers() {
     let usersDiv = document.querySelector('.users');
+    usersDiv.setAttribute('tabindex', '-1');
     let bufferDiv = document.createElement('div');
 
     if (!hideButton) {
@@ -833,10 +834,10 @@ async function loadUsers() {
             document.querySelector('.profile').appendChild(hideButton);
             usersDiv.style.right = `-${window.getComputedStyle(usersDiv).width}`;
 	    usersDiv.setAttribute('tabindex', '-1');
-	    NodeList.prototype.forEach = Array.prototype.forEach
-	    usersDiv.children.forEach(function(child){
-    		child.setAttribute('tabindex', '-1');
-		});
+	 //    NodeList.prototype.forEach = Array.prototype.forEach
+	 //    usersDiv.children.forEach(function(child){
+  //   		child.setAttribute('tabindex', '-1');
+		// });
         } else {
             hideButton.textContent = '▶';
             hideButton.classList.remove('hide-button-outside');
@@ -852,10 +853,10 @@ async function loadUsers() {
             usersDiv.insertBefore(hideButton, usersDiv.firstChild);
             usersDiv.style.right = '0';
 	    usersDiv.setAttribute('tabindex', '0');
-			NodeList.prototype.forEach = Array.prototype.forEach
-	    usersDiv.children.forEach(function(child){
-    		child.setAttribute('tabindex', '0');
-		});
+		// 	NodeList.prototype.forEach = Array.prototype.forEach
+	 //    usersDiv.children.forEach(function(child){
+  //   		child.setAttribute('tabindex', '0');
+		// });
         }
 	let roomTitle = document.querySelector('.room-title');
 	if (!roomTitle) {
