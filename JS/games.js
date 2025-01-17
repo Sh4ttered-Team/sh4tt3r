@@ -1,4 +1,4 @@
-async function getIcon(game, icon) {
+export async function getIcon(game, icon) {
       const { data, error } = await supabaseClient
         .storage
         .from('gameIcons')
@@ -6,16 +6,16 @@ async function getIcon(game, icon) {
       icon.src = data.signedUrl;
     }
 
-function getFavorites() {
+export function getFavorites() {
       const favorites = localStorage.getItem('favGames');
       return favorites ? JSON.parse(favorites) : [];
     }
 
-function saveFavorites(favorites) {
+export function saveFavorites(favorites) {
     localStorage.setItem('favGames', JSON.stringify(favorites));
 }
 
-function toggleFavorite(game, gameDiv) {
+export function toggleFavorite(game, gameDiv) {
     let favorites = getFavorites();
     let state;
     if (favorites.includes(game)) {
@@ -30,12 +30,12 @@ function toggleFavorite(game, gameDiv) {
     return state;
 }
 
-function moveGameDiv(gameDiv, isFav) {
+export function moveGameDiv(gameDiv, isFav) {
       const targetDiv = document.querySelector(isFav ? '.favGames' : '.gamesDiv');
       targetDiv.appendChild(gameDiv);
     }
 
-function create_game(game_name,game_url, suffix) {
+export function create_game(game_name,game_url, suffix) {
     const gameDiv = document.createElement('div');
     gameDiv.className = 'game';
     const favButton = document.createElement('button');
@@ -62,7 +62,7 @@ function create_game(game_name,game_url, suffix) {
     return gameDiv;
 }
 
-async function create_game_div(flash, url, game) {
+export async function create_game_div(flash, url, game) {
     let suffix = '';
     if (flash) {
     suffix = '&flash=true';
