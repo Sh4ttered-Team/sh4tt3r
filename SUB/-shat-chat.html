@@ -1288,7 +1288,7 @@ async function loadUsers() {
 				  const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
 				  const data = await response.json();
 				  var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
-				  body.appendChild(docHtml.querySelector('iframe'));
+				  messageDiv.appendChild(docHtml.querySelector('iframe'));
 				} catch (e) {
 				  console.error("Error fetching or appending embed content:", e);
 				}
