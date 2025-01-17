@@ -1321,7 +1321,7 @@ async function loadUsers() {
                 if (message.edited) {
                     body.appendChild(editedTag);
                 }
-		console.log(embedDiv);
+		console.log(embedDiv.children);
 		if (embedDiv.children.length > 0) {
 			messageDiv.appendChild(embedDiv);
 		}
