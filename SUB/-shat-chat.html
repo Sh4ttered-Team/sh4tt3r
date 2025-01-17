@@ -1263,7 +1263,8 @@ async function loadUsers() {
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(?<=^|[\s])((?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
 		const parts = message.text.split(urlRegex).filter(part => part !== "");
-
+		const embedDiv = document.createElement('div');
+		embedDiv.className = 'embed-div';
 		parts.forEach(async (part) => {
  		   if (urlRegex.test(part)) {
   		      const link = document.createElement('a');
@@ -1288,7 +1289,7 @@ async function loadUsers() {
 				  const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
 				  const data = await response.json();
 				  var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
-				  messageDiv.appendChild(docHtml.querySelector('iframe'));
+				  embedDiv.appendChild(docHtml.querySelector('iframe'));
 				} catch (e) {
 				  console.error("Error fetching or appending embed content:", e);
 				}
@@ -1320,6 +1321,9 @@ async function loadUsers() {
                 if (message.edited) {
                     body.appendChild(editedTag);
                 }
+		if (embedDiv.children.length > 0) {
+			messageDiv.appendChild(embedDiv);
+		}
 
                 bufferDiv.appendChild(messageDiv);
             }
