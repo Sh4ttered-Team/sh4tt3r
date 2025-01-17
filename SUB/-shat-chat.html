@@ -749,7 +749,8 @@ async function loadUsers() {
                     }
 	}
 
-        userDiv.style.filter = user_statuses.includes(user_id) ? 'none' : 'grayscale(40%) brightness(60%)';
+        userDiv.style.filter = user_statuses.some(userStatus => 
+    userStatus.user === user_id) ? 'none' : 'grayscale(40%) brightness(60%)';
 
         if (user_id == userId) {
             userDiv.style.backgroundColor = 'var(--hover-color1)';
@@ -1391,7 +1392,7 @@ function resetInactivityTimer() {
 	    console.log('idle')
         isActive = false;
 		updateStatus()
-    }, 1 * 60 * 1000);
+    }, 5 * 60 * 1000);
 }
 document.addEventListener('keydown', resetInactivityTimer);
 document.addEventListener('keyup', resetInactivityTimer);
@@ -1427,7 +1428,7 @@ resetInactivityTimer();
 		
 let presenceTrackStatus
 async function updateStatus() {
-const userStatus = {
+let userStatus = {
 	user: userId,
 	online_at: new Date().toISOString(),
 	status: isActive,
@@ -1464,10 +1465,16 @@ channel.on('presence', { event: 'sync' }, () => {
 }
 
 function updateOnlineUsers(presenceState) {
-    const users = Object.values(presenceState).flatMap(userPresences => userPresences.map(p => p.user));
+    const users = Object.values(presenceState).flatMap(userPresences =>
+    userPresences.map(p => ({
+        user: p.user,
+        status: p.status,
+        typing: p.typing,
+    }))
+);
     console.group(`updateOnlineUsers called`);
     console.log(presenceState,channel);
-    console.log('Current online users:', users);
+    console.log('Current users:', users);
     console.groupEnd();
     if(!users.includes(userId)) {
         users.push(userId)
