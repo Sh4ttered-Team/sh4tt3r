@@ -1280,11 +1280,8 @@ async function loadUsers() {
 				try {
 				  const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
 				  const data = await response.json();
-				  // const wrapper = document.createElement('div');
-				  // wrapper.className = 'embed-player';
 				  var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
-				  fragment.appendChild(docHtml.querySelector('iframe'));
-				  // fragment.appendChild(wrapper);
+				  body.appendChild(docHtml.querySelector('iframe'));
 				} catch (e) {
 				  console.error("Error fetching or appending embed content:", e);
 				}
