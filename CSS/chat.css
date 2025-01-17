@@ -283,6 +283,8 @@
     flex-direction: column;
     z-index: 1;
     transition: width 0.3s ease;
+    outline: none;
+    border: none;
 }
 
 .message {
