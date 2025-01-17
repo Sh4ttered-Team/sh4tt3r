@@ -334,7 +334,7 @@
     overflow-wrap: break-word;
     word-break: break-word;
 }
-.message p youtube-embed {
+.youtube-embed {
     width: 30vw;
     height: 24vh;
 }
