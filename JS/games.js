@@ -3,7 +3,9 @@ export async function getIcon(game, icon) {
         .storage
         .from('gameIcons')
         .createSignedUrl(`${game.replace('.swf', '')}.png`, 60)
+      if (!error) {
       icon.src = data.signedUrl;
+      }
     }
 
 export function getFavorites() {
