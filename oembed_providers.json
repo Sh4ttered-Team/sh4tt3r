@@ -4762,6 +4762,20 @@
         ]
     },
     {
+        "provider_name": "Shatter",
+        "provider_url": "https://shattered-team.github.io/new-shatter/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "https://shattered-team.github.io/new-shatter/user/*",
+                    "https://shattered-team.github.io/new-shatter/SUB/-play.html?*id=*",
+                    "https://shattered-team.github.io/new-shatter/SUB/-shat-chat.html?*room=*"
+                ],
+                "url": "https://shattered-team.github.io/new-shatter/oembed"
+            }
+        ]
+    },
+    {
         "provider_name": "YouTube",
         "provider_url": "https://www.youtube.com/",
         "endpoints": [
