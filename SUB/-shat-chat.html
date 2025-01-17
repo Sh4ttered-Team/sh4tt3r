@@ -1476,8 +1476,12 @@ function updateOnlineUsers(presenceState) {
     console.log(presenceState,channel);
     console.log('Current users:', users);
     console.groupEnd();
-    if(users.some(userStatus => userStatus.user === user_id))
-	users.push({user:userId,status:true,typing:false})
+    if(users.some(userStatus => userStatus.user === user_id)) {
+	users.push({
+		 user:userId,
+		 status:true,
+		 typing:false
+		})
     }
     user_statuses = users;
     loadUsers();
