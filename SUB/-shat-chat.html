@@ -1322,9 +1322,8 @@ async function loadUsers() {
                     body.appendChild(editedTag);
                 }
 		console.log(embedDiv.children);
-		let i = 0;
-		embedDiv.children.forEach((child) => {i++})
-		if (i > 0) {
+		let i = Array.prototype.slice.call( htmlCollection );
+		if (i.length > 0) {
 			messageDiv.appendChild(embedDiv);
 		}
 
