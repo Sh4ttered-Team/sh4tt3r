@@ -50,7 +50,7 @@
             </script>
         </div>
         <div class="chat_rooms"></div>
-        <div class="users"></div>
+        <div class="users" tabindex="-1"></div>
         <div id="overlay" class="overlay">
         </div>
     </div>
@@ -834,10 +834,9 @@ async function loadUsers() {
             document.querySelector('.profile').appendChild(hideButton);
             usersDiv.style.right = `-${window.getComputedStyle(usersDiv).width}`;
 	    usersDiv.setAttribute('tabindex', '-1');
-	    NodeList.prototype.forEach = Array.prototype.forEach
-	    usersDiv.children.forEach(function(child){
+	    usersDiv.querySelectorAll('*').forEach(function(child){
     		child.setAttribute('tabindex', '-1');
-		});
+	   });
         } else {
             hideButton.textContent = '▶';
             hideButton.classList.remove('hide-button-outside');
@@ -875,7 +874,7 @@ async function loadUsers() {
             if (!chatDiv) {
                 chatDiv = document.createElement('div');
                 chatDiv.className = 'chat';
-		chatDiv.setAttribute('tabindex', '0');
+				chatDiv.setAttribute('tabindex', '0');
                 document.querySelector('.home_menu').appendChild(chatDiv);
             }
 
