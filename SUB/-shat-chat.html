@@ -832,6 +832,7 @@ async function loadUsers() {
             document.querySelector('.profile').style.right = '1vw';
             document.querySelector('.profile').appendChild(hideButton);
             usersDiv.style.right = `-${window.getComputedStyle(usersDiv).width}`;
+	    usersDiv.setAttribute('tabindex', '-1');
         } else {
             hideButton.textContent = '▶';
             hideButton.classList.remove('hide-button-outside');
@@ -846,6 +847,7 @@ async function loadUsers() {
             document.querySelector('.profile').style.right = `-${window.getComputedStyle(document.querySelector('.profile')).width}`;
             usersDiv.insertBefore(hideButton, usersDiv.firstChild);
             usersDiv.style.right = '0';
+	    usersDiv.setAttribute('tabindex', '0');
         }
 	let roomTitle = document.querySelector('.room-title');
 	if (!roomTitle) {
