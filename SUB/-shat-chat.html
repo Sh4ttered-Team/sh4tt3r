@@ -1381,8 +1381,10 @@ subscribeToChannel();
 let isActive = true;
 let inactivityTimer;
 function resetInactivityTimer() {
+    if(!isActive) {
     isActive = true;
     updateStatus()
+    }
     clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(() => {
         isActive = false;
@@ -1403,8 +1405,10 @@ let isTyping = false;
 let typingTimeout = 3000;
 let typingTimer;
 function setTyping() {
+if(!isTyping) {
 isTyping = true;
 updateStatus();
+}
 clearTimeout(typingTimer);
 typingTimer = setTimeout(() => {
         isTyping = false;
