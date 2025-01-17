@@ -1283,7 +1283,7 @@ async function loadUsers() {
 				  // const wrapper = document.createElement('div');
 				  // wrapper.className = 'embed-player';
 				  var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
-				  body.appendChild(docHtml.querySelector('iframe'));
+				  fragment.appendChild(docHtml.querySelector('iframe'));
 				  // fragment.appendChild(wrapper);
 				} catch (e) {
 				  console.error("Error fetching or appending embed content:", e);
