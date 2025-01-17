@@ -1382,11 +1382,13 @@ let isActive = true;
 let inactivityTimer;
 function resetInactivityTimer() {
     if(!isActive) {
+	console.log('active')
     isActive = true;
     updateStatus()
     }
     clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(() => {
+	    console.log('idle')
         isActive = false;
 		updateStatus()
     }, 1 * 60 * 1000);
@@ -1406,11 +1408,13 @@ let typingTimeout = 3000;
 let typingTimer;
 function setTyping() {
 if(!isTyping) {
+console.log('typing')
 isTyping = true;
 updateStatus();
 }
 clearTimeout(typingTimer);
 typingTimer = setTimeout(() => {
+	console.log('not typing')
         isTyping = false;
 	updateStatus()
 }, typingTimeout);
