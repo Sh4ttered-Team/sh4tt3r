@@ -1348,6 +1348,18 @@ async function loadUsers() {
         }
 
         if (currentRoomId) {
+	try {
+		const { data, error } = await api({
+		    "userId": `${userId}`,
+		    "token": `${token}`,
+		    "mode": "fromid",
+		    "data": `${currentRoomId}`
+		}, auth, "getRoom");
+		room_cache = JSON.parse(data);
+	    } catch (error) {
+		console.error("Error fetching room:", error);
+	    }
+	    if (!error) {
             await loadMessages()
             let roomChannel = supabaseClient
                 .channel('messages')
@@ -1508,7 +1520,12 @@ async function reconnectChannel() {
     }
 }
 
-        }
+        } else {
+		    //room not found
+	}
+	}else {
+		//if no room specified
+	}
         loadRooms();
         setInterval(loadRooms, 7000)
     </script>
