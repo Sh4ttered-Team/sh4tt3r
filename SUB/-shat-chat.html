@@ -1348,6 +1348,7 @@ async function loadUsers() {
         }
 
         if (currentRoomId) {
+	let room_error;
 	try {
 		const { data, error } = await api({
 		    "userId": `${userId}`,
@@ -1356,10 +1357,14 @@ async function loadUsers() {
 		    "data": `${currentRoomId}`
 		}, auth, "getRoom");
 		room_cache = JSON.parse(data);
+		if (error) {
+			room_error = error;
+		}
 	    } catch (error) {
 		console.error("Error fetching room:", error);
+		room_error = error;
 	    }
-	    if (!error) {
+	    if (!room_error) {
             await loadMessages()
             let roomChannel = supabaseClient
                 .channel('messages')
