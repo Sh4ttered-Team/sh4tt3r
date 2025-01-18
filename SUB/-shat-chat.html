@@ -1451,27 +1451,34 @@ resetInactivityTimer();
 		
 let presenceTrackStatus
 async function updateStatus() {
-let userStatus = {
-	user: userId,
-	online_at: new Date().toISOString(),
-	status: isActive,
-	typing: isTyping,
-}
-presenceTrackStatus = await channel.track(userStatus)
+    let userStatus = {
+        user: userId,
+        online_at: new Date().toISOString(),
+        status: isActive,
+        typing: isTyping,
+    };
+    try {
+        presenceTrackStatus = await channel.track(userStatus);
+        if (presenceTrackStatus.error) {
+            console.error('Presence track error:', presenceTrackStatus.error);
+        }
+    } catch (error) {
+        console.error('Failed to track presence:', error);
+    }
 }
 
+
 function subscribeToChannel() {
-    channel.subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-            console.log('Successfully subscribed to room-' + currentRoomId, 'channel.');
-            updateOnlineUsers(channel.presenceState());
-        } else if (status === 'CLOSED') {
-            console.warn('Channel closed. Attempting to reconnect...');
-            reconnectChannel();
-        } else if (status === 'ERROR') {
-            console.error('An error occurred with the channel subscription.');
-        }
-    });
+    channel.subscribe(async (status) => {
+    if (status === 'SUBSCRIBED') {
+        console.log('Successfully subscribed to room-' + currentRoomId, 'channel.');
+        await updateStatus();
+        updateOnlineUsers(channel.presenceState());
+    } else if (status === 'CLOSED') {
+        reconnectChannel();
+    }
+});
+
 
 channel.on('presence', { event: 'sync' }, () => {
         const currentPresence = channel.presenceState();
