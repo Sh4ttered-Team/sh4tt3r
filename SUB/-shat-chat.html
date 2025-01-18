@@ -1356,7 +1356,6 @@ async function loadUsers() {
 		    "mode": "fromid",
 		    "data": `${currentRoomId}`
 		}, auth, "getRoom");
-		room_cache = JSON.parse(data);
 		if (error) {
 			room_error = error;
 		}
