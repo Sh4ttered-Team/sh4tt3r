@@ -1032,12 +1032,22 @@ async function loadUsers() {
                     } catch (error) {
                         const pfp = document.createElement('img');
                         pfp.src = '../UI/account-placeholder.svg';
+			const userStatus = user_statuses.find(userStatus => userStatus.user === user_id);
+        	   	 pfp.style.filter = userStatus ? 'none' : 'grayscale(40%) brightness(60%)';
+	    		if (userStatus) {
+		 	   pfp.style.border = (userStatus.status) ? '4px solid var(--color-accent-2)' : '4px solid var(--color-third)';
+	  		}
                         pfp.draggable = false;
                         userInfoDiv.appendChild(pfp);
                         console.error("Error fetching profile picture:", error);
                     }
                 } else {
                     const pfp = document.createElement('img');
+		    const userStatus = user_statuses.find(userStatus => userStatus.user === user_id);
+        	    pfp.style.filter = userStatus ? 'none' : 'grayscale(40%) brightness(60%)';
+	    if (userStatus) {
+		    pfp.style.border = (userStatus.status) ? '4px solid var(--color-accent-2)' : '4px solid var(--color-third)';
+	    }
                     pfp.src = pfp_cache[message.user];
                     pfp.draggable = false;
                     userInfoDiv.appendChild(pfp);
@@ -1055,6 +1065,7 @@ async function loadUsers() {
                         console.error("Error fetching roomData:", error);
                     }
                 }
+		
 
                 const username = document.createElement('h2');
                 username.textContent = user.username;
