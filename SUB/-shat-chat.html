@@ -1415,7 +1415,7 @@ function resetInactivityTimer() {
 	    console.log('idle')
         isActive = false;
 		updateStatus()
-    }, 5 * 60 * 1000);
+    }, 3.5 * 60 * 1000);
 }
 document.addEventListener('keydown', resetInactivityTimer);
 document.addEventListener('keyup', resetInactivityTimer);
