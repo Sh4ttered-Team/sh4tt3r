@@ -1684,7 +1684,9 @@ async function reconnectChannel() {
 		const userboxbutton = document.createElement('button');
 		userboxbutton.className = 'userboxbutton';
 		userboxbutton.textContent = 'Send friend request';
-		// userboxbutton.onclick = () => {friendUser(document.querySelector('.userbox').value)};
+		userboxbutton.onclick = () => {
+			friendUser("");
+		};
 		const frenadddiv = document.createElement('div');
 		frenadddiv.className = 'frenadddiv';
 		frenadddiv.appendChild(userbox);
