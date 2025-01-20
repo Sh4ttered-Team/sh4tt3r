@@ -5,6 +5,21 @@ const AdminReq = checkForTag("admin-req");
 const LoadingScreen = checkForTag("loading");
 const ThemeBypass = checkForTag("theme-bypass");
 
+function googleAnalytics() {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-2EWL8GKTZP';
+    document.head.appendChild(script);
+
+    script.onload = () => {
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-2EWL8GKTZP');
+    };
+}
+googleAnalytics();
+
 if (window.self !== window.top) {
 	window.isCloaked = true;
 }
