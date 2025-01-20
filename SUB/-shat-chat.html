@@ -56,6 +56,7 @@
     </div>
     <script type="module">
         window.showLoadingScreen()
+	let room_found = false;
         import { api } from "../JS/api.js"
         const user = JSON.parse(localStorage.getItem("sb-fffwukshwgrcdyqmvahg-auth-token"))
         const userId = user.user.id
@@ -234,6 +235,27 @@
                 "token": `${token}`
             }, auth, "getRooms"));
             const allRooms = [];
+	    const homeDiv = document.createElement("div");
+                homeDiv.classList.add("room");
+                homeDiv.innerHTML = `
+            <h1>Home</h1>
+        `;
+	if (!currentRoomId || !room_found) {
+                homeDiv.onmouseover = () => {
+                            homeDiv.style.backgroundColor = 'var(--color-major)';
+                            homeDiv.style.cursor = 'pointer';
+                        };
+                        homeDiv.onmouseout = () => {
+                            homeDiv.style.backgroundColor = '';
+                            homeDiv.style.cursor = '';
+                        };
+                        homeDiv.onclick = () => {
+                            window.location.href = ``;
+                        }
+                    }
+                    else {
+                        homeDiv.style.backgroundColor = 'var(--hover-color1)';
+                    }
             Rooms.rooms.forEach(room => {
                 const users = room.users ? JSON.parse(room.users) : [];
                 const roomDiv = document.createElement("div");
@@ -1444,6 +1466,7 @@ async function loadUsers() {
 		room_error = error;
 	    }
 	    if (!room_error) {
+	    room_found = true;
             await loadMessages()
             let roomChannel = supabaseClient
                 .channel('messages')
