@@ -479,6 +479,9 @@
                     case "Message not found":
                         alert("Message not found");
                         break;
+		    case "User not found":
+                        alert("User not found");
+                        break;
                     case "Reported":
                         alert("Reported")
                         return
@@ -492,6 +495,78 @@
                 window.hideLoadingScreen();
                 console.error("Error reporting:", error);
                 alert("Failed to report =(");
+            }
+        }
+
+	async function kickUser(data) {
+            try {
+                window.showLoadingScreen()
+                const response = await api({
+                    "userId": `${userId}`,
+                    "token": `${token}`,
+                    "roomId": `${currentRoomId}`,
+                    "data": `${data}`,
+                }, auth, "kickUser");
+                const state = JSON.parse(response);
+
+                switch (state.message) {
+                    case "Room not found":
+                        alert("Room not found");
+                        break;
+                    case "User not found":
+                        alert("User not found");
+                        break;
+                    case "Kicked":
+                        alert("Kicked User")
+                        return
+                        break;
+                    default:
+                        alert("An unknown error occurred =(");
+                        break;
+                }
+                window.hideLoadingScreen();
+            } catch (error) {
+                window.hideLoadingScreen();
+                console.error("Error kicking:", error);
+                alert("Failed to kick =(");
+            }
+        }
+
+	async function banUser(data,reason) {
+            try {
+                window.showLoadingScreen()
+                const response = await api({
+                    "userId": `${userId}`,
+                    "token": `${token}`,
+                    "roomId": `${currentRoomId}`,
+                    "data": `${data}`,
+		    "reason": `${reason}`,
+                }, auth, "banUser");
+                const state = JSON.parse(response);
+
+                switch (state.message) {
+                    case "Room not found":
+                        alert("Room not found");
+                        break;
+                    case "User not found":
+                        alert("User not found");
+                        break;
+		    case "Reason must not be empty!":
+                        alert("Reason must not be empty!");
+                        break;
+                    case "Banned":
+                        alert("Banned User")
+                        return
+                        break;
+                    default:
+                        alert("An unknown error occurred =(");
+                        break;
+                }
+                window.hideLoadingScreen();
+            } catch (error) {
+                window.hideLoadingScreen();
+                console.error("Error banning:", error);
+                alert("Failed to ban =(");
             }
         }
 
@@ -664,36 +739,40 @@ async function loadUsers() {
                                     overlay.style.visibility = 'hidden';
                                 }
                             };
-			const banButton = document.createElement('button');
-                            banButton.innerText = 'Ban User';
-                            banButton.onclick = () => {
-                                dropdown_cache.remove();
-                                dropdown_cache = null;
-                                overlay.innerHTML = `
-                                    <div class="overlay-content">
-                                        <h2>Are you sure you want to ban this user? (this is permanent)</h2>
-                                        <button id="confirmDelete">Yes</button>
-                                        <button id="cancelDelete">No</button>
-                                    </div>
-                                `;
-                                overlay.style.visibility = 'visible';
-                                overlay.style.opacity = '1';
+						const banButton = document.createElement('button');
+			                            banButton.innerText = 'Ban User';
+			                            banButton.onclick = () => {
+							    dropdown_cache.remove();
+							    dropdown_cache = null;
+							    overlay.innerHTML = `
+							        <div class="overlay-content">
+							            <h2>Ban User</h2>
+							            <textarea id="banReason" placeholder="Reason for banning (required)"></textarea>
+							            <button id="confirmBan">Ban</button>
+							            <button id="cancelBan">Cancel</button>
+							        </div>
+							    `;
+							    overlay.style.visibility = 'visible';
+							    overlay.style.opacity = '1';
+							
+							    document.getElementById('confirmBan').onclick = () => {
+							        const reason = document.getElementById('banReason').value;
+							        if (reason.trim() === '') {
+							            alert('Please provide a reason for banning');
+							            return;
+							        }
+							        banUser(user_id, reason);
+							        hideOverlay();
+							    };
+							
+							    document.getElementById('cancelBan').onclick = hideOverlay;
+							
+							    function hideOverlay() {
+							        overlay.style.opacity = '0';
+							        setTimeout(() => overlay.style.visibility = 'hidden', 300);
+							    }
+							};
 
-                                document.getElementById('confirmDelete').onclick = () => {
-                                    banUser(user_id);
-                                    if (cancelButton_cache) {
-                                        cancelButton_cache.click();
-                                    }
-                                    hideOverlay();
-                                };
-
-                                document.getElementById('cancelDelete').onclick = hideOverlay;
-
-                                function hideOverlay() {
-                                    overlay.style.opacity = '0';
-                                    overlay.style.visibility = 'hidden';
-                                }
-                            };
                             dropdown.appendChild(deleteButton);
 			    dropdown.appendChild(banButton);
 			    }
