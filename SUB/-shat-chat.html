@@ -240,7 +240,7 @@
                 homeDiv.innerHTML = `
             <h1>Home</h1>
         `;
-	if (!currentRoomId || !room_found) {
+	if (currentRoomId || room_found) {
                 homeDiv.onmouseover = () => {
                             homeDiv.style.backgroundColor = 'var(--color-major)';
                             homeDiv.style.cursor = 'pointer';
