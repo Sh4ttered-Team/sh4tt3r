@@ -329,6 +329,7 @@
                 joinedSeparator.innerText = 'Joined Rooms';
                 bufferDiv.appendChild(joinedSeparator);
             }
+	    bufferDiv.appendChild(homeDiv);
             allRooms.forEach(room => bufferDiv.appendChild(room.element));
             const firstUnjoinedIndex = allRooms.findIndex(room => !room.isJoined);
             if (firstUnjoinedIndex > 0) {
