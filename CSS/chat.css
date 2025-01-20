@@ -286,6 +286,22 @@
     outline: none;
     border: none;
 }
+.home {
+    position: fixed;
+    top: 0;
+    left: 21vw;
+    width: 79vw;
+    padding: 0;
+    margin: 0;
+    height: 93vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    outline: none;
+    border: none;
+}
 
 .message {
     width: 50vw;
