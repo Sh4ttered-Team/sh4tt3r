@@ -1634,10 +1634,10 @@ async function reconnectChannel() {
 }
 
         } else {
-		    //room not found
+		loadHome();
 	}
 	}else {
-		//if no room specified
+		loadHome();
 	}
 	async function loadHome() {
 		const home = document.createElement('div');
