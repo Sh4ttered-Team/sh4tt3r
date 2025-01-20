@@ -1648,9 +1648,12 @@ async function reconnectChannel() {
 		userbox.className = 'userbox';
 		const userboxbutton = document.createElement('button');
 		userboxbutton.className = 'userboxbutton';
+		const frenadddiv = document.createElement('div');
+		frenadddiv.className = 'frenadddiv';
 		userboxbutton.textContent = 'Send friend request';
-		home.appendChild(userbox);
-		home.appendChild(userboxbutton);
+		frenadddiv.appendChild(userbox);
+		frenadddiv.appendChild(userboxbutton);
+		home.appendChild(frenadddiv);
 		home.appendChild(friends);
 		document.querySelector('.home_menu').appendChild(home);
 	}
