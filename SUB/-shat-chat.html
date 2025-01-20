@@ -1639,6 +1639,21 @@ async function reconnectChannel() {
 	}else {
 		//if no room specified
 	}
+	async function loadHome() {
+		const home = document.createElement('div');
+		home.className = 'home';
+		const friends = document.createElement('div');
+		friends.className = 'friends';
+		const userbox = document.createElement('input');
+		userbox.className = 'userbox';
+		const userboxbutton = document.createElement('button');
+		userboxbutton.className = 'userboxbutton';
+		userboxbutton.textContent = 'Send friend request';
+		home.appendChild(userboxbutton);
+		home.appendChild(userbox);
+		home.appendChild(friends);
+		document.querySelector('.home-menu').appendChild(home);
+	}
         loadRooms();
         setInterval(loadRooms, 7000)
     </script>
