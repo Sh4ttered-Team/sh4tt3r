@@ -240,22 +240,20 @@
                 homeDiv.innerHTML = `
             <h1>Home</h1>
         `;
-	if (currentRoomId || room_found) {
-                homeDiv.onmouseover = () => {
-                            homeDiv.style.backgroundColor = 'var(--color-major)';
-                            homeDiv.style.cursor = 'pointer';
-                        };
-                        homeDiv.onmouseout = () => {
-                            homeDiv.style.backgroundColor = '';
-                            homeDiv.style.cursor = '';
-                        };
-                        homeDiv.onclick = () => {
-                            window.location.href = ``;
-                        }
-                    }
-                    else {
-                        homeDiv.style.backgroundColor = 'var(--hover-color1)';
-                    }
+	if (!currentRoomId || room_found === false) {
+	    homeDiv.style.backgroundColor = 'var(--hover-color1)';
+	} else {
+	    homeDiv.onmouseover = () => {
+	        homeDiv.style.backgroundColor = 'var(--color-major)';
+	        homeDiv.style.cursor = 'pointer';
+	    };
+	    homeDiv.onmouseout = () => {
+	        homeDiv.style.backgroundColor = '';
+	    };
+	    homeDiv.onclick = () => {
+	        window.location.href = window.location.origin + window.location.pathname;
+	    };
+	}
             Rooms.rooms.forEach(room => {
                 const users = room.users ? JSON.parse(room.users) : [];
                 const roomDiv = document.createElement("div");
