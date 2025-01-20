@@ -1639,6 +1639,41 @@ async function reconnectChannel() {
 	}else {
 		loadHome();
 	}
+	    async function friendUser(data) {
+            try {
+                window.showLoadingScreen()
+                const response = await api({
+                    "userId": `${userId}`,
+                    "token": `${token}`,
+                    "data": `${data}`,
+                }, auth, "addFriend");
+                const state = JSON.parse(response);
+
+                switch (state.message) {
+                    case "Request already exists":
+                        alert("Request already exists");
+                        break;
+		    case "Already friends":
+                        alert("Already friends");
+                        break;
+                    case "User not found":
+                        alert("User not found");
+                        break;
+                    case "Sent":
+                        alert("sent request")
+                        return
+                        break;
+                    default:
+                        alert("An unknown error occurred =(");
+                        break;
+                }
+                window.hideLoadingScreen();
+            } catch (error) {
+                window.hideLoadingScreen();
+                console.error("Error sending:", error);
+                alert("Failed to send =(");
+            }
+        }
 	async function loadHome() {
 		const home = document.createElement('div');
 		home.className = 'home';
@@ -1648,9 +1683,10 @@ async function reconnectChannel() {
 		userbox.className = 'userbox';
 		const userboxbutton = document.createElement('button');
 		userboxbutton.className = 'userboxbutton';
+		userboxbutton.textContent = 'Send friend request';
+		userboxButton.onclick = () => {friendUser(document.querySelector('.userbox').value)};
 		const frenadddiv = document.createElement('div');
 		frenadddiv.className = 'frenadddiv';
-		userboxbutton.textContent = 'Send friend request';
 		frenadddiv.appendChild(userbox);
 		frenadddiv.appendChild(userboxbutton);
 		home.appendChild(frenadddiv);
