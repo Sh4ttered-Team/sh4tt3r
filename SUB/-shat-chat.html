@@ -1448,7 +1448,9 @@ async function loadUsers() {
 		        document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
 		    });
 		}
+		console.log([...bufferDiv.children])
 		prevMessageList = [...bufferDiv.children];
+		console.log("a",prevMessageList)
         }
 
         if (currentRoomId) {
