@@ -1409,29 +1409,42 @@ async function loadUsers() {
 		}
 		
 		if (prevMessageList.length > 0) {
+		    console.log('Previous message list is not empty. Checking for changes...');
+		    
 		    const changes = objectDifference(prevMessageList, messages);
+		    console.log('Changes detected:', changes);
+		    
 		    const bufferArray = Array.from(bufferDiv.children);
-		
+		    console.log('Buffer array:', bufferArray);
+		    
 		    for (const message of bufferArray) {
+		        console.log('Processing message:', message);
+		        
 		        const prev = Array.from(chatDiv.children).find(prevMessage => prevMessage.dataset.messageId === message.dataset.messageId);
+		        console.log('Previous message found:', prev);
 		        
 		        if (prev) {
 		            // Update
+		            console.log('Updating message:', message);
 		            chatDiv.replaceChild(message, prev);
 		        } else {
 		            // Creation
 		            if (!prevMessageList.includes(message)) {
+		                console.log('Appending new message:', message);
 		                chatDiv.appendChild(message);
 		            }
 		            // Deletion
 		            if (!bufferArray.includes(message)) {
+		                console.log('Removing deleted message:', message);
 		                chatDiv.removeChild(message);
 		            }
 		        }
 		    }
 		} else {
+		    console.log('Previous message list is empty. Replacing all children...');
 		    chatDiv.replaceChildren(...bufferDiv.children);
 		    requestAnimationFrame(() => {
+		        console.log('Scrolling to the bottom...');
 		        document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
 		    });
 		}
