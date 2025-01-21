@@ -1062,6 +1062,7 @@ async function loadUsers() {
 
    	     const newMessages = objectDifference(messages, prevMessageList);
     	     prevMessageList = messages;
+	     console.log(newMessages,prevMessageList)
 
             for (const message of newMessages) {
                 let user;
@@ -1410,16 +1411,18 @@ async function loadUsers() {
                 if (message.edited) {
                     body.appendChild(editedTag);
                 }
+		console.log(newMessages,prevMessageList)
 		messageDiv.dataset.messageId = message.id;
                 bufferDiv.appendChild(messageDiv);
             }
+		console.trace()
 
 		const currentMessages = chatDiv.querySelectorAll('.message');
 
 		for (const bufferMessageDiv of bufferDiv.children) {
 		    const messageId = bufferMessageDiv.dataset.messageId;
 		    const existingMessageDiv = [...currentMessages].find(msg => msg.dataset.messageId === messageId);
-		    console.trace(bufferMessageDiv,messageId,existingMessageDiv,newMessages,prevMessageList)
+		    console.trace(bufferMessageDiv,messageId,existingMessageDiv)
 		    if (existingMessageDiv) {
 		        chatDiv.replaceChild(bufferMessageDiv, existingMessageDiv);
 		    } else {
