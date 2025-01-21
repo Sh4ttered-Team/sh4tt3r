@@ -1419,7 +1419,7 @@ async function loadUsers() {
 		for (const bufferMessageDiv of bufferDiv.children) {
 		    const messageId = bufferMessageDiv.dataset.messageId;
 		    const existingMessageDiv = [...currentMessages].find(msg => msg.dataset.messageId === messageId);
-		
+		    console.trace(bufferMessageDiv,messageId,existingMessageDiv,newMessages,prevMessageList)
 		    if (existingMessageDiv) {
 		        chatDiv.replaceChild(bufferMessageDiv, existingMessageDiv);
 		    } else {
