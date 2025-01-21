@@ -1448,11 +1448,8 @@ async function loadUsers() {
 		        document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
 		    });
 		}
-		// prevMessageList = [...bufferDiv.children];
-		requestAnimationFrame(() => {
-		    prevMessageList = [...bufferDiv.children];
-		    console.log('# ', prevMessageList);
-		});
+		console.log("a",bufferDiv.children)
+		prevMessageList = [...bufferDiv.children];
         }
 
         if (currentRoomId) {
