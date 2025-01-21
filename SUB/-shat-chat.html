@@ -977,12 +977,6 @@ async function loadUsers() {
 	usersDiv.insertBefore(roomTitle, usersDiv.firstChild);
     }
 }
-    	function objectDifference(list1, list2) {
-	  	return list1.filter(obj1 => 
-	   	 !list2.some(obj2 => JSON.stringify(obj1) === JSON.stringify(obj2))
-	  	);
-	}
-	let prevMessageList
         async function loadMessages() {
             let chatDiv = document.querySelector('.chat');
             if (!chatDiv) {
@@ -996,6 +990,8 @@ async function loadUsers() {
 
             let inputDiv = document.querySelector('.inputDiv');
             let sendButton = document.querySelector('.send-button');
+	    // let attachButton = document.querySelector('.attach-button');
+	    // let attachButtonText = document.querySelector('.attach-button-text');
             if (!inputDiv) {
                 inputDiv = document.createElement('div');
                 inputDiv.className = 'inputDiv';
@@ -1022,6 +1018,45 @@ async function loadUsers() {
             		}
 			}
         	});
+		// attachButton = document.createElement('div');
+		// attachButton.className = 'attach-button';
+		// attachButton.onclick = async() => {
+		// 	let inputElement = document.querySelector('.attach-input');
+		// 	if (!inputElement) {
+		// 	inputElement = document.createElement("input");
+		// 	inputElement.type = 'file';
+		//     	// inputElement.setAttribute('multiple','');
+		//     	inputElement.className = 'attach-input';
+		//     	document.body.appendChild(inputElement);
+		// 	inputElement.addEventListener("change", async() => {
+		// 		// const files = event.target.files;
+		// 		// if(files.length > 0) {
+		// 			try {
+		// 			const bucket = supabaseClient.storage.from('chat_content');
+		// 			// for (let i = 0; i < files.length; i++) {
+  //       					const file = event.target.files[0]//files[i];
+		// 				const { data, error } = await bucket.upload(`${currentRoomId}/${file.name}`, file);
+		// 				if (error) {
+  //         						alert(`Error uploading file: ${error.message}`);
+  //       					} else {
+  //      						   	console.log('File uploaded successfully:', data);
+  //     						}
+		// 			// }
+		// 		} catch (error) {
+  //    					 alert(`Error handling file upload: ${error.message}`);
+		// 			}
+		// 		// }else {
+		// 		// 	alert('You must select atleast 1 file');
+		// 		// }
+		// 	});
+		// 	}
+		// 	inputElement.click();
+		// 	}
+		// attachButtonText = document.createElement('h2');
+		// attachButtonText.className = 'attach-button-text';
+		// attachButtonText.innerText = '+';
+		// attachButton.appendChild(attachButtonText);
+		// inputDiv.appendChild(attachButton);
                 inputDiv.appendChild(inputField);
                 inputDiv.appendChild(sendButton);
 
@@ -1056,15 +1091,8 @@ async function loadUsers() {
                 "token": `${token}`,
                 "roomId": `${currentRoomId}`
             }, auth, "getMessages")))['messages'];
-	if (!prevMessageList) {
-        	prevMessageList = [];
-    	}
 
-   	     const newMessages = objectDifference(messages, prevMessageList);
-    	     prevMessageList = messages;
-	     console.log(newMessages,prevMessageList)
-
-            for (const message of newMessages) {
+            for (const message of messages) {
                 let user;
                 if (!user_cache[message.user]) {
                     try {
@@ -1411,32 +1439,13 @@ async function loadUsers() {
                 if (message.edited) {
                     body.appendChild(editedTag);
                 }
-		console.log(newMessages,prevMessageList)
-		messageDiv.dataset.messageId = message.id;
+
                 bufferDiv.appendChild(messageDiv);
             }
-		const currentMessages = Array.from(chatDiv.querySelectorAll('.message'));
-		const updatedMessageIds = new Set();
-		for (const bufferMessageDiv of bufferDiv.children) {
-		    const messageId = bufferMessageDiv.dataset.messageId;
-		    const existingMessageDiv = chatDiv.querySelector(`.message[data-message-id="${messageId}"]`);
-		    updatedMessageIds.add(messageId);
-		
-		    if (existingMessageDiv) {
-		        chatDiv.replaceChild(bufferMessageDiv, existingMessageDiv);
-		    } else {
-		        chatDiv.appendChild(bufferMessageDiv);
-		    }
-		}
-		currentMessages.forEach(existingMessageDiv => {
-		    const messageId = existingMessageDiv.dataset.messageId;
-		    if (!updatedMessageIds.has(messageId)) {
-		        chatDiv.removeChild(existingMessageDiv);
-		    }
-		});
-            if (newMessages.length > 0) {
-        	chatDiv.scrollTop = chatDiv.scrollHeight;
-    		}
+            chatDiv.replaceChildren(...bufferDiv.children);
+            requestAnimationFrame(() => {
+                document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
+            });
         }
 
         if (currentRoomId) {
