@@ -1440,16 +1440,16 @@ async function loadUsers() {
 		            }
 		        }
 		    }
+		    prevMessageList = [...bufferDiv.children];
 		} else {
 		    console.log('Previous message list is empty. Replacing all children...');
+		    prevMessageList = [...bufferDiv.children];
 		    chatDiv.replaceChildren(...bufferDiv.children);
 		    requestAnimationFrame(() => {
 		        console.log('Scrolling to the bottom...');
 		        document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
 		    });
 		}
-		console.log("a",bufferDiv.children)
-		prevMessageList = [...bufferDiv.children];
         }
 
         if (currentRoomId) {
