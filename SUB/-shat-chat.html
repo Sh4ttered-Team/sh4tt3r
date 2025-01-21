@@ -1421,10 +1421,10 @@ async function loadUsers() {
 		        console.log('Previous message found:', prev);
 		        
 		        if (prev) {
-		            if (prev.innerHTML !== message.innerHTML) {
-		                console.log('Updating changed message:', message);
-		                chatDiv.replaceChild(message, prev);
-		            }
+		            if (prev.dataset.messageId !== message.dataset.messageId || prev.textContent !== message.textContent) {
+			            console.log('Updating changed message:', message);
+			            chatDiv.replaceChild(message.cloneNode(true), prev);
+			        }
 		        } else {
 		            console.log('Appending new message:', message);
 		            chatDiv.appendChild(message);
