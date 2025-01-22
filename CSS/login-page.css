@@ -65,7 +65,6 @@
     color: var(--color-accent);
     transition: color 0.3s ease;
     cursor:pointer;
-    text-decoration: underline;
 }
 
 #login-form h2:hover {
@@ -78,8 +77,10 @@
 }
 
 #login-form h2 a:hover {
+    text-decoration: underline;
     color: var(--color-button-hover);
 }
 #forgot:hover {
+    text-decoration: underline;
     color: var(--color-button-hover);
 }
