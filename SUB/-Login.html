@@ -27,10 +27,25 @@
     <h2>Don't have an account? Thats fine! You can make one <a href="-Signup.html">here!</a></h2>
     <input type="email" id="email" placeholder="Email" required />
     <input type="password" id="password" placeholder="Password" required />
+    <a id="forgot">Forgot your password?</a>
     <button class="c-button" type="submit">Sign In</button>
   </form>
 
   <script type="module">
+    document.querySelector('#forgot').onclick = async() => {
+      try{
+      const { data, error } = await supabaseClient.auth.resetPasswordForEmail(document.querySelector('email').value, {
+      redirectTo: 'https://shattered-team.github.io/new-shatter/SUB/-Forgot.html',
+      })
+      if (error) {
+        alert(`An error occured =(  ${error}`);
+      }else{
+        alert('An email has been sent to reset your password');
+      }
+      }catch(e) {
+        alert(`An error occured =(  ${e}`);
+      }
+    };
     async function signIn(event) {
       event.preventDefault(); // Prevent form from submitting the default way
       window.showLoadingScreen();
