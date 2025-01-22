@@ -33,6 +33,7 @@
 
   <script type="module">
     document.querySelector('#forgot').onclick = async() => {
+      window.showLoadingScreen();
       try{
       const { data, error } = await supabaseClient.auth.resetPasswordForEmail(document.querySelector('#email').value, {
       redirectTo: 'https://shattered-team.github.io/new-shatter/SUB/-Forgot.html',
@@ -45,6 +46,7 @@
       }catch(e) {
         alert(`An error occured =(  ${e}`);
       }
+      window.hideLoadingScreen();
     };
     async function signIn(event) {
       event.preventDefault(); // Prevent form from submitting the default way
