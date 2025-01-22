@@ -1448,15 +1448,12 @@ async function loadUsers() {
 		        } else {
 			    console.log('Appending new message:', message);
 			    chatDiv.appendChild(message);
+			    if(chatDiv.scrollHeight - chatDiv.scrollTop - chatDiv.clientHeight < 175) {
 			    requestAnimationFrame(() => {
-			        const chat = document.querySelector('.chat');
-			        const isNearBottom = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 175;
-			
-			        if (isNearBottom) {
 			            console.log('Scrolling to the bottom...');
-			            chat.scrollTop = chat.scrollHeight;
-			        }
+			            document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
 			    });
+			    }
 			}
 		    }
 		    const bufferIds = new Set(bufferArray.map(msg => msg.dataset.messageId));
