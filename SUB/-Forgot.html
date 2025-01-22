@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<head>
+  <title>Shatter</title>
+
+  <link rel="stylesheet" href="../CSS/theme-index.css" />
+  <link rel="stylesheet" href="../CSS/index.css" />
+  <link rel="stylesheet" href="../CSS/login-page.css" />
+
+  <link rel="icon" type="image/x-icon" href="../UI/favicon.ico" />
+
+  <!-- main js stuff, copy paste -->
+  <script src="../JS/supabase.js"></script>
+  <script src="../JS/accounts.js"></script>
+  <script src="../JS/fetch.js"></script>
+  <script src="../JS/main.js" type="module"></script>
+
+  <loading></loading>
+</head>
+
+<body>
+  <div class="background"></div>
+
+  <form id="login-form">
+    <h1>Password reset</h1>
+    <input type="password" id="password" placeholder="Password" required />
+    <button class="c-button" type="submit">Reset</button>
+  </form>
+
+  <script type="module">
+    async function reset(event) {
+      event.preventDefault(); // Prevent form from submitting the default way
+      window.showLoadingScreen();
+
+      const password = document.getElementById("password").value;
+
+      // Reset using Supabase Auth
+      try{
+      const { data, error } = await supabaseClient.auth.updateUser({
+            password: password
+      })
+      if (error) {
+        alert(`An error occured =(  ${error}`);
+      }else{
+        alert('Your password has been reset');
+        window.location.href = window.prefix + '/';
+      }
+      }catch(e) {
+        alert(`An error occured =(  ${e}`);
+      }
+      window.hideLoadingScreen();
+    }
+
+    // Add event listener to form submission
+    document.getElementById("login-form").addEventListener("submit", reset);
+  </script>
+</body>
