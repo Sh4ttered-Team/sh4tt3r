@@ -1448,6 +1448,10 @@ async function loadUsers() {
 		        } else {
 		            console.log('Appending new message:', message);
 		            chatDiv.appendChild(message);
+			    requestAnimationFrame(() => {
+			        console.log('Scrolling to the bottom...');
+			        document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
+			    });
 		        }
 		    }
 		    const bufferIds = new Set(bufferArray.map(msg => msg.dataset.messageId));
