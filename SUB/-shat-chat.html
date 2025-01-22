@@ -1450,7 +1450,7 @@ async function loadUsers() {
 			    chatDiv.appendChild(message);
 			    requestAnimationFrame(() => {
 			        const chat = document.querySelector('.chat');
-			        const isNearBottom = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 50;
+			        const isNearBottom = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 175;
 			
 			        if (isNearBottom) {
 			            console.log('Scrolling to the bottom...');
