@@ -78,3 +78,6 @@
 #login-form h2 a:hover {
     color: var(--color-button-hover);
 }
+#forgot:hover {
+    color: var(--color-button-hover);
+}
