@@ -34,7 +34,7 @@
   <script type="module">
     document.querySelector('#forgot').onclick = async() => {
       try{
-      const { data, error } = await supabaseClient.auth.resetPasswordForEmail(document.querySelector('email').value, {
+      const { data, error } = await supabaseClient.auth.resetPasswordForEmail(document.querySelector('#email').value, {
       redirectTo: 'https://shattered-team.github.io/new-shatter/SUB/-Forgot.html',
       })
       if (error) {
