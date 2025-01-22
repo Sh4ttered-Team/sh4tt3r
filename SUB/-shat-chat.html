@@ -1447,13 +1447,13 @@ async function loadUsers() {
 			        }
 		        } else {
 			    console.log('Appending new message:', message);
-			    chatDiv.appendChild(message);
 			    if(chatDiv.scrollHeight - chatDiv.scrollTop - chatDiv.clientHeight < 175) {
-			    requestAnimationFrame(() => {
-			            console.log('Scrolling to the bottom...');
-			            document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
-			    });
+				    requestAnimationFrame(() => {
+				            console.log('Scrolling to the bottom...');
+				            document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
+				    });
 			    }
+			    chatDiv.appendChild(message);
 			}
 		    }
 		    const bufferIds = new Set(bufferArray.map(msg => msg.dataset.messageId));
