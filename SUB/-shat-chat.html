@@ -1446,13 +1446,18 @@ async function loadUsers() {
 			            chatDiv.replaceChild(message, prev);
 			        }
 		        } else {
-		            console.log('Appending new message:', message);
-		            chatDiv.appendChild(message);
+			    console.log('Appending new message:', message);
+			    chatDiv.appendChild(message);
 			    requestAnimationFrame(() => {
-			        console.log('Scrolling to the bottom...');
-			        document.querySelector('.chat').scrollTop = document.querySelector('.chat').scrollHeight;
+			        const chat = document.querySelector('.chat');
+			        const isNearBottom = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 50;
+			
+			        if (isNearBottom) {
+			            console.log('Scrolling to the bottom...');
+			            chat.scrollTop = chat.scrollHeight;
+			        }
 			    });
-		        }
+			}
 		    }
 		    const bufferIds = new Set(bufferArray.map(msg => msg.dataset.messageId));
 		    for (const message of Array.from(chatDiv.children)) {
