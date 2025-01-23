@@ -1407,8 +1407,7 @@ parts.forEach(async (part) => {
   } else if (emojiRegex.test(part)) {
     const emojiCode = part.trim();
     const emoji = emojiMap[emojiCode] || part;
-    const textNode = document.createTextNode(emoji);
-    fragment.appendChild(textNode);
+    fragment.appendChild(emoji);
   } else {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = part;
