@@ -1356,74 +1356,52 @@ async function loadUsers() {
                     }
                 messageDiv.appendChild(userInfoDiv);
                 const body = document.createElement('p');
-const fragment = document.createDocumentFragment();
-
-const urlRegex = /(?<=^|[\s])((?:https?|ftp):\/\/[^\s<>"']+|www\.[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
-const emojiRegex = /(:[a-zA-Z0-9_]+:)/g;
-
-const emojiMap = {
-  ":skull:": "💀",
-  ":heart:": "❤️",
-  ":star:": "⭐",
-  ":fire:": "🔥",
-  // Add more emojis here
-};
-
-const parts = message.text.split(new RegExp(`(${urlRegex.source}|${emojiRegex.source})`, "gi")).filter(part => part !== "");
-
-parts.forEach(async (part) => {
-  if (urlRegex.test(part)) {
-    // Handle URLs
-    const link = document.createElement('a');
-    var doc = new DOMParser().parseFromString(part, 'text/html');
-    link.href = doc.documentElement.textContent;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.textContent = doc.documentElement.textContent;
-    fragment.appendChild(link);
-
-    if (oembed_providers.length > 0) {
-      const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\./, '').replace(/\/$/, '');
-      const provider = oembed_providers.find(provider =>
-        provider.endpoints.some(endpoint =>
-          endpoint.schemes?.some(pattern => {
-            const regex = new RegExp(`^${pattern.replace(/\*/g, '.*')}$`);
-            return regex.test(doc.documentElement.textContent);
-          })
-        )
-      );
-      if (provider) {
-        try {
-          const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
-          const data = await response.json();
-          var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
-          const embed = docHtml.querySelector('iframe');
-          if (provider.provider_name === "YouTube") {
-            embed.className = 'youtube-embed';
-          }
-          body.appendChild(embed);
-        } catch (e) {
-          console.error("Error fetching or appending embed content:", e);
-        }
-      }
-    }
-  } else if (emojiRegex.test(part)) {
-    // Handle Emoji
-    const emojiCode = part.trim();
-    const emoji = emojiMap[emojiCode] || emojiCode; // Use original code if not found
-    const textNode = document.createTextNode(emoji);
-    fragment.appendChild(textNode);
-  } else {
-    // Handle Plain Text
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = part; // Direct HTML embedding.
-    while (tempDiv.firstChild) {
-      fragment.appendChild(tempDiv.firstChild);
-    }
-  }
-});
-
-body.appendChild(fragment);
+		const fragment = document.createDocumentFragment();
+		const urlRegex = /(?<=^|[\s])((?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
+		const parts = message.text.split(urlRegex).filter(part => part !== "");
+		parts.forEach(async (part) => {
+ 		   if (urlRegex.test(part)) {
+  		      const link = document.createElement('a');
+		      var doc = new DOMParser().parseFromString(part, 'text/html');
+  		      link.href = doc.documentElement.textContent;
+  		      link.target = "_blank";
+   		     link.rel = "noopener noreferrer";
+   		     link.textContent = doc.documentElement.textContent;
+   		     fragment.appendChild(link);
+			if (oembed_providers.length > 0) {
+			const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\./, '').replace(/\/$/, '');
+			const provider = oembed_providers.find(provider =>
+			  provider.endpoints.some(endpoint =>
+			    endpoint.schemes?.some(pattern => {
+			      const regex = new RegExp(^${pattern.replace(/\*/g, '.*')}$);
+			      return regex.test(doc.documentElement.textContent);
+			    })
+			  )
+			);
+			if(provider) {
+				try {
+				  const response = await fetch(${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json);
+				  const data = await response.json();
+				  var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
+				  const embed = docHtml.querySelector('iframe');
+				  if(provider.provider_name === "YouTube") {
+				  	embed.className = 'youtube-embed';
+				  }
+				  body.appendChild(embed);
+				} catch (e) {
+				  console.error("Error fetching or appending embed content:", e);
+				}
+			}
+			   }
+  		  } else {
+        		const tempDiv = document.createElement('div');
+        		tempDiv.innerHTML = part;  // Direct HTML embedding.
+        		while (tempDiv.firstChild) {
+         	   	    fragment.appendChild(tempDiv.firstChild);
+        		   }
+    			}
+		});
+		body.appendChild(fragment);
 
                 let editedTag;
                 if (message.edited) {
