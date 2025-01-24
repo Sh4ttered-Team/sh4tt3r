@@ -1373,14 +1373,14 @@ async function loadUsers() {
 			const provider = oembed_providers.find(provider =>
 			  provider.endpoints.some(endpoint =>
 			    endpoint.schemes?.some(pattern => {
-			      const regex = new RegExp(^${pattern.replace(/\*/g, '.*')}$);
+			      const regex = new RegExp(`^${pattern.replace(/\*/g, '.*')}$`);
 			      return regex.test(doc.documentElement.textContent);
 			    })
 			  )
 			);
 			if(provider) {
 				try {
-				  const response = await fetch(${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json);
+				  const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
 				  const data = await response.json();
 				  var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
 				  const embed = docHtml.querySelector('iframe');
@@ -1402,7 +1402,6 @@ async function loadUsers() {
     			}
 		});
 		body.appendChild(fragment);
-
                 let editedTag;
                 if (message.edited) {
                     editedTag = document.createElement('span');
