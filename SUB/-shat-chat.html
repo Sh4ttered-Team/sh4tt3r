@@ -66,6 +66,7 @@
         const currentRoomId = params.get("room");
         let user_statuses = [];
         let clientUser = {};
+	let emoteCache = [];
 	let oembed_providers;
 	try {
 		const r = await fetch("../oembed_providers.json"); //I absolutely hate the hell out of this but cors is the worst and won't let me grab it from their api
@@ -1358,8 +1359,27 @@ async function loadUsers() {
                 const body = document.createElement('p');
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(?<=^|[\s])((?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
-		const parts = message.text.split(urlRegex).filter(part => part !== "");
+		const emoteRegex = /<(\d+):(\d+)>|&lt;(\d+):(\d+)&gt;/gm;
+		const parts = message.text.split(new RegExp(`${urlRegex.source}|${emoteRegex.source}`, 'g')).filter(part => part !== "");
 		parts.forEach(async (part) => {
+		   if (emoteRegex.test(part)) {
+			   let emoteData = emoteRegex.exec(part);
+			   if (emoteData[1] && emoteData[2]) {
+			   	emoteData = [emoteData[1],emoteData[2]];
+				if (!emoteCache.some(emote => emote.emoteData === data.signedUrl)) {
+				const { data, error } = await supabaseClient.storage
+                        		.from("emotes")
+                        		.createSignedUrl(`${emoteData[2]}/${emoteData[1]}`, 60);
+				if (data && !error) {
+					emoteCache.push({emoteData:data.signedUrl});
+				}
+				}
+				const emote = document.createElement('img');
+				emote.className = 'emote';
+				emote.src = `${emoteCache.find(emote => emote.emoteData[0] === emoteData[0] && emote.emoteData[1] === emoteData[1])}`;
+				fragment.appendChild(emote);
+			   }
+		   }
  		   if (urlRegex.test(part)) {
   		      const link = document.createElement('a');
 		      var doc = new DOMParser().parseFromString(part, 'text/html');
