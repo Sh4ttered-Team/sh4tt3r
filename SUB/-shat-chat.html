@@ -1360,7 +1360,7 @@ async function loadUsers() {
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(?<=^|[\s])((?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
 		const emoteRegex = /<(\d+):(\d+)>|&lt;(\d+):(\d+)&gt;/gm;
-		const parts = message.text.split(new RegExp(`${urlRegex.source}|${emoteRegex.source}`, 'g')).filter(part => part !== "");
+		const parts = message.text.split(urlRegex).filter(part => part !== "");
 		parts.forEach(async (part) => {
 		   if (emoteRegex.test(part)) {
 			    let emoteData = emoteRegex.exec(part);
