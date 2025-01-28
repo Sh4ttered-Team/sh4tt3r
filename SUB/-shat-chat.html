@@ -1378,7 +1378,7 @@ async function loadUsers() {
 			                console.log('Emote not found in cache, fetching...');
 			                const { data, error } = await supabaseClient.storage
 			                    .from("emotes")
-			                    .createSignedUrl(`${folder}/${id}`, 60);
+			                    .createSignedUrl(`${folder}/${id}.webp`, 60);
 			                if (data && !error) {
 			                    console.log('Emote URL fetched:', data.signedUrl);
 			                    emoteCache.push({ emoteData: cacheKey, url: data.signedUrl });
