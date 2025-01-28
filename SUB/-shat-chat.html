@@ -1363,22 +1363,30 @@ async function loadUsers() {
 		const parts = message.text.split(new RegExp(`${urlRegex.source}|${emoteRegex.source}`, 'g')).filter(part => part !== "");
 		parts.forEach(async (part) => {
 		   if (emoteRegex.test(part)) {
-			   let emoteData = emoteRegex.exec(part);
-			   if (emoteData[1] && emoteData[2]) {
-			   	emoteData = [emoteData[1],emoteData[2]];
-				if (!emoteCache.some(emote => emote.emoteData === data.signedUrl)) {
-				const { data, error } = await supabaseClient.storage
-                        		.from("emotes")
-                        		.createSignedUrl(`${emoteData[2]}/${emoteData[1]}`, 60);
-				if (data && !error) {
-					emoteCache.push({emoteData:data.signedUrl});
-				}
-				}
-				const emote = document.createElement('img');
-				emote.className = 'emote';
-				emote.src = `${emoteCache.find(emote => emote.emoteData[0] === emoteData[0] && emote.emoteData[1] === emoteData[1])}`;
-				fragment.appendChild(emote);
-			   }
+		       let emoteData = emoteRegex.exec(part);
+		       if (emoteData) {
+		           const id = emoteData[1] || emoteData[3];
+		           const folder = emoteData[2] || emoteData[4];
+		           if (id && folder) {
+		               const cacheKey = `${folder}/${id}`;
+		               let cachedEmote = emoteCache.find(emote => emote.emoteData === cacheKey);
+		               if (!cachedEmote) {
+		                   const { data, error } = await supabaseClient.storage
+		                       .from("emotes")
+		                       .createSignedUrl(`${folder}/${id}`, 60);
+		                   if (data && !error) {
+		                       emoteCache.push({ emoteData: cacheKey, url: data.signedUrl });
+		                       cachedEmote = { emoteData: cacheKey, url: data.signedUrl };
+		                   }
+		               }
+		               if (cachedEmote && cachedEmote.url) {
+		                   const emote = document.createElement('img');
+		                   emote.className = 'emote';
+		                   emote.src = cachedEmote.url;
+		                   fragment.appendChild(emote);
+		               }
+		           }
+		       }
 		   }
  		   if (urlRegex.test(part)) {
   		      const link = document.createElement('a');
