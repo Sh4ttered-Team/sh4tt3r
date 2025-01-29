@@ -1358,8 +1358,8 @@ async function loadUsers() {
                 messageDiv.appendChild(userInfoDiv);
                 const body = document.createElement('p');
 		const fragment = document.createDocumentFragment();
-		const urlRegex = /(?<=^|[\s])((?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
-		const emoteRegex = /<(\\d+):(\\d+)>|&lt;(\\d+):(\\d+)&gt;/gm;
+		const urlRegex = /(?<=^|[\s])((?:https?|ftp):\/\/[^\s<>"']+|www\.[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
+		const emoteRegex = /<(\d+):(\d+)>|&lt;(\d+):(\d+)&gt;/gm;
 		const parts = message.text.split(urlRegex).filter(part => part !== "");
 		
 		for (let part of parts) { // Use `let` to modify `part` directly
@@ -1410,11 +1410,11 @@ async function loadUsers() {
 		        fragment.appendChild(link);
 		
 		        if (oembed_providers.length > 0) {
-		            const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\\./, '').replace(/\\/$/, '');
+		            const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\./, '').replace(/\/$/, '');
 		            const provider = oembed_providers.find(provider =>
 		                provider.endpoints.some(endpoint =>
 		                    endpoint.schemes?.some(pattern => {
-		                        const regex = new RegExp(`^${pattern.replace(/\\*/g, '.*')}$`);
+		                        const regex = new RegExp(`^${pattern.replace(/\*/g, '.*')}$`);
 		                        return regex.test(doc.documentElement.textContent);
 		                    })
 		                )
