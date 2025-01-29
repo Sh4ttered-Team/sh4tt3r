@@ -600,4 +600,5 @@
     max-height: 2vw;
     margin: 0;
     padding: 0;
+    vertical-align: baseline;
 }
