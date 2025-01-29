@@ -347,6 +347,7 @@
     -webkit-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
+    vertical-align: middle;
     position: relative;
     font-size: x-large;
     overflow-wrap: break-word;
