@@ -341,7 +341,6 @@
 }
 
 .message p {
-    display: inline-flex;
     align-items: middle;
     margin-left: 7vw;
     margin-top: -2vh;
@@ -595,11 +594,9 @@
 }
 
 .emote {
-    all: initial;
+    all: unset;
     max-width: 2.5vw;
     max-height: 2.5vw;
     margin:0;
     padding:0;
-    align-items:middle;
-    vertical-align: middle;
 }
