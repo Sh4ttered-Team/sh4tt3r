@@ -341,13 +341,14 @@
 }
 
 .message p {
+    display: inline-flex;
+    align-items: baseline;
     margin-left: 7vw;
     margin-top: -2vh;
     user-select: text;
     -webkit-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
-    vertical-align: middle;
     position: relative;
     font-size: x-large;
     overflow-wrap: break-word;
@@ -599,4 +600,5 @@
     max-height: 2.5vw;
     margin:0;
     padding:0;
+    vertical-align: baseline;
 }
