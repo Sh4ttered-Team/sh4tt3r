@@ -591,3 +591,9 @@
 .overlay button:hover {
     background-color: var(--color-button-hover);
 }
+
+.emote {
+    all: initial;
+    max-width: 2.5vw;
+    max-height: 2.5vw;
+}
