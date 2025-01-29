@@ -342,7 +342,7 @@
 
 .message p {
     display: inline-flex;
-    align-items: baseline;
+    align-items: middle;
     margin-left: 7vw;
     margin-top: -2vh;
     user-select: text;
@@ -600,5 +600,5 @@
     max-height: 2.5vw;
     margin:0;
     padding:0;
-    vertical-align: baseline;
+    vertical-align: middle;
 }
