@@ -1371,7 +1371,7 @@ async function loadUsers() {
 		const parts = message.text.split(urlRegex).filter(part => part !== "");
 		
 		for (let part of parts) {
-		    part = replaceWithEmoji(part);
+		    // part = replaceWithEmoji(part);
 		    const emoteMatches = [...part.matchAll(emoteRegex)];
 		
 		    for (const match of emoteMatches) {
