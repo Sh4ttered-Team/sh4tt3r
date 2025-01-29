@@ -1362,42 +1362,36 @@ async function loadUsers() {
 		const emoteRegex = /<(\d+):(\d+)>|&lt;(\d+):(\d+)&gt;/gm;
 		const parts = message.text.split(urlRegex).filter(part => part !== "");
 		parts.forEach(async (part) => {
-		   if (emoteRegex.test(part)) {
-			    let emoteData = emoteRegex.exec(part);
-			    console.log('Emote regex match:', emoteData);
-			    if (emoteData) {
-			        const id = emoteData[1] || emoteData[3];
-			        const folder = emoteData[2] || emoteData[4];
-			        console.log('Extracted ID:', id, 'Folder:', folder);
-			        if (id && folder) {
-			            const cacheKey = `${folder}/${id}`;
-			            console.log('Cache key:', cacheKey);
-			            let cachedEmote = emoteCache.find(emote => emote.emoteData === cacheKey);
-			            console.log('Found cached emote:', cachedEmote);
-			            if (!cachedEmote) {
-			                console.log('Emote not found in cache, fetching...');
-			                const { data, error } = await supabaseClient.storage
-			                    .from("emotes")
-			                    .createSignedUrl(`${folder}/${id}.webp`, 60);
-			                if (data && !error) {
-			                    console.log('Emote URL fetched:', data.signedUrl);
-			                    emoteCache.push({ emoteData: cacheKey, url: data.signedUrl });
-			                    cachedEmote = { emoteData: cacheKey, url: data.signedUrl };
-			                } else {
-			                    console.error('Error fetching emote:', error);
-			                }
-			            } else {
-			                console.log('Emote found in cache:', cachedEmote.url);
-			            }
-			            if (cachedEmote && cachedEmote.url) {
-			                const emote = document.createElement('img');
-			                emote.className = 'emote';
-			                emote.src = cachedEmote.url;
-			                fragment.appendChild(emote);
-			            } else {
-			                console.log('Emote URL not available');
-			            }
+		   const emoteMatches = [...message.text.matchAll(emoteRegex)];
+			for (const match of emoteMatches) {
+			    const id = match[1] || match[3];
+			    const folder = match[2] || match[4];
+			    const cacheKey = `${folder}/${id}`;
+			
+			    let cachedEmote = emoteCache.find(emote => emote.emoteData === cacheKey);
+			
+			    if (!cachedEmote) {
+			        console.log(`Fetching emote: ${cacheKey}`);
+			        const { data, error } = await supabaseClient.storage
+			            .from("emotes")
+			            .createSignedUrl(`${folder}/${id}.webp`, 60);
+			
+			        if (data && !error) {
+			            cachedEmote = { emoteData: cacheKey, url: data.signedUrl };
+			            emoteCache.push(cachedEmote);
+			        } else {
+			            console.error("Error fetching emote:", error);
+			            continue;
 			        }
+			    } else {
+			        console.log("Emote found in cache:", cachedEmote.url);
+			    }
+			
+			    if (cachedEmote?.url) {
+			        const emote = document.createElement("img");
+			        emote.className = "emote";
+			        emote.src = cachedEmote.url;
+			        fragment.appendChild(emote);
 			    }
 			}
  		   if (urlRegex.test(part)) {
