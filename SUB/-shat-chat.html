@@ -1409,7 +1409,7 @@ async function loadUsers() {
 		        }
 		
 		        if (cachedEmote?.url) {
-		            const emote = `<img class="emote" src="${cachedEmote.url}" alt="<${id}:${folder}>" draggable="false" oncontextmenu="return false;">`;
+		            const emote = `<img class="emote" src="${cachedEmote.url}" alt="<&${id}:${folder}>" draggable="false" oncontextmenu="return false;">`;
 		            part = part.replace(match[0], emote);
 		        }
 		    }
