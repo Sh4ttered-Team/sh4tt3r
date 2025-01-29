@@ -1361,81 +1361,92 @@ async function loadUsers() {
 		const urlRegex = /(?<=^|[\s])((?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
 		const emoteRegex = /<(\d+):(\d+)>|&lt;(\d+):(\d+)&gt;/gm;
 		const parts = message.text.split(urlRegex).filter(part => part !== "");
-		parts.forEach(async (part) => {
-		   const emoteMatches = [...message.text.matchAll(emoteRegex)];
-			for (const match of emoteMatches) {
-			    const id = match[1] || match[3];
-			    const folder = match[2] || match[4];
-			    const cacheKey = `${folder}/${id}`;
-			
-			    let cachedEmote = emoteCache.find(emote => emote.emoteData === cacheKey);
-			
-			    if (!cachedEmote) {
-			        console.log(`Fetching emote: ${cacheKey}`);
-			        const { data, error } = await supabaseClient.storage
-			            .from("emotes")
-			            .createSignedUrl(`${folder}/${id}.webp`, 60);
-			
-			        if (data && !error) {
-			            cachedEmote = { emoteData: cacheKey, url: data.signedUrl };
-			            emoteCache.push(cachedEmote);
-			        } else {
-			            console.error("Error fetching emote:", error);
-			            continue;
-			        }
-			    } else {
-			        console.log("Emote found in cache:", cachedEmote.url);
-			    }
-			
-			    if (cachedEmote?.url) {
-			        const emote = document.createElement("img");
-			        emote.className = "emote";
-			        emote.src = cachedEmote.url;
-			        fragment.appendChild(emote);
-				part = "";
-			    }
-			}
- 		   if (urlRegex.test(part)) {
-  		      const link = document.createElement('a');
-		      var doc = new DOMParser().parseFromString(part, 'text/html');
-  		      link.href = doc.documentElement.textContent;
-  		      link.target = "_blank";
-   		     link.rel = "noopener noreferrer";
-   		     link.textContent = doc.documentElement.textContent;
-   		     fragment.appendChild(link);
-			if (oembed_providers.length > 0) {
-			const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\./, '').replace(/\/$/, '');
-			const provider = oembed_providers.find(provider =>
-			  provider.endpoints.some(endpoint =>
-			    endpoint.schemes?.some(pattern => {
-			      const regex = new RegExp(`^${pattern.replace(/\*/g, '.*')}$`);
-			      return regex.test(doc.documentElement.textContent);
-			    })
-			  )
-			);
-			if(provider) {
-				try {
-				  const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
-				  const data = await response.json();
-				  var docHtml = new DOMParser().parseFromString(data.html, 'text/html');
-				  const embed = docHtml.querySelector('iframe');
-				  if(provider.provider_name === "YouTube") {
-				  	embed.className = 'youtube-embed';
-				  }
-				  body.appendChild(embed);
-				} catch (e) {
-				  console.error("Error fetching or appending embed content:", e);
-				}
-			}
-			   }
-  		  } else {
-        		const tempDiv = document.createElement('div');
-        		tempDiv.innerHTML = part;  // Direct HTML embedding.
-        		while (tempDiv.firstChild) {
-         	   	    fragment.appendChild(tempDiv.firstChild);
-        		   }
-    			}
-		});
+		const fragment = document.createDocumentFragment();
+		
+		for (const part of parts) {
+		    let processedPart = part;
+		    const emoteMatches = [...processedPart.matchAll(emoteRegex)];
+		    
+		    for (const match of emoteMatches) {
+		        const id = match[1] || match[3];
+		        const folder = match[2] || match[4];
+		        const cacheKey = `${folder}/${id}`;
+		
+		        let cachedEmote = emoteCache.find(emote => emote.emoteData === cacheKey);
+		
+		        if (!cachedEmote) {
+		            console.log(`Fetching emote: ${cacheKey}`);
+		            try {
+		                const { data, error } = await supabaseClient.storage
+		                    .from("emotes")
+		                    .createSignedUrl(`${folder}/${id}.webp`, 60);
+		                
+		                if (data && !error) {
+		                    cachedEmote = { emoteData: cacheKey, url: data.signedUrl };
+		                    emoteCache.push(cachedEmote);
+		                } else {
+		                    console.error("Error fetching emote:", error);
+		                    continue;
+		                }
+		            } catch (e) {
+		                console.error("Error fetching emote:", e);
+		                continue;
+		            }
+		        } else {
+		            console.log("Emote found in cache:", cachedEmote.url);
+		        }
+		
+		        if (cachedEmote?.url) {
+		            const emote = document.createElement("img");
+		            emote.className = "emote";
+		            emote.src = cachedEmote.url;
+		            processedPart = processedPart.replace(match[0], emote.outerHTML);
+		        }
+		    }
+		
+		    if (urlRegex.test(processedPart)) {
+		        const link = document.createElement('a');
+		        const doc = new DOMParser().parseFromString(processedPart, 'text/html');
+		        link.href = doc.documentElement.textContent;
+		        link.target = "_blank";
+		        link.rel = "noopener noreferrer";
+		        link.textContent = doc.documentElement.textContent;
+		        fragment.appendChild(link);
+		
+		        if (oembed_providers.length > 0) {
+		            const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\./, '').replace(/\/$/, '');
+		            const provider = oembed_providers.find(provider =>
+		                provider.endpoints.some(endpoint =>
+		                    endpoint.schemes?.some(pattern => {
+		                        const regex = new RegExp(`^${pattern.replace(/\*/g, '.*')}$`);
+		                        return regex.test(doc.documentElement.textContent);
+		                    })
+		                )
+		            );
+		            if (provider) {
+		                try {
+		                    const response = await fetch(`${provider.endpoints[0].url}?url=${encodeURIComponent(doc.documentElement.textContent)}&format=json`);
+		                    const data = await response.json();
+		                    const docHtml = new DOMParser().parseFromString(data.html, 'text/html');
+		                    const embed = docHtml.querySelector('iframe');
+		                    if (provider.provider_name === "YouTube") {
+		                        embed.className = 'youtube-embed';
+		                    }
+		                    body.appendChild(embed);
+		                } catch (e) {
+		                    console.error("Error fetching or appending embed content:", e);
+		                }
+		            }
+		        }
+		    } else {
+		        const tempDiv = document.createElement('div');
+		        tempDiv.innerHTML = processedPart;
+		        while (tempDiv.firstChild) {
+		            fragment.appendChild(tempDiv.firstChild);
+		        }
+		    }
+		}
+		
 		body.appendChild(fragment);
                 let editedTag;
                 if (message.edited) {
