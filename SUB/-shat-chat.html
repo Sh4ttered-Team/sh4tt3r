@@ -1395,7 +1395,7 @@ async function loadUsers() {
 		        }
 		
 		        if (cachedEmote?.url) {
-		            const emote = `<img class="emote" src="${cachedEmote.url}" alt="emote" draggable="false" oncontextmenu="return false;">`;
+		            const emote = `<img class="emote" src="${cachedEmote.url}" draggable="false" oncontextmenu="return false;">`;
 		            part = part.replace(match[0], emote); // Replace matched text with the emote image HTML
 		        }
 		    }
