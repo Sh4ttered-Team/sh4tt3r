@@ -342,6 +342,7 @@
 
 .message p {
     align-items: middle;
+    margin:0;
     margin-left: 7vw;
     margin-top: -2vh;
     user-select: text;
@@ -597,6 +598,6 @@
     all: unset;
     max-width: 2vw;
     max-height: 2vw;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
