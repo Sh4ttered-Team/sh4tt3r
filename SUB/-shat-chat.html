@@ -54,13 +54,13 @@
         <div id="overlay" class="overlay">
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/emojibase@16.0.0/dist/emojibase.umd.min.js"></script>
+<!--     <script src="https://cdn.jsdelivr.net/npm/emojibase@16.0.0/dist/emojibase.umd.min.js"></script> -->
     <script type="module">
         window.showLoadingScreen()
-	const emojiMap = new emojibase.EmojiData({
-    		source: 'en',
-    		strategy: 'shortcodes',
-	});
+	// const emojiMap = new emojibase.EmojiData({
+ //    		source: 'en',
+ //    		strategy: 'shortcodes',
+	// });
 	let room_found = false;
         import { api } from "../JS/api.js"
         const user = JSON.parse(localStorage.getItem("sb-fffwukshwgrcdyqmvahg-auth-token"))
@@ -73,12 +73,12 @@
         let clientUser = {};
 	let emoteCache = [];
 	let oembed_providers;
-	function replaceWithEmoji(text) {
-	    return text.replace(/:([\w\d_]+):/g, (match, emoteName) => {
-	        const emojiChar = emojiMap[emoteName];
-	        return emojiChar || match;
-	    });
-	}
+	// function replaceWithEmoji(text) {
+	//     return text.replace(/:([\w\d_]+):/g, (match, emoteName) => {
+	//         const emojiChar = emojiMap[emoteName];
+	//         return emojiChar || match;
+	//     });
+	// }
 	try {
 		const r = await fetch("../oembed_providers.json"); //I absolutely hate the hell out of this but cors is the worst and won't let me grab it from their api
 		oembed_providers = await r.json();
