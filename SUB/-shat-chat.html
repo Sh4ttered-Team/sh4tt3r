@@ -54,13 +54,14 @@
         <div id="overlay" class="overlay">
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/emojibase@16.0.0/dist/emojibase.umd.min.js"></script>
     <script type="module">
         window.showLoadingScreen()
-	const emojiMap = new emojibase.EmojiData({
-    		source: 'en',
-    		strategy: 'shortcodes',
-	});
+	async function fetchEmojiDataset() {
+	        const response = await fetch('https://cdn.jsdelivr.net/npm/emojibase@16.0.0/dist/data/en/compact.json');
+	        const emojiData = await response.json();
+	        return emojiData;
+    	}
+	const emojiData = await fetchEmojiDataset();
 	let room_found = false;
         import { api } from "../JS/api.js"
         const user = JSON.parse(localStorage.getItem("sb-fffwukshwgrcdyqmvahg-auth-token"))
@@ -73,12 +74,15 @@
         let clientUser = {};
 	let emoteCache = [];
 	let oembed_providers;
-	// function replaceWithEmoji(text) {
-	//     return text.replace(/:([\w\d_]+):/g, (match, emoteName) => {
-	//         const emojiChar = emojiMap[emoteName];
-	//         return emojiChar || match;
-	//     });
-	// }
+	function replaceWithEmoji(text) {
+	        const emojiMap = {};
+	        emojiData.forEach(({ shortcodes, emoji }) => {
+	            shortcodes.forEach(shortcode => {
+	                emojiMap[shortcode] = emoji;
+	            });
+	        });
+	        return text.replace(/:([\w\d_]+):/g, (match, emoteName) => emojiMap[emoteName] || match);
+	    }
 	try {
 		const r = await fetch("../oembed_providers.json"); //I absolutely hate the hell out of this but cors is the worst and won't let me grab it from their api
 		oembed_providers = await r.json();
@@ -1371,7 +1375,7 @@ async function loadUsers() {
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(?<=^|[\s])((?:https?|ftp):\/\/[^\s<>"']+|www\.[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
 		const emoteRegex = /<(\d+):(\d+)>|&lt;(\d+):(\d+)&gt;/gm;
-		const parts = message.text.split(urlRegex).filter(part => part !== "");
+		const parts = replaceWithEmoji(message.text).split(urlRegex).filter(part => part !== "");
 		
 		for (let part of parts) {
 		    const emoteMatches = [...part.matchAll(emoteRegex)];
