@@ -595,8 +595,8 @@
 
 .emote {
     all: unset;
-    max-width: 2.5vw;
-    max-height: 2.5vw;
+    max-width: 1.6vw;
+    max-height: 1.6vw;
     margin:0;
     padding:0;
 }
