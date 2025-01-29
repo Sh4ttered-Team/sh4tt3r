@@ -54,8 +54,10 @@
         <div id="overlay" class="overlay">
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/emojibase"></script>
     <script type="module">
         window.showLoadingScreen()
+	const emojiMap = emojibase.get('en');
 	let room_found = false;
         import { api } from "../JS/api.js"
         const user = JSON.parse(localStorage.getItem("sb-fffwukshwgrcdyqmvahg-auth-token"))
@@ -68,6 +70,12 @@
         let clientUser = {};
 	let emoteCache = [];
 	let oembed_providers;
+	function replaceWithEmoji(text) {
+	    return text.replace(/:([\w\d_]+):/g, (match, emoteName) => {
+	        const emojiChar = emojiMap[emoteName];
+	        return emojiChar || match;
+	    });
+	}
 	try {
 		const r = await fetch("../oembed_providers.json"); //I absolutely hate the hell out of this but cors is the worst and won't let me grab it from their api
 		oembed_providers = await r.json();
@@ -1363,6 +1371,7 @@ async function loadUsers() {
 		const parts = message.text.split(urlRegex).filter(part => part !== "");
 		
 		for (let part of parts) {
+		    part = replaceWithEmoji(part);
 		    const emoteMatches = [...part.matchAll(emoteRegex)];
 		
 		    for (const match of emoteMatches) {
