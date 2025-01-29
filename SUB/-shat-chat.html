@@ -56,6 +56,7 @@
     </div>
     <script type="module">
         window.showLoadingScreen()
+	import { api } from "../JS/api.js"
 	async function fetchEmojiDataset() {
 	        const response = await fetch('https://cdn.jsdelivr.net/npm/emojibase@16.0.0/dist/data/en/compact.json');
 	        const emojiData = await response.json();
@@ -63,7 +64,6 @@
     	}
 	const emojiData = await fetchEmojiDataset();
 	let room_found = false;
-        import { api } from "../JS/api.js"
         const user = JSON.parse(localStorage.getItem("sb-fffwukshwgrcdyqmvahg-auth-token"))
         const userId = user.user.id
         const token = user.access_token
