@@ -1359,14 +1359,13 @@ async function loadUsers() {
                 const body = document.createElement('p');
 		const fragment = document.createDocumentFragment();
 		const urlRegex = /(?<=^|[\s])((?:https?|ftp):&#x2F;&#x2F;[^\s<>"']+|www&#x2E;[^\s<>"']+|(?:https?|ftp):\/\/[^\s<>"']+)(?=[\s]|$)/gi;
-		const emoteRegex = /<(\d+):(\d+)>|&lt;(\d+):(\d+)&gt;/gm;
-		const parts = message.text.split(urlRegex).filter((part) => part !== "");
+		const emoteRegex = /<(\\d+):(\\d+)>|&lt;(\\d+):(\\d+)&gt;/gm;
+		const parts = message.text.split(urlRegex).filter(part => part !== "");
 		const fragment = document.createDocumentFragment();
 		
-		for (const part of parts) {
-		    let processedPart = part;
-		    const emoteMatches = [...processedPart.matchAll(emoteRegex)];
-		    
+		for (let part of parts) { // Use `let` to modify `part` directly
+		    const emoteMatches = [...part.matchAll(emoteRegex)];
+		
 		    for (const match of emoteMatches) {
 		        const id = match[1] || match[3];
 		        const folder = match[2] || match[4];
@@ -1380,7 +1379,7 @@ async function loadUsers() {
 		                const { data, error } = await supabaseClient.storage
 		                    .from("emotes")
 		                    .createSignedUrl(`${folder}/${id}.webp`, 60);
-		                
+		
 		                if (data && !error) {
 		                    cachedEmote = { emoteData: cacheKey, url: data.signedUrl };
 		                    emoteCache.push(cachedEmote);
@@ -1397,16 +1396,14 @@ async function loadUsers() {
 		        }
 		
 		        if (cachedEmote?.url) {
-		            const emote = document.createElement("img");
-		            emote.className = "emote";
-		            emote.src = cachedEmote.url;
-		            processedPart = processedPart.replace(match[0], emote.outerHTML);
+		            const emote = `<img class="emote" src="${cachedEmote.url}" alt="emote">`;
+		            part = part.replace(match[0], emote); // Replace matched text with the emote image HTML
 		        }
 		    }
 		
-		    if (urlRegex.test(processedPart)) {
+		    if (urlRegex.test(part)) {
 		        const link = document.createElement('a');
-		        const doc = new DOMParser().parseFromString(processedPart, 'text/html');
+		        const doc = new DOMParser().parseFromString(part, 'text/html');
 		        link.href = doc.documentElement.textContent;
 		        link.target = "_blank";
 		        link.rel = "noopener noreferrer";
@@ -1414,11 +1411,11 @@ async function loadUsers() {
 		        fragment.appendChild(link);
 		
 		        if (oembed_providers.length > 0) {
-		            const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\./, '').replace(/\/$/, '');
+		            const origin = (new URL(doc.documentElement.textContent)).origin.toLowerCase().replace(/^www\\./, '').replace(/\\/$/, '');
 		            const provider = oembed_providers.find(provider =>
 		                provider.endpoints.some(endpoint =>
 		                    endpoint.schemes?.some(pattern => {
-		                        const regex = new RegExp(`^${pattern.replace(/\*/g, '.*')}$`);
+		                        const regex = new RegExp(`^${pattern.replace(/\\*/g, '.*')}$`);
 		                        return regex.test(doc.documentElement.textContent);
 		                    })
 		                )
@@ -1440,13 +1437,12 @@ async function loadUsers() {
 		        }
 		    } else {
 		        const tempDiv = document.createElement('div');
-		        tempDiv.innerHTML = processedPart;
+		        tempDiv.innerHTML = part; // Direct HTML embedding.
 		        while (tempDiv.firstChild) {
 		            fragment.appendChild(tempDiv.firstChild);
 		        }
 		    }
 		}
-		
 		body.appendChild(fragment);
                 let editedTag;
                 if (message.edited) {
