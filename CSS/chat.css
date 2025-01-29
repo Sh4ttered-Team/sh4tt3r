@@ -315,7 +315,7 @@
     word-break: break-word;
 }
 
-.message img {
+.message img:not(.emote) {
     width: 4.5vw;
     height: 8vh;
     margin-left: 0.5vw;
