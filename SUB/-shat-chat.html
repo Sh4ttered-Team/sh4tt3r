@@ -57,7 +57,10 @@
     <script src="https://cdn.jsdelivr.net/npm/emojibase"></script>
     <script type="module">
         window.showLoadingScreen()
-	const emojiMap = emojibase.get('en');
+	const emojiMap = new emojibase.EmojiData({
+    		source: 'en',
+    		strategy: 'shortcodes',
+	});
 	let room_found = false;
         import { api } from "../JS/api.js"
         const user = JSON.parse(localStorage.getItem("sb-fffwukshwgrcdyqmvahg-auth-token"))
@@ -1371,7 +1374,7 @@ async function loadUsers() {
 		const parts = message.text.split(urlRegex).filter(part => part !== "");
 		
 		for (let part of parts) {
-		    // part = replaceWithEmoji(part);
+		    part = replaceWithEmoji(part);
 		    const emoteMatches = [...part.matchAll(emoteRegex)];
 		
 		    for (const match of emoteMatches) {
