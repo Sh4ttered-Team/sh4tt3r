@@ -139,11 +139,11 @@ async function checkAcc() {
 			    {
 				event: '*',
 				schema: 'public',
-				table: 'profiles',
-				filter: `id=eq.${user.id}`
+				table: 'profiles'
 			    },
 			    async (payload) => {
 				try {
+				    console.log(payload);
 				    if (user[0].banned) {
 						window.location.href = window.prefix + "/404.html";
 					} else if (!user) {
