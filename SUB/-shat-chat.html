@@ -1213,7 +1213,7 @@ async function loadUsers() {
                                 }
                             };
                             dropdown.appendChild(deleteButton);
-                            if (!editstatus_cache) {
+                            if (!editstatus_cache && userId == message.user) {
                                 const editButton = document.createElement('button');
                                 editButton.innerText = 'Edit';
                                 editButton.onclick = () => {
