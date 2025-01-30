@@ -158,6 +158,11 @@ async function checkAcc() {
 			.subscribe((status) => {
 			    console.log('User subscription status:', status);
 			});
+			if (user[0].banned) {
+				window.location.href = window.prefix + "/404.html";
+			} else if (!user) {
+				window.location.href = window.prefix + "/SUB/-Login.html";
+			}
 	} else if (!(await loggedIn())) {
 		window.location.href = window.prefix + "/SUB/-Login.html";
 	}
