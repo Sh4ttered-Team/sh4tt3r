@@ -132,11 +132,32 @@ async function checkAcc() {
 	}
 
 	if (user) {
-		if (user[0].banned) {
-			window.location.href = window.prefix + "/404.html";
-		} else if (!user) {
-			window.location.href = window.prefix + "/SUB/-Login.html";
-		}
+		let userChannel = supabaseClient
+			.channel('user')
+			.on(
+			    'postgres_changes',
+			    {
+				event: '*',
+				schema: 'public',
+				table: 'profiles',
+				filter: `id=eq.${user.id}`
+			    },
+			    async (payload) => {
+				try {
+				    if (user[0].banned) {
+						window.location.href = window.prefix + "/404.html";
+					} else if (!user) {
+						window.location.href = window.prefix + "/SUB/-Login.html";
+					}
+				    console.log('User refreshed');
+				} catch (error) {
+				    console.error('Error refreshing user:', error);
+				}
+			    }
+			)
+			.subscribe((status) => {
+			    console.log('User subscription status:', status);
+			});
 	} else if (!(await loggedIn())) {
 		window.location.href = window.prefix + "/SUB/-Login.html";
 	}
