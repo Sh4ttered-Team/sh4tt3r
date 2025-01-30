@@ -132,6 +132,11 @@ async function checkAcc() {
 	}
 
 	if (user) {
+		if (user[0].banned) {
+			window.location.href = window.prefix + "/404.html";
+		} else if (!user) {
+			window.location.href = window.prefix + "/SUB/-Login.html";
+		}
 		let userChannel = supabaseClient
 			.channel('user')
 			.on(
@@ -143,7 +148,7 @@ async function checkAcc() {
 			    },
 			    async (payload) => {
 				try {
-				    console.log(payload);
+				    console.log(payload,user);
 				    if (user[0].banned) {
 						window.location.href = window.prefix + "/404.html";
 					} else if (!user) {
@@ -158,11 +163,6 @@ async function checkAcc() {
 			.subscribe((status) => {
 			    console.log('User subscription status:', status);
 			});
-			if (user[0].banned) {
-				window.location.href = window.prefix + "/404.html";
-			} else if (!user) {
-				window.location.href = window.prefix + "/SUB/-Login.html";
-			}
 	} else if (!(await loggedIn())) {
 		window.location.href = window.prefix + "/SUB/-Login.html";
 	}
