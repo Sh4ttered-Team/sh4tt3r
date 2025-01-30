@@ -120,52 +120,53 @@ function addLoadingScreen() {
 
 //check for account
 async function checkAcc() {
-	let user = await FDB("profiles");
-	if (AdminReq && !user[0].admin) {
-		window.location.href = window.prefix + "/404.html";
-	}
-	if (window.prefix == "" && user[0].admin) {
-		loadConsole();
-	}
-	if (settings['console'] && user[0].admin) {
-		loadConsole();
-	}
+    let user = await FDB("profiles");
+    if (!user || user.length === 0) {
+        window.location.href = window.prefix + "/SUB/-Login.html";
+        return;
+    }
+    let userData = user[0];
+    if (userData.banned) {
+        window.location.href = window.prefix + "/404.html";
+        return;
+    }
+    if (AdminReq && !userData.admin) {
+        window.location.href = window.prefix + "/404.html";
+        return;
+    }
+    if (userData.admin && (window.prefix === "" || settings['console'])) {
+        loadConsole();
+    }
+    supabaseClient
+        .channel('user')
+        .on(
+            'postgres_changes',
+            {
+                event: '*',
+                schema: 'public',
+                table: 'profiles'
+            },
+            async (payload) => {
+                try {
+                    console.log('User update received:', payload);
+                    let updatedUser = await FDB("profiles");
+                    if (!updatedUser || updatedUser.length === 0) {
+                        window.location.href = window.prefix + "/SUB/-Login.html";
+                        return;
+                    }
+                    let updatedUserData = updatedUser[0];
 
-	if (user) {
-		if (user[0].banned) {
-			window.location.href = window.prefix + "/404.html";
-		} else if (!user) {
-			window.location.href = window.prefix + "/SUB/-Login.html";
-		}
-		let userChannel = supabaseClient
-			.channel('user')
-			.on(
-			    'postgres_changes',
-			    {
-				event: '*',
-				schema: 'public',
-				table: 'profiles'
-			    },
-			    async (payload) => {
-				try {
-				    console.log(payload,user);
-				    if (user[0].banned) {
-						window.location.href = window.prefix + "/404.html";
-					} else if (!user) {
-						window.location.href = window.prefix + "/SUB/-Login.html";
-					}
-				    console.log('User refreshed');
-				} catch (error) {
-				    console.error('Error refreshing user:', error);
-				}
-			    }
-			)
-			.subscribe((status) => {
-			    console.log('User subscription status:', status);
-			});
-	} else if (!(await loggedIn())) {
-		window.location.href = window.prefix + "/SUB/-Login.html";
-	}
+                    if (updatedUserData.banned) {
+                        window.location.href = window.prefix + "/404.html";
+                    }
+                } catch (error) {
+                    console.error('Error refreshing user:', error);
+                }
+            }
+        )
+        .subscribe((status) => {
+            console.log('User subscription status:', status);
+        });
 }
 
 //load eruda console
