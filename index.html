@@ -15,10 +15,9 @@
 	<script src="./JS/main.js" type="module"></script>
 
 	<loading></loading>
-	<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+	<script src="/lib/OneSignalSDK.page.js" defer></script>
 	<script>
 	window.OneSignalDeferred = window.OneSignalDeferred || [];
-	OneSignal.SERVICE_WORKER_PATH = '/new-shatter/OneSignalSDKWorker.js';
 	OneSignalDeferred.push(async function(OneSignal) {
 		await OneSignal.init({
 		appId: "48b10c07-91ce-4656-8f09-b49c8fa2c0a3",
