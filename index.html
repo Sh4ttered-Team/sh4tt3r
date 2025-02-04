@@ -19,6 +19,7 @@
 	<script>
 	window.OneSignalDeferred = window.OneSignalDeferred || [];
 	OneSignalDeferred.push(async function(OneSignal) {
+		OneSignal.SERVICE_WORKER_PATH = '/new-shatter/OneSignalSDK.sw.js';
 		await OneSignal.init({
 		appId: "48b10c07-91ce-4656-8f09-b49c8fa2c0a3",
 		});
