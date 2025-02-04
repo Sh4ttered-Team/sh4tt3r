@@ -14,16 +14,18 @@
 	<script src="./JS/fetch.js"></script>
 	<script src="./JS/main.js" type="module"></script>
 
-	<script src="./lib/OneSignalSDKWorker.js" defer></script>
+	<loading></loading>
+	<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 	<script>
 	window.OneSignalDeferred = window.OneSignalDeferred || [];
+	window.OneSignal = window.OneSignal || [];
+	OneSignal.SERVICE_WORKER_PATH = '/new-shatter/OneSignalSDKWorker.js';
 	OneSignalDeferred.push(async function(OneSignal) {
 		await OneSignal.init({
 		appId: "48b10c07-91ce-4656-8f09-b49c8fa2c0a3",
 		});
 	});
 	</script>
-	<loading></loading>
 </head>
 
 <body>
