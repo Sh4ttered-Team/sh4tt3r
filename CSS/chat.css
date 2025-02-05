@@ -355,6 +355,8 @@
     font-size: x-large;
     overflow-wrap: break-word;
     word-break: break-word;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 .youtube-embed {
     width: 30vw;
