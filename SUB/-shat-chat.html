@@ -176,7 +176,7 @@
                     const state = JSON.parse(response);
 
                     switch (state.message) {
-                        case "Room created":
+                        case "Room created successfully":
                             const Idresponse = await api({
                                 "userId": `${userId}`,
                                 "token": `${token}`,
