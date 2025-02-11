@@ -139,15 +139,17 @@
 					const sub_button = document.createElement("button");
 					if (subpage.startsWith("=")) {
 						sub_button.disabled = true;
-						const work_in_progress = document.createElement("h2");
+						const work_in_progress = document.createElement("h3");
+						work_in_progress.style = "font-size: large;";
 						work_in_progress.textContent = "Work in progress";
 						sub_button.appendChild(work_in_progress);
+						sub_button.style = "background-color: var(\"--hover-color1\")";
 					}else {
-						sub_button.textContent = subpage.replace(".html", "").replace("=", "");
 						sub_button.onclick = function () {
 							window.location.href = "./" + subfolder + "/" + subpage;
 						};
 					}
+					sub_button.textContent = subpage.replace(".html", "").replace("=", "");
 					sub_button.className = "c-button";
 					container.appendChild(sub_button);
 				});
