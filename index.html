@@ -138,13 +138,16 @@
 					const container = document.getElementsByClassName("menu-container")[0];
 					const sub_button = document.createElement("button");
 					if (subpage.startsWith("=")) {
-						sub_button.disabled = true;
-						const work_in_progress = document.createElement("h3");
-						work_in_progress.style = "font-size: large;";
-						work_in_progress.textContent = "Work in progress";
-						sub_button.appendChild(work_in_progress);
-						sub_button.style.backgroundColor = "var(--color-major-lesser)";
-						sub_button.style.cursor = "not-allowed";
+						if (user.admin) {
+							sub_button.onclick = function () {
+								window.location.href = "./" + subfolder + "/" + subpage;
+							};
+						} else{
+							sub_button.disabled = true;
+							sub_button.style.backgroundColor = "var(--color-major-lesser)";
+							sub_button.style.cursor = "not-allowed";
+							sub_button.title = "Work in progress";
+						}
 					}else {
 						sub_button.onclick = function () {
 							window.location.href = "./" + subfolder + "/" + subpage;
