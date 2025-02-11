@@ -135,16 +135,20 @@
 				window.hideLoadingScreen();
 			} else {
 				menus.forEach((subpage) => {
-					const container =
-						document.getElementsByClassName("menu-container")[0];
+					const container = document.getElementsByClassName("menu-container")[0];
 					const sub_button = document.createElement("button");
-
-					sub_button.textContent = subpage.replace(".html", "");
+					if (subpage.startsWith("=")) {
+						sub_button.disabled = true;
+						const work_in_progress = document.createElement("h2");
+						work_in_progress.textContent = "Work in progress";
+						sub_button.appendChild(work_in_progress);
+					}else {
+						sub_button.textContent = subpage.replace(".html", "").replace("=", "");
+						sub_button.onclick = function () {
+							window.location.href = "./" + subfolder + "/" + subpage;
+						};
+					}
 					sub_button.className = "c-button";
-					sub_button.onclick = function () {
-						window.location.href = "./" + subfolder + "/" + subpage;
-					};
-
 					container.appendChild(sub_button);
 				});
 				window.hideLoadingScreen();
