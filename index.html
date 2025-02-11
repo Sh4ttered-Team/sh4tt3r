@@ -138,7 +138,7 @@
 					const container = document.getElementsByClassName("menu-container")[0];
 					const sub_button = document.createElement("button");
 					if (subpage.startsWith("=")) {
-						if (user.admin) {
+						if (user[0].admin) {
 							sub_button.onclick = function () {
 								window.location.href = "./" + subfolder + "/" + subpage;
 							};
