@@ -26,6 +26,10 @@ body {
   font-weight: 600;
 }
 
+* {
+  font-family: 'Tangerine', serif;
+}
+
 h1, h2, h3, h4, h5, h6, a, p {
   color: var(--color-text-light);
   font-weight: bolder;
