@@ -3,43 +3,43 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    gap: 40px;
+    gap: 4vh;
     width: 100%;
     height: 100%;
-    padding: 20px;
+    padding: 2vw;
     box-sizing: border-box;
 }
 
 .infobox {
-    border-radius: 7px;
+    border-radius: 0.7vw;
     background-color: var(--color-accent);
     width: 29%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    box-shadow: 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 2vw;
+    box-shadow: 0.4vw 1vw rgba(0, 0, 0, 0.2);
 }
 
 .infobox-header {
     color: var(--color-text-light);
     font-weight: bolder;
-    font-size: xx-large;
+    font-size: 2vw;
     text-align: center;
 }
 
 .infobox-body {
     color: var(--color-text-light);
     font-weight: bolder;
-    font-size: large;
+    font-size: 1.5vw;
     text-align: center;
 }
 
 .infobox-body-link {
     color: var(--color-button);
     font-weight: bolder;
-    font-size: large;
+    font-size: 1.5vw;
     text-decoration: none;
 }
 
@@ -53,12 +53,12 @@
     border: none;
     color: var(--color-text-light);
     width: 100%;
-    font-size: x-large;
+    font-size: 1.5vw;
     font-weight: bolder;
-    border-radius: 7px;
-    padding: 10px;
+    border-radius: 0.7vw;
+    padding: 1vw;
     box-sizing: border-box;
-    box-shadow: 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0.4vw 1vw rgba(0, 0, 0, 0.2);
 }
 
 #support-form {
@@ -67,15 +67,15 @@
 
 #submit-button {
     width: 100%;
-    height: 5%;
+    height: 5vh;
     cursor: pointer;
     background-color: var(--color-button);
     color: var(--color-text-light);
     border-color: var(--color-button-hover);
-    border-radius: 7px;
-    font-size: x-large;
+    border-radius: 0.7vw;
+    font-size: 1.5vw;
     font-weight: bolder;
-    box-shadow: 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0.4vw 1vw rgba(0, 0, 0, 0.2);
 }
 
 #submit-button:hover {

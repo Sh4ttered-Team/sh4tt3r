@@ -11,13 +11,13 @@
 #login-form input {
     background-color: var(--color-minor);
     border-style: solid;
-    border: 6px solid var(--color-accent);
-    border-radius: 7px;
+    border: 0.6vw solid var(--color-accent);
+    border-radius: 0.7vw;
     width: 27vw;
     height: 8vh;
     margin: 1vh;
     text-align: center;
-    font-size: x-large;
+    font-size: 1.5rem;
     font-weight: bolder;
     color: var(--color-text-light);
 }
@@ -51,20 +51,21 @@
 
 #login-form h1 {
     font-size: 8vh;
-    margin-bottom: 0vh;
+    margin-bottom: 2vh;
 }
 
 #login-form h2 {
-    font-size: large;
+    font-size: 1.5rem;
     color: var(--color-border);
     transition: color 0.3s ease;
     margin-bottom: 6vh;
 }
 
 #login-form a {
+    font-size: 1.5rem;
     color: var(--color-accent);
     transition: color 0.3s ease;
-    cursor:pointer;
+    cursor: pointer;
     text-decoration: none;
 }
 
@@ -81,6 +82,7 @@
     text-decoration: underline;
     color: var(--color-button-hover);
 }
+
 #forgot:hover {
     text-decoration: underline;
     color: var(--color-button-hover);

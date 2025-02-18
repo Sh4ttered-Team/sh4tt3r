@@ -1,6 +1,6 @@
 .settings-div {
     background-color: var(--color-accent);
-    border-radius: 10px;
+    border-radius: 1vw;
     width: 70%;
     transform: translateX(23%);
     height: 75vh;
@@ -26,11 +26,11 @@
     flex-grow: 0;
     flex-shrink: 0;
     align-items: center;
-    margin-bottom: -3vh;
     margin-left: 5vw;
     width: 100%;
 }
 
 .setting h2 {
     color: var(--color-text-muted);
+    font-size: 1.5vw;
 }

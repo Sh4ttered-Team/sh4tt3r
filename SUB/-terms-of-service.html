@@ -81,4 +81,9 @@
 	</div>
 
 	<c-footer />
+	<script>
+		document.querySelectorAll(".TOS-section p").forEach(element => {
+			element.innerHTML = element.innerHTML.replace(/\*\s/g, "• ");
+		});
+	</script>
 </body>

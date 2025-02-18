@@ -51,4 +51,9 @@
 
 	</div>
 	<c-footer />
+	<script>
+		document.querySelectorAll(".privacy-policy-section p").forEach(element => {
+			element.innerHTML = element.innerHTML.replace(/\*\s/g, "• ");
+		});
+	</script>
 </body>

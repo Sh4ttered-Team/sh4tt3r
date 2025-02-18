@@ -4,13 +4,13 @@
     position: relative;
     width: 17vw;
     height: 30vh;
-    padding: 10px;
+    padding: 1vw; /* Changed from 10px to vw for better scaling */
     display: flex;
     justify-content: center;
     flex-direction: column;
     overflow: hidden;
     align-items: center;
-    border-radius: 7px;
+    border-radius: 0.5vw; /* Changed from 7px to vw for better scaling */
     cursor: pointer;
 }
 
@@ -29,6 +29,7 @@
     text-align: center;
     word-wrap: break-word;
     word-break: break-all;
+    font-size: 1.5vw; /* Added font-size for better scaling */
 }
 
 .game button {
@@ -39,11 +40,11 @@
     height: 3vw;
     background-color: var(--color-minor);
     color: var(--color-text-light);
-    border: 6px solid var(--color-minor);
+    border: 0.5vw solid var(--color-minor); /* Changed from 6px to vw for better scaling */
     transition: background-color 0.4s ease, border-color 0.4s ease;
-    font-size: x-large;
+    font-size: 1.5vw; /* Changed from x-large to vw for better scaling */
     font-weight: bolder;
-    border-radius: 7px;
+    border-radius: 0.5vw; /* Changed from 7px to vw for better scaling */
     cursor: pointer;
     text-align: center;
     white-space: nowrap;
@@ -55,18 +56,18 @@
 }
 
 .game button:hover {
-    border: 6px solid var(--color-button-hover);
+    border: 0.5vw solid var(--color-button-hover); /* Changed from 6px to vw for better scaling */
     background-color: var(--color-button-hover);
 }
 
 .gamesDiv, .favGames {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(17vw, 1fr));
-    gap: 10px;
-    padding: 10px;
+    gap: 1vw; /* Changed from 10px to vw for better scaling */
+    padding: 1vw; /* Changed from 10px to vw for better scaling */
 }
 
 h1 {
     text-align: center;
-    font-size: xxx-large;
+    font-size: 3vw; /* Changed from xxx-large to vw for better scaling */
 }
