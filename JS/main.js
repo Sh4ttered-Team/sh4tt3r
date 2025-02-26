@@ -109,20 +109,10 @@ function addLoadingScreen() {
 
 		window.showLoadingScreen = function () {
 			document.querySelector(".loading-overlay").style.visibility = "visible";
-			document.addEventListener("keydown", e => e.preventDefault());
-			document.body.style.pointerEvents = "none";
-			if document.querySelector(".send-button") {
-				document.querySelector(".send-button").disabled = true
-			}
 		};
 
 		window.hideLoadingScreen = function () {
 			document.querySelector(".loading-overlay").style.visibility = "hidden";
-			document.body.style.pointerEvents = "auto";
-			document.removeEventListener("keydown", e => e.preventDefault());
-			if document.querySelector(".send-button") {
-				document.querySelector(".send-button").disabled = false
-			}
 		};
 	}
 }
