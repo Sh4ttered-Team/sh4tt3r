@@ -137,6 +137,9 @@ async function checkAcc() {
     if (userData.admin && (window.prefix === "" || settings['console'])) {
         loadConsole();
     }
+	if (window.location.href.includes("shat-chat.html") && updatedUserData.chat_banned) {
+		window.location.href = window.prefix + `/404.html?from=${window.location.href}`;
+	}
     supabaseClient
         .channel('user')
         .on(
@@ -239,3 +242,4 @@ function cloak(url, relative_path = false) {
 	cloak.document.write(`<iframe src='${url}' frameBorder='0' style='width: 100vw; height: 100vh;' />`);
 	window.location.replace("about:blank");
 }
+

@@ -27,6 +27,11 @@
 
   <script type="module">
     const user = await FDB('profiles');
+    const params = new URLSearchParams(window.location.search);
+		const from = params.get("from");
+    if (user[0].chat_banned && from.includes(shat-chat.html)) {
+      document.getElementById('text').textContent = "You've been banned from chat! \n Reason: \'" + user[0].chat_ban_reason + '\'';
+    }
     if (user[0].banned) {
       document.getElementById('text').textContent = "You've been banned! \n How'd you manage that? \n Reason: \'" + user[0].ban_reason + '\'';
     }

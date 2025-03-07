@@ -1724,31 +1724,75 @@ async function reconnectChannel() {
 	}
 	    async function friendUser(data) {
             try {
+                console.log(data);
+
+                if (!data) {
+
+                    alert("Please enter a username");
+
+                    return;
+
+                }
+
+                let fetchedUser = await api({
+
+                    "userId": `${userId}`,
+
+                    "token": `${token}`,
+
+                    "data": `${data}`,
+
+                    "mode": 'fromusername'
+
+                }, auth, "getUser");
+
+                if (!fetchedUser) {
+
+                    alert("User not found");
+
+                    return;
+
+                }
+
+                fetchedUser = JSON.parse(fetchedUser);
+
+                if (fetchedUser.id === userId) {
+
+                    alert("You can't friend yourself");
+
+                    return;
+
+                }
                 window.showLoadingScreen()
                 const response = await api({
                     "userId": `${userId}`,
                     "token": `${token}`,
-                    "data": `${data}`,
+                    "data": `${fetchedUser.id}`,
                 }, auth, "addFriend");
                 const state = JSON.parse(response);
 
                 switch (state.message) {
-                    case "Request already exists":
+                    case "Friend request already sent":
                         alert("Request already exists");
                         break;
-		    case "Blocked":
-                        alert("You have been blocked by this user");
-                        break;
-		    case "Already friends":
+		            case "Already friends":
                         alert("Already friends");
                         break;
-                    case "User not found":
+                    case "Receiver not found":
                         alert("User not found");
                         break;
-                    case "Sent":
-                        alert("sent request")
+                    case "Request created":
+                        alert("Request sent")
                         return
                         break;
+                    case "Receiver has blocked you":
+                        alert("Receiver has blocked you")
+                        return
+                        break
+                    case "You have blocked the receiver":
+                        alert("You have blocked the receiver")
+                        return
+                        break
                     default:
                         alert("An unknown error occurred =(");
                         break;
