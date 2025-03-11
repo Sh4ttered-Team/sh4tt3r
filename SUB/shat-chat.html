@@ -935,31 +935,31 @@ async function loadUsers() {
 	roomTitleText.innerHTML = room.roomName;
 	roomTitle.appendChild(roomTitleText);
 	if (clientUser.admin || userId == room_cache.roomOwner) {
-		const roomSettings = document.createElement('div');
-		roomSettings.className = 'room-settings';
-		const overlay = document.getElementById('overlay');
-            	const closeOverlay = document.getElementById('closeOverlay');
-		roomSettings.onclick = () => {
-			overlay.innerHTML = `
-                                    <div class="overlay-content">
-                        <h2>Room Settings</h2>
-                        <form class="join">
-                            <input id="settingsName" placeholder="Room name" value="${room.roomName}">
-                            <input id="settingsPassword" placeholder="Password(Current hidden)">
-                            <div class="settingsOptions">
-                            <h2 id="privateText">Private</h2>
-                            <input id="settingsPrivate" ${room.isPrivate ? 'checked' : ''} type="checkbox">
-                            <h2 id="maxUsersText">Max users</h2>
-                            <input id="settingsMaxUsers" value="${room.maxUsers}" type="number" min="2" max="50">
-                            </div>
-                            <button type="submit" id="settingsSubmit">Submit</button>
-                        </form>
-                    </div>
-                                `;
-                        overlay.style.visibility = 'visible';
-                        overlay.style.opacity = '1';
-		}
-		roomTitle.appendChild(roomSettings);
+		// const roomSettings = document.createElement('div');
+		// roomSettings.className = 'room-settings';
+		// const overlay = document.getElementById('overlay');
+  //           	const closeOverlay = document.getElementById('closeOverlay');
+		// roomSettings.onclick = () => {
+		// 	overlay.innerHTML = `
+  //                                   <div class="overlay-content">
+  //                       <h2>Room Settings</h2>
+  //                       <form class="join">
+  //                           <input id="settingsName" placeholder="Room name" value="${room.roomName}">
+  //                           <input id="settingsPassword" placeholder="Password(Current hidden)">
+  //                           <div class="settingsOptions">
+  //                           <h2 id="privateText">Private</h2>
+  //                           <input id="settingsPrivate" ${room.isPrivate ? 'checked' : ''} type="checkbox">
+  //                           <h2 id="maxUsersText">Max users</h2>
+  //                           <input id="settingsMaxUsers" value="${room.maxUsers}" type="number" min="2" max="50">
+  //                           </div>
+  //                           <button type="submit" id="settingsSubmit">Submit</button>
+  //                       </form>
+  //                   </div>
+  //                               `;
+  //                       overlay.style.visibility = 'visible';
+  //                       overlay.style.opacity = '1';
+		// }
+		// roomTitle.appendChild(roomSettings);
 	}
 	}
 	usersDiv.insertBefore(roomTitle, usersDiv.firstChild);
@@ -1717,10 +1717,10 @@ async function reconnectChannel() {
 }
 
         } else {
-		loadHome();
+		// loadHome();
 	}
 	}else {
-		loadHome();
+		// loadHome();
 	}
 	    async function friendUser(data) {
             try {
