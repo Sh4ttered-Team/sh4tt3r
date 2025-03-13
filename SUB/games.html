@@ -46,7 +46,7 @@
         games = await FFFF('shattered-team/shatt3r-games', "game-sources/-flash/", "file");
         games = games.map(game => ({ 'name': game, 'url': game }))
       } else if (url) {
-        games = await (await fetch("https://shatt3red-team.github.io/shatt3r-games/game-sources/-url_games.json")).json();
+        games = await (await fetch("https://shattered-team.github.io/shatt3r-games/game-sources/-url_games.json")).json();
       }
       if (games) {
         const favs = getFavorites();

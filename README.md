@@ -1,9 +1,9 @@
 ![Project Logo](UI/Title.png)
 ## Info: 
-![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/shatt3red-team/shatt3r)
-![GitHub repo size](https://img.shields.io/github/repo-size/shatt3red-team/shatt3r)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/t/shatt3red-team/shatt3r)
-![GitHub last commit](https://img.shields.io/github/last-commit/shatt3red-team/shatt3r)
+![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/shattered-team/shatt3r)
+![GitHub repo size](https://img.shields.io/github/repo-size/shattered-team/shatt3r)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/shattered-team/shatt3r)
+![GitHub last commit](https://img.shields.io/github/last-commit/shattered-team/shatt3r)
 
 ## License
 
@@ -14,4 +14,4 @@
 ## Contact
 
 Use our support email: [sshlvl.contact@gmail.com](mailto:sshlvl.contact@gmail.com)
-or our support page: [https://shatt3red-team.github.io/shatt3r/SUB/support.html](https://shatt3red-team.github.io/shatt3r/SUB/support.html)
+or our support page: [https://shattered-team.github.io/shatt3r/SUB/support.html](https://shattered-team.github.io/shatt3r/SUB/support.html)

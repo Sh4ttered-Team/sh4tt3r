@@ -60,7 +60,7 @@ if (!ThemeBypass) {
 
 //fix for different web environments (local dev/github pages)
 window.prefix = "";
-if (window.location.href.startsWith("https://shatt3red-team.github.io/")) {
+if (window.location.href.startsWith("https://shattered-team.github.io/")) {
 	window.prefix = "/shatt3r";
 }
 

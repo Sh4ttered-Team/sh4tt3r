@@ -78,7 +78,7 @@
 			else {
 				if (params.has("flash", true)) {
 					try {
-						srcFetch = await fetch("https://shatt3red-team.github.io/shatt3r-games/game-sources/-flash/" + encodeURIComponent(src));
+						srcFetch = await fetch("https://shattered-team.github.io/shatt3r-games/game-sources/-flash/" + encodeURIComponent(src));
 						if (!srcFetch.ok) {
 							throw new Error('Failed to fetch the game');
 						}
@@ -117,7 +117,7 @@
 					}
 				} else {
 					// Fetch to check if the resource exists
-					const iframeUrl = "https://shatt3red-team.github.io/shatt3r-games/game-sources/" + src;
+					const iframeUrl = "https://shattered-team.github.io/shatt3r-games/game-sources/" + src;
 					try {
 						const iframeFetch = await fetch(iframeUrl, { method: 'HEAD' });
 						if (!iframeFetch.ok) {
