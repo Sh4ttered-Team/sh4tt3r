@@ -78,7 +78,7 @@
 			else {
 				if (params.has("flash", true)) {
 					try {
-						srcFetch = await fetch("https://shattered-team.github.io/shatt3r-games/game-sources/-flash/" + encodeURIComponent(src));
+						srcFetch = await fetch("https://shattered-team.github.io/shatter-games/game-sources/-flash/" + encodeURIComponent(src));
 						if (!srcFetch.ok) {
 							throw new Error('Failed to fetch the game');
 						}
@@ -117,7 +117,7 @@
 					}
 				} else {
 					// Fetch to check if the resource exists
-					const iframeUrl = "https://shattered-team.github.io/shatt3r-games/game-sources/" + src;
+					const iframeUrl = "https://shattered-team.github.io/shatter-games/game-sources/" + src;
 					try {
 						const iframeFetch = await fetch(iframeUrl, { method: 'HEAD' });
 						if (!iframeFetch.ok) {
@@ -145,7 +145,7 @@
 			errortext.id = "error-text";
 			errortext.style.color = "var(--color-text-light)";
 			errortext.style.textAlign = "center";
-			errortext.innerHTML = "Oops! <br>We couldn't find this game...<br>If you think this is an error please report it ";
+			errortext.innerHTML = "Oops! <br>We couldn't find this game...<br>If you think this is an error please report it(with the name of the game) ";
 			const linktext = document.createElement("a");
 			linktext.textContent = "here!";
 			linktext.style.color = "var(--color-button)";
