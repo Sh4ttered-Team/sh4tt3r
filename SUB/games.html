@@ -40,10 +40,10 @@
     async function load_games(flash, url, html) {
       let games
       if (html) {
-        games = await FFFF('shattered-team/shattered-team', "game-sources", "dir");
+        games = await FFFF('shattered-team/shatter-games', "game-sources", "dir");
         games = games.map(game => ({ 'name': game, 'url': game }))
       } else if (flash) {
-        games = await FFFF('shattered-team/shattered-team', "game-sources/-flash/", "file");
+        games = await FFFF('shattered-team/shatter-games', "game-sources/-flash/", "file");
         games = games.map(game => ({ 'name': game, 'url': game }))
       } else if (url) {
         games = await (await fetch("https://shattered-team.github.io/shatter-games/game-sources/-url_games.json")).json();
