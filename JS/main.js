@@ -61,7 +61,7 @@ if (!ThemeBypass) {
 //fix for different web environments (local dev/github pages)
 window.prefix = "";
 if (window.location.href.startsWith("https://shattered-team.github.io/")) {
-	window.prefix = "/shatt3r";
+	window.prefix = "/sh4tter";
 }
 
 //if there isn't an account bypass for the page

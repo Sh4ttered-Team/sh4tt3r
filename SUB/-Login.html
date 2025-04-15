@@ -36,7 +36,7 @@
       window.showLoadingScreen();
       try{
       const { data, error } = await supabaseClient.auth.resetPasswordForEmail(document.querySelector('#email').value, {
-      redirectTo: 'https://shattered-team.github.io/shatt3r/SUB/-Forgot.html',
+      redirectTo: 'https://shattered-team.github.io/sh4tter/SUB/-Forgot.html',
       })
       if (error) {
         alert(`An error occured =(  ${error}`);
