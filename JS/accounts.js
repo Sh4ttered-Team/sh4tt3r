@@ -1,11 +1,16 @@
-async function LTA(Email, Password) {
+async function LTA(rawCred, Password) {
 	//Login To Account
+	const isEmail = cred => /\S+@\S+\.\S+/.test(cred);
+	const emailToUse = isEmail(rawCred)
+		? rawCred
+		: `${rawCred}@shatter.local`;
+
 	const { data, error } = await supabaseClient.auth.signInWithPassword({
-		email: Email,
+		email: emailToUse,
 		password: Password,
 	});
 
-	if(window.hideLoadingScreen) {
+	if (window.hideLoadingScreen) {
 		window.hideLoadingScreen();
 	}
 	if (error) {
@@ -19,11 +24,7 @@ async function loggedIn() {
 	const {
 		data: { session },
 	} = await supabaseClient.auth.getSession();
-	if (session) {
-		return true;
-	} else {
-		return false;
-	}
+	return !!session;
 }
 
 async function LOA() {
