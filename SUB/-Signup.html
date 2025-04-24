@@ -78,12 +78,19 @@
         .from('profilePictures')
         .upload(filepath, file, { cacheControl: '0', upsert: false });
 
-      await supabaseClient.from("profiles").insert([{
-        id: data.user.id,
-        username: username,
-        email: fakeEmail,
-        pfp: filepath
-      }]);
+      const { error: insertError } = await supabaseClient.from("profiles").insert([{
+        	id: data.user.id,
+        	username: username,
+        	email: fakeEmail,
+        	pfp: filepath
+        }]);
+        
+        if (insertError) {
+        	window.hideLoadingScreen();
+        	alert("Failed to insert profile:\n" + insertError.message);
+        	return;
+        }
+
 
       window.hideLoadingScreen();
       window.location.href = window.prefix + '/';
