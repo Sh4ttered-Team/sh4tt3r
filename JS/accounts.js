@@ -1,12 +1,8 @@
 async function LTA(rawCred, Password) {
 	//Login To Account
-	const isEmail = cred => /\S+@\S+\.\S+/.test(cred);
-	const emailToUse = isEmail(rawCred)
-		? rawCred
-		: `${rawCred}@shatter.local`;
 
 	const { data, error } = await supabaseClient.auth.signInWithPassword({
-		email: emailToUse,
+		email: rawCred,
 		password: Password,
 	});
 
