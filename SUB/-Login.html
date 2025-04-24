@@ -27,31 +27,31 @@
     <h2>Don't have an account? Thats fine! You can make one <a href="-Signup.html">here!</a></h2>
     <input type="text" id="credential" placeholder="Email or Username" required />
     <input type="password" id="password" placeholder="Password" required />
-    <a id="forgot">Forgot your password?</a>
+<!--     <a id="forgot">Forgot your password?</a> -->
     <button class="c-button" type="submit">Sign In</button>
   </form>
 
   <script type="module">
-    document.querySelector('#forgot').onclick = async () => {
-      window.showLoadingScreen();
-      const rawCred = document.querySelector('#credential').value.trim();
-      const isEmail = cred => /\S+@\S+\.\S+/.test(cred);
-      const emailToUse = isEmail(rawCred) ? rawCred : `${rawCred}@shatter.local`;
+    // document.querySelector('#forgot').onclick = async () => {
+    //   window.showLoadingScreen();
+    //   const rawCred = document.querySelector('#credential').value.trim();
+    //   const isEmail = cred => /\S+@\S+\.\S+/.test(cred);
+    //   const emailToUse = isEmail(rawCred) ? rawCred : `${rawCred}@shatter.local`;
 
-      try {
-        const { data, error } = await supabaseClient.auth.resetPasswordForEmail(emailToUse, {
-          redirectTo: 'https://shattered-team.github.io/sh4tter/SUB/-Forgot.html',
-        });
-        if (error) {
-          alert(`An error occured =(  ${error}`);
-        } else {
-          alert('An email has been sent to reset your password');
-        }
-      } catch (e) {
-        alert(`An error occured =(  ${e}`);
-      }
-      window.hideLoadingScreen();
-    };
+    //   try {
+    //     const { data, error } = await supabaseClient.auth.resetPasswordForEmail(emailToUse, {
+    //       redirectTo: 'https://shattered-team.github.io/sh4tter/SUB/-Forgot.html',
+    //     });
+    //     if (error) {
+    //       alert(`An error occured =(  ${error}`);
+    //     } else {
+    //       alert('An email has been sent to reset your password');
+    //     }
+    //   } catch (e) {
+    //     alert(`An error occured =(  ${e}`);
+    //   }
+    //   window.hideLoadingScreen();
+    // };
 
     async function signIn(event) {
       event.preventDefault();
