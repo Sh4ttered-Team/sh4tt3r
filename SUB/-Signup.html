@@ -26,7 +26,6 @@
     <h1>Shatter Signup</h1>
     <img id="pfp" draggable="false" title="Please fill out this field." />
     <input id="username" placeholder="Username" required />
-    <input type="text" id="credential" placeholder="Username (or Email for old users)" required />
     <input type="password" id="password" placeholder="Password" required />
     <button class="c-button" type="submit">Sign Up</button>
     <input type="file" id="pfpDialog" accept="image/*" />
@@ -34,9 +33,7 @@
 
   <script type="module">
     document.getElementById('pfp').src = window.prefix + '/UI/account-placeholder.svg';
-    document.getElementById('pfp').onclick = (function pfpSelect() {
-      document.getElementById('pfpDialog').click();
-    });
+    document.getElementById('pfp').onclick = () => document.getElementById('pfpDialog').click();
 
     document.getElementById('pfpDialog').addEventListener('change', updatePfp);
     document.getElementById("login-form").addEventListener("submit", signUp);
@@ -45,47 +42,38 @@
       const file = document.getElementById('pfpDialog').files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function (e) {
-          document.getElementById('pfp').src = e.target.result;
-        };
+        reader.onload = e => document.getElementById('pfp').src = e.target.result;
         reader.readAsDataURL(file);
       }
     }
 
     async function signUp(event) {
       event.preventDefault();
-      if (document.getElementById('pfpDialog').files.length === 0) {
+      if (!document.getElementById('pfpDialog').files.length) {
         alert('A profile picture is required!');
         return;
       }
       window.showLoadingScreen();
 
       const username = document.getElementById("username").value.trim();
-      const rawCred = document.getElementById("credential").value.trim();
       const password = document.getElementById("password").value;
-
-      const isEmail = cred => /\S+@\S+\.\S+/.test(cred);
-      const emailToUse = isEmail(rawCred)
-        ? rawCred
-        : `${rawCred}@shatter.local`;
+      const fakeEmail = `${username}@shatter.local`;
 
       const { data, error } = await supabaseClient.auth.signUp({
-        email: emailToUse,
+        email: fakeEmail,
         password,
       });
 
       if (error) {
         window.hideLoadingScreen();
-        alert(
-          "Oops! Something went wrong.\nError: " +
-            error.message.replace('AuthApiError: ', '')
-        );
+        alert("Oops! Something went wrong.\nError: " + error.message);
         return;
       }
 
       const file = document.getElementById('pfpDialog').files[0];
       const ext = file.type.split('/').pop();
       const filepath = `${data.user.id}.${ext}`;
+
       await supabaseClient.storage
         .from('profilePictures')
         .upload(filepath, file, { cacheControl: '0', upsert: false });
@@ -93,11 +81,11 @@
       await supabaseClient.from("profiles").insert([{
         id: data.user.id,
         username: username,
-        email: isEmail(rawCred) ? rawCred : null,
         pfp: filepath
       }]);
 
       window.hideLoadingScreen();
+      window.location.href = window.prefix + '/';
     }
   </script>
 </body>
