@@ -26,7 +26,7 @@
     <h1>Shatter Signup</h1>
     <img id="pfp" draggable="false" title="Please fill out this field." />
     <input id="username" placeholder="Username" required />
-    <input type="email" id="email" placeholder="Email" required />
+    <input type="text" id="credential" placeholder="Username (or Email for old users)" required />
     <input type="password" id="password" placeholder="Password" required />
     <button class="c-button" type="submit">Sign Up</button>
     <input type="file" id="pfpDialog" accept="image/*" />
@@ -51,58 +51,52 @@
         reader.readAsDataURL(file);
       }
     }
+
     async function signUp(event) {
-      if (document.getElementById('pfpDialog').files.length == 0) {
+      event.preventDefault();
+      if (document.getElementById('pfpDialog').files.length === 0) {
         alert('A profile picture is required!');
-        event.preventDefault();
         return;
       }
-      event.preventDefault();
-
       window.showLoadingScreen();
 
-      const username = document.getElementById("username").value;
-      const email = document.getElementById("email").value;
+      const username = document.getElementById("username").value.trim();
+      const rawCred = document.getElementById("credential").value.trim();
       const password = document.getElementById("password").value;
 
+      const isEmail = cred => /\S+@\S+\.\S+/.test(cred);
+      const emailToUse = isEmail(rawCred)
+        ? rawCred
+        : `${rawCred}@shatter.local`;
+
       const { data, error } = await supabaseClient.auth.signUp({
-        email: email,
-        password: password,
+        email: emailToUse,
+        password,
       });
 
       if (error) {
         window.hideLoadingScreen();
-        alert("Oops! Something went wrong, try again later =( \nError: " + String(error).replace('AuthApiError: ', ''));
+        alert(
+          "Oops! Something went wrong.\nError: " +
+            error.message.replace('AuthApiError: ', '')
+        );
         return;
       }
+
       const file = document.getElementById('pfpDialog').files[0];
-      const extention = String(file.type).split('/').pop();
-      const filepath = String(data.user.id) + '.' + String(extention)
-
-
-      const { pfpdata, pfperror } = await supabaseClient.storage
+      const ext = file.type.split('/').pop();
+      const filepath = `${data.user.id}.${ext}`;
+      await supabaseClient.storage
         .from('profilePictures')
-        .upload(filepath, file, {
-          cacheControl: '0',
-          upsert: false,
-        });
+        .upload(filepath, file, { cacheControl: '0', upsert: false });
 
-      const { error: profileError } = await supabaseClient.from("profiles").insert([
-        {
-          id: data.user.id,
-          username: username,
-          pfp: filepath,
-        },
-      ]);
+      await supabaseClient.from("profiles").insert([{
+        id: data.user.id,
+        username: username,
+        pfp: filepath
+      }]);
 
       window.hideLoadingScreen();
-      if (confirm("Would you like to redirect to 'gmail.com' to verify your email?")) {
-        window.location.href = 'https://gmail.com';
-      }
-      else {
-        window.location.href = window.prefix + '/';
-      }
     }
-
   </script>
 </body>
