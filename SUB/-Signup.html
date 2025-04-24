@@ -93,6 +93,7 @@
       await supabaseClient.from("profiles").insert([{
         id: data.user.id,
         username: username,
+        email: isEmail(rawCred) ? rawCred : null,
         pfp: filepath
       }]);
 
