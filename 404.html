@@ -30,10 +30,10 @@
     const params = new URLSearchParams(window.location.search);
 		const from = params.get("from");
     if (user[0].chat_banned && from.includes(shat-chat.html)) {
-      document.getElementById('text').textContent = "You've been banned from chat! \n Reason: \'" + user[0].chat_ban_reason + '\'';
+      document.getElementById('text').textContent = "You've been banned from chat! \n Reason: \'" + user[0].chat_ban_reason + '\'. If you wish to appeal this decision, contact sshlvl.contact@gmail.com';
     }
     if (user[0].banned) {
-      document.getElementById('text').textContent = "You've been banned! \n How'd you manage that? \n Reason: \'" + user[0].ban_reason + '\'';
+      document.getElementById('text').textContent = "You've been banned! \n How'd you manage that? \n Reason: \'" + user[0].ban_reason + '\'. If you wish to appeal this decision, contact sshlvl.contact@gmail.com';
     }
   </script>
 </body>
